@@ -140,7 +140,7 @@ class HardcodedSecretRule(Rule):
                     note = ""
                     if (
                         pattern.name == "Google API key"
-                        and item.symbol in GOOGLE_SERVICES_RESOURCES
+                        and _resource_name(item) in GOOGLE_SERVICES_RESOURCES
                     ):
                         severity = Severity.LOW
                         note = (
@@ -158,7 +158,7 @@ class HardcodedSecretRule(Rule):
             if matched or not item.symbol or not item.file.startswith("res/"):
                 continue
             # Named resource that looks like a secret, e.g. <string name="stripe_secret">...
-            name = item.symbol.rsplit("/", 1)[-1]
+            name = _resource_name(item)
             value = item.value.strip()
             if (
                 name not in GOOGLE_SERVICES_RESOURCES
@@ -187,3 +187,8 @@ class HardcodedSecretRule(Rule):
             for ins in method.instructions:
                 if ins.string is not None and len(ins.string) >= 10:
                     yield StringItem(ins.string, cls.source_dex, method.short_name)
+
+
+def _resource_name(item: StringItem) -> str:
+    """``string/google_api_key`` -> ``google_api_key``."""
+    return (item.symbol or "").rsplit("/", 1)[-1]

@@ -25,6 +25,11 @@ INSECURE_SETTERS: dict[str, tuple[int, Severity, str]] = {
         Severity.HIGH,
         "lets JavaScript in file:// pages read other local files",
     ),
+    "setJavaScriptEnabled": (
+        1,
+        Severity.INFO,
+        "runs JavaScript from loaded pages; make sure only trusted HTTPS content is loaded",
+    ),
     "setMixedContentMode": (
         0,  # WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
         Severity.MEDIUM,
@@ -41,7 +46,8 @@ class InsecureWebViewRule(Rule):
         category=Category.CODE,
         description=(
             "Detects WebView settings that weaken the same-origin policy for file:// URLs or "
-            "allow mixed content, and WebViewClient.onReceivedSslError handlers that call "
+            "allow mixed content, enabled JavaScript (informational), and "
+            "WebViewClient.onReceivedSslError handlers that call "
             "SslErrorHandler.proceed(), which silently accepts invalid TLS certificates and "
             "enables man-in-the-middle attacks."
         ),

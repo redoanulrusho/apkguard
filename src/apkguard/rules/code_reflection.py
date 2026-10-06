@@ -95,7 +95,6 @@ class ReflectionRule(Rule):
                     f"{', '.join(sorted(hidden))}.",
                     class_location(cls),
                     evidence=", ".join(sorted(hidden)),
-                    severity=Severity.MEDIUM,
                 )
             if total >= threshold:
                 yield self.finding(
