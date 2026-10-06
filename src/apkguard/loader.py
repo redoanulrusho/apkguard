@@ -16,7 +16,6 @@ from apkguard.context import (
     Manifest,
     MethodInfo,
     StringItem,
-    android_attr,
 )
 
 TEXT_ASSET_SUFFIXES = (
@@ -28,6 +27,7 @@ MAX_ASSET_BYTES = 1_000_000
 _REGISTER = 0
 _LITERAL = 1
 _KIND = 0x100
+_BINARY_XML_MAGIC = b"\x03\x00\x08\x00"
 
 
 class ApkLoadError(Exception):
@@ -164,7 +164,7 @@ def _load_asset_strings(apk: Any) -> list[StringItem]:
         if not name.lower().endswith(TEXT_ASSET_SUFFIXES):
             continue
         data = apk.get_file(name)
-        if not data or len(data) > MAX_ASSET_BYTES or data[:4] == b"\x03\x00\x08\x00":
+        if not data or len(data) > MAX_ASSET_BYTES or data[:4] == _BINARY_XML_MAGIC:
             continue  # skip empty, huge and binary-XML files
         text = data.decode("utf-8", errors="ignore")
         for lineno, line in enumerate(text.splitlines(), start=1):
@@ -186,7 +186,7 @@ def _load_network_security_config(
             for _config, value in apk.get_android_resources().get_resolved_res_configs(res_id):
                 if isinstance(value, str) and value.endswith(".xml"):
                     candidates.append(value)
-        except (ValueError, Exception):
+        except Exception:  # unresolvable reference; fall back to the conventional path
             pass
     if ref:
         candidates.append("res/xml/network_security_config.xml")
@@ -197,16 +197,17 @@ def _load_network_security_config(
             continue
         if not data:
             continue
+        obj: etree._Element | None = None
         try:
-            obj = AXMLPrinter(data).get_xml_obj()
-        except Exception:
-            try:
+            if data[:4] == _BINARY_XML_MAGIC:
+                obj = AXMLPrinter(data).get_xml_obj()
+            else:  # some build tools / tests ship plain-text XML
                 obj = etree.fromstring(data)
-            except Exception:
-                continue
+        except Exception:
+            continue
         if obj is not None:
             return candidate, obj
     return None, None
 
 
-__all__ = ["ApkLoadError", "android_attr", "load_apk"]
+__all__ = ["ApkLoadError", "load_apk"]

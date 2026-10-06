@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>APKGuard report - org.billthefarmer.diary</title><style>
+:root{--bg:#f7f8fa;--card:#fff;--text:#1d2330;--muted:#5f6b7a;--border:#dfe3ea;
+--critical:#b3132b;--high:#d9480f;--medium:#b7791f;--low:#1c7ed6;--info:#6b7280;--ok:#2b8a3e}
+@media (prefers-color-scheme:dark){:root{--bg:#12151b;--card:#1b2029;--text:#e6e9ef;
+--muted:#9aa4b2;--border:#2c3340;--critical:#ff6b81;--high:#ff922b;--medium:#fcc419;
+--low:#4dabf7;--info:#adb5bd;--ok:#69db7c}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);
+font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1100px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:24px;margin:0 0 4px}h2{font-size:18px;margin:32px 0 12px}
+.muted{color:var(--muted)}code{font:13px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;
+word-break:break-all}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin:16px 0}
+.meta div{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px}
+.meta b{display:block;font-size:12px;color:var(--muted);font-weight:500}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.card{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--c);
+border-radius:8px;padding:10px 14px;cursor:pointer;user-select:none}
+.card.off{opacity:.45}.card .n{font-size:26px;font-weight:700;color:var(--c)}
+.card .l{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.toolbar input{flex:1;min-width:200px;padding:8px 10px;border-radius:6px;
+border:1px solid var(--border);background:var(--card);color:var(--text)}
+details.f{background:var(--card);border:1px solid var(--border);border-radius:8px;margin:6px 0}
+details.f summary{display:flex;gap:10px;align-items:baseline;padding:10px 14px;cursor:pointer;
+list-style:none;flex-wrap:wrap}
+details.f summary::-webkit-details-marker{display:none}
+details.f .body{padding:0 14px 14px;border-top:1px solid var(--border)}
+.sev{font-size:11px;font-weight:700;text-transform:uppercase;padding:2px 8px;border-radius:99px;
+color:#fff;background:var(--c);white-space:nowrap}
+.rid{font:12px ui-monospace,Consolas,monospace;color:var(--muted)}
+.title{font-weight:600}.loc{flex-basis:100%;font-size:13px;color:var(--muted)}
+.supp{opacity:.6}
+.tag{font-size:11px;border:1px solid var(--border);border-radius:4px;padding:1px 6px}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 16px;margin:12px 0 0}
+dt{color:var(--muted);font-size:13px}dd{margin:0}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);
+border-radius:8px;overflow:hidden;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase}
+.empty{padding:24px;text-align:center;color:var(--ok);font-weight:600}
+.tw{overflow-x:auto}
+</style></head>
+<body><main>
+<h1>APKGuard security report</h1>
+<div class="muted">Highest severity: high &middot; generated 2026-10-06 05:50 UTC by APKGuard
+0.1.0</div>
+<div class="meta">
+<div><b>Package</b><code>org.billthefarmer.diary</code></div>
+<div><b>Version</b>1.105</div>
+<div><b>minSdk / targetSdk</b>21 / 28</div>
+<div><b>APK</b><code>tests\fixtures\apks\org.billthefarmer.diary_1105.apk</code></div>
+<div><b>Scan time</b>0.40s</div>
+</div>
+<div class="cards"><div class="card" data-sev="critical" style="--c:var(--critical)" title="Click to hide/show"><div class="n">0</div><div class="l">critical</div></div><div class="card" data-sev="high" style="--c:var(--high)" title="Click to hide/show"><div class="n">1</div><div class="l">high</div></div><div class="card" data-sev="medium" style="--c:var(--medium)" title="Click to hide/show"><div class="n">3</div><div class="l">medium</div></div><div class="card" data-sev="low" style="--c:var(--low)" title="Click to hide/show"><div class="n">2</div><div class="l">low</div></div><div class="card" data-sev="info" style="--c:var(--info)" title="Click to hide/show"><div class="n">5</div><div class="l">info</div></div></div>
+<h2>Findings <span class="muted">(<span id="shown">11</span> shown,
+0 suppressed)</span></h2>
+<div class="toolbar"><input id="q" type="search" placeholder="Filter by text, rule, class...">
+</div>
+<details class="f" data-sev="high">
+<summary><span class="sev" style="--c:var(--high)">high</span>
+<span class="rid">AG-MAN-003</span><span class="title">Cleartext network traffic allowed</span><span class="tag">CWE-319</span> <span class="tag">MASVS-NETWORK-1</span>
+<span class="loc"><code>AndroidManifest.xml:application</code></span></summary>
+<div class="body"><dl><dt>Details</dt><dd>The &lt;application&gt; element sets android:usesCleartextTraffic=&quot;true&quot;.</dd><dt>Evidence</dt><dd><code>android:usesCleartextTraffic=&quot;true&quot;</code></dd>
+<dt>Remediation</dt><dd>Use HTTPS for all connections. Remove android:usesCleartextTraffic=&quot;true&quot; and set cleartextTrafficPermitted=&quot;false&quot; in the network security config base-config. If a legacy host truly requires HTTP, allow it only for that domain with a &lt;domain-config&gt;.</dd><dt>References</dt><dd><a href="https://developer.android.com/privacy-and-security/security-config" rel="noopener">https://developer.android.com/privacy-and-security/security-config</a><br><a href="https://developer.android.com/guide/topics/manifest/application-element#usesCleartextTraffic" rel="noopener">https://developer.android.com/guide/topics/manifest/application-element#usesCleartextTraffic</a></dd></dl></div></details><details class="f" data-sev="medium">
+<summary><span class="sev" style="--c:var(--medium)">medium</span>
+<span class="rid">AG-MAN-002</span><span class="title">Application data backup is enabled</span><span class="tag">CWE-530</span> <span class="tag">MASVS-STORAGE-2</span>
+<span class="loc"><code>AndroidManifest.xml:application</code></span></summary>
+<div class="body"><dl><dt>Details</dt><dd>The &lt;application&gt; element sets android:allowBackup=&quot;true&quot;. No backup rules restrict which files are included.</dd><dt>Evidence</dt><dd><code>android:allowBackup=&quot;true&quot;</code></dd>
+<dt>Remediation</dt><dd>Set android:allowBackup=&quot;false&quot;, or keep it enabled but restrict what is backed up with android:fullBackupContent (Android 11 and lower) and android:dataExtractionRules (Android 12+), excluding tokens, credentials and other sensitive files.</dd><dt>References</dt><dd><a href="https://developer.android.com/guide/topics/data/autobackup" rel="noopener">https://developer.android.com/guide/topics/data/autobackup</a><br><a href="https://developer.android.com/about/versions/12/backup-restore" rel="noopener">https://developer.android.com/about/versions/12/backup-restore</a></dd></dl></div></details><details class="f" data-sev="medium">
+<summary><span class="sev" style="--c:var(--medium)">medium</span>
+<span class="rid">AG-MAN-004</span><span class="title">Exported component without permission</span><span class="tag">CWE-926</span> <span class="tag">MASVS-PLATFORM-1</span>
+<span class="loc"><code>AndroidManifest.xml:org.billthefarmer.diary.DiaryWidgetProvider</code></span></summary>
+<div class="body"><dl><dt>Details</dt><dd>receiver org.billthefarmer.diary.DiaryWidgetProvider is exported (android:exported=&quot;true&quot;) without a permission.</dd><dt>Evidence</dt><dd><code>&lt;receiver android:name=&quot;org.billthefarmer.diary.DiaryWidgetProvider&quot;&gt; actions: android.appwidget.action.APPWIDGET_UPDATE</code></dd>
+<dt>Remediation</dt><dd>Set android:exported=&quot;false&quot; on components that are only used inside the app. If the component must be reachable by other apps, protect it with android:permission using a signature-level custom permission, and validate all incoming intent data.</dd><dt>References</dt><dd><a href="https://developer.android.com/privacy-and-security/risks/android-exported" rel="noopener">https://developer.android.com/privacy-and-security/risks/android-exported</a><br><a href="https://developer.android.com/guide/topics/manifest/activity-element#exported" rel="noopener">https://developer.android.com/guide/topics/manifest/activity-element#exported</a></dd></dl></div></details><details class="f" data-sev="medium">
+<summary><span class="sev" style="--c:var(--medium)">medium</span>
+<span class="rid">AG-MAN-005</span><span class="title">Outdated SDK version</span><span class="tag">CWE-1104</span> <span class="tag">MASVS-CODE-1</span>
+<span class="loc"><code>AndroidManifest.xml:uses-sdk/targetSdkVersion</code></span></summary>
+<div class="body"><dl><dt>Details</dt><dd>targetSdkVersion is 28; at least 34 is recommended.</dd><dt>Evidence</dt><dd><code>targetSdkVersion=28</code></dd>
+<dt>Remediation</dt><dd>Raise targetSdkVersion to the level currently required by Google Play and test the behaviour changes. Consider raising minSdkVersion to at least 23 so that runtime permissions and modern TLS defaults are always available.</dd><dt>References</dt><dd><a href="https://developer.android.com/google/play/requirements/target-sdk" rel="noopener">https://developer.android.com/google/play/requirements/target-sdk</a><br><a href="https://developer.android.com/guide/topics/manifest/uses-sdk-element" rel="noopener">https://developer.android.com/guide/topics/manifest/uses-sdk-element</a></dd></dl></div></details><details class="f" data-sev="low">
+<summary><span class="sev" style="--c:var(--low)">low</span>
+<span class="rid">AG-MAN-004</span><span class="title">Exported component without permission</span><span class="tag">CWE-926</span> <span class="tag">MASVS-PLATFORM-1</span>
+<span class="loc"><code>AndroidManifest.xml:org.billthefarmer.diary.Editor</code></span></summary>
+<div class="body"><dl><dt>Details</dt><dd>activity org.billthefarmer.diary.Editor is exported (android:exported=&quot;true&quot;) without a permission.</dd><dt>Evidence</dt><dd><code>&lt;activity android:name=&quot;org.billthefarmer.diary.Editor&quot;&gt; actions: android.intent.action.VIEW, android.intent.action.EDIT</code></dd>
+<dt>Remediation</dt><dd>Set android:exported=&quot;false&quot; on components that are only used inside the app. If the component must be reachable by other apps, protect it with android:permission using a signature-level custom permission, and validate all incoming intent data.</dd><dt>References</dt><dd><a href="https://developer.android.com/privacy-and-security/risks/android-exported" rel="noopener">https://developer.android.com/privacy-and-security/risks/android-exported</a><br><a href="https://developer.android.com/guide/topics/manifest/activity-element#exported" rel="noopener">https://developer.android.com/guide/topics/manifest/activity-element#exported</a></dd></dl></div></details><details class="f" data-sev="low">
+<summary><span class="sev" style="--c:var(--low)">low</span>
+<span class="rid">AG-MAN-005</span><span class="title">Outdated SDK version</span><span class="tag">CWE-1104</span> <span class="tag">MASVS-CODE-1</span>
+<span class="loc"><code>AndroidManifest.xml:uses-sdk/minSdkVersion</code></span></summary>
+<div class="body"><dl><dt>Details</dt><dd>minSdkVersion is 21; the app can run on Android versions without current security patches (recommended minimum: 23).</dd><dt>Evidence</dt><dd><code>minSdkVersion=21</code></dd>
+<dt>Remediation</dt><dd>Raise targetSdkVersion to the level currently required by Google Play and test the behaviour changes. Consider raising minSdkVersion to at least 23 so that runtime permissions and modern TLS defaults are always available.</dd><dt>References</dt><dd><a href="https://developer.android.com/google/play/requirements/target-sdk" rel="noopener">https://developer.android.com/google/play/requirements/target-sdk</a><br><a href="https://developer.android.com/guide/topics/manifest/uses-sdk-element" rel="noopener">https://developer.android.com/guide/topics/manifest/uses-sdk-element</a></dd></dl></div></details><details class="f" data-sev="info">
+<summary><span class="sev" style="--c:var(--info)">info</span>
+<span class="rid">AG-CODE-004</span><span class="title">Insecure WebView configuration</span><span class="tag">CWE-295</span> <span class="tag">MASVS-PLATFORM-2</span>
+<span class="loc"><code>classes.dex:Lorg/billthefarmer/diary/Diary;-&gt;onCreate</code></span></summary>
+<div class="body"><dl><dt>Details</dt><dd>Lorg/billthefarmer/diary/Diary;-&gt;onCreate calls WebSettings.setJavaScriptEnabled(true), which runs JavaScript from loaded pages; make sure only trusted HTTPS content is loaded.</dd><dt>Evidence</dt><dd><code>setJavaScriptEnabled(true)</code></dd>
+<dt>Remediation</dt><dd>Keep setAllowFileAccessFromFileURLs and setAllowUniversalAccessFromFileURLs false (the default since API 16), use MIXED_CONTENT_NEVER_ALLOW, load local content via WebViewAssetLoader, and never call handler.proceed() in onReceivedSslError - call handler.cancel() instead.</dd><dt>References</dt><dd><a href="https://developer.android.com/privacy-and-security/risks/webview-unsafe-file-inclusion" rel="noopener">https://developer.android.com/privacy-and-security/risks/webview-unsafe-file-inclusion</a><br><a href="https://developer.android.com/reference/android/webkit/WebViewClient#onReceivedSslError(android.webkit.WebView,%20android.webkit.SslErrorHandler,%20android.net.http.SslError)" rel="noopener">https://developer.android.com/reference/android/webkit/WebViewClient#onReceivedSslError(android.webkit.WebView,%20android.webkit.SslErrorHandler,%20android.net.http.SslError)</a></dd></dl></div></details><details class="f" data-sev="info">
+<summary><span class="sev" style="--c:var(--info)">info</span>
+<span class="rid">AG-PERM-001</span><span class="title">Dangerous or high-risk permissions requested</span><span class="tag">CWE-250</span> <span class="tag">MASVS-PRIVACY-1</span>
+<span class="loc"><code>AndroidManifest.xml:android.permission.READ_CALENDAR</code></span></summary>
+<div class="body"><dl><dt>Details</dt><dd>Requests dangerous (runtime) permission android.permission.READ_CALENDAR.</dd><dt>Evidence</dt><dd><code>&lt;uses-permission android:name=&quot;android.permission.READ_CALENDAR&quot;/&gt;</code></dd>
+<dt>Remediation</dt><dd>Remove permissions that are not strictly needed (check transitive library manifests with the merged-manifest view), prefer privacy-preserving alternatives (photo picker, Storage Access Framework, coarse location) and request runtime permissions only when the feature is used.</dd><dt>References</dt><dd><a href="https://developer.android.com/guide/topics/permissions/overview" rel="noopener">https://developer.android.com/guide/topics/permissions/overview</a><br><a href="https://developer.android.com/privacy-and-security/minimize-permission-requests" rel="noopener">https://developer.android.com/privacy-and-security/minimize-permission-requests</a></dd></dl></div></details><details class="f" data-sev="info">
+<summary><span class="sev" style="--c:var(--info)">info</span>
+<span class="rid">AG-PERM-001</span><span class="title">Dangerous or high-risk permissions requested</span><span class="tag">CWE-250</span> <span class="tag">MASVS-PRIVACY-1</span>
+<span class="loc"><code>AndroidManifest.xml:android.permission.READ_EXTERNAL_STORAGE</code></span></summary>
+<div class="body"><dl><dt>Details</dt><dd>Requests dangerous (runtime) permission android.permission.READ_EXTERNAL_STORAGE.</dd><dt>Evidence</dt><dd><code>&lt;uses-permission android:name=&quot;android.permission.READ_EXTERNAL_STORAGE&quot;/&gt;</code></dd>
+<dt>Remediation</dt><dd>Remove permissions that are not strictly needed (check transitive library manifests with the merged-manifest view), prefer privacy-preserving alternatives (photo picker, Storage Access Framework, coarse location) and request runtime permissions only when the feature is used.</dd><dt>References</dt><dd><a href="https://developer.android.com/guide/topics/permissions/overview" rel="noopener">https://developer.android.com/guide/topics/permissions/overview</a><br><a href="https://developer.android.com/privacy-and-security/minimize-permission-requests" rel="noopener">https://developer.android.com/privacy-and-security/minimize-permission-requests</a></dd></dl></div></details><details class="f" data-sev="info">
+<summary><span class="sev" style="--c:var(--info)">info</span>
+<span class="rid">AG-PERM-001</span><span class="title">Dangerous or high-risk permissions requested</span><span class="tag">CWE-250</span> <span class="tag">MASVS-PRIVACY-1</span>
+<span class="loc"><code>AndroidManifest.xml:android.permission.WRITE_CALENDAR</code></span></summary>
+<div class="body"><dl><dt>Details</dt><dd>Requests dangerous (runtime) permission android.permission.WRITE_CALENDAR.</dd><dt>Evidence</dt><dd><code>&lt;uses-permission android:name=&quot;android.permission.WRITE_CALENDAR&quot;/&gt;</code></dd>
+<dt>Remediation</dt><dd>Remove permissions that are not strictly needed (check transitive library manifests with the merged-manifest view), prefer privacy-preserving alternatives (photo picker, Storage Access Framework, coarse location) and request runtime permissions only when the feature is used.</dd><dt>References</dt><dd><a href="https://developer.android.com/guide/topics/permissions/overview" rel="noopener">https://developer.android.com/guide/topics/permissions/overview</a><br><a href="https://developer.android.com/privacy-and-security/minimize-permission-requests" rel="noopener">https://developer.android.com/privacy-and-security/minimize-permission-requests</a></dd></dl></div></details><details class="f" data-sev="info">
+<summary><span class="sev" style="--c:var(--info)">info</span>
+<span class="rid">AG-PERM-001</span><span class="title">Dangerous or high-risk permissions requested</span><span class="tag">CWE-250</span> <span class="tag">MASVS-PRIVACY-1</span>
+<span class="loc"><code>AndroidManifest.xml:android.permission.WRITE_EXTERNAL_STORAGE</code></span></summary>
+<div class="body"><dl><dt>Details</dt><dd>Requests dangerous (runtime) permission android.permission.WRITE_EXTERNAL_STORAGE.</dd><dt>Evidence</dt><dd><code>&lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot;/&gt;</code></dd>
+<dt>Remediation</dt><dd>Remove permissions that are not strictly needed (check transitive library manifests with the merged-manifest view), prefer privacy-preserving alternatives (photo picker, Storage Access Framework, coarse location) and request runtime permissions only when the feature is used.</dd><dt>References</dt><dd><a href="https://developer.android.com/guide/topics/permissions/overview" rel="noopener">https://developer.android.com/guide/topics/permissions/overview</a><br><a href="https://developer.android.com/privacy-and-security/minimize-permission-requests" rel="noopener">https://developer.android.com/privacy-and-security/minimize-permission-requests</a></dd></dl></div></details>
+
+<h2>Rules executed</h2>
+<div class="tw"><table><thead><tr><th>ID</th><th>Title</th><th>Default severity</th>
+<th>Category</th><th>CWE</th></tr></thead><tbody><tr><td><code>AG-MAN-001</code></td><td>Application is debuggable</td><td>high</td><td>manifest</td><td>CWE-489</td></tr><tr><td><code>AG-MAN-002</code></td><td>Application data backup is enabled</td><td>medium</td><td>manifest</td><td>CWE-530</td></tr><tr><td><code>AG-MAN-003</code></td><td>Cleartext network traffic allowed</td><td>high</td><td>manifest</td><td>CWE-319</td></tr><tr><td><code>AG-MAN-004</code></td><td>Exported component without permission</td><td>medium</td><td>manifest</td><td>CWE-926</td></tr><tr><td><code>AG-MAN-005</code></td><td>Outdated SDK version</td><td>medium</td><td>manifest</td><td>CWE-1104</td></tr><tr><td><code>AG-PERM-001</code></td><td>Dangerous or high-risk permissions requested</td><td>info</td><td>permissions</td><td>CWE-250</td></tr><tr><td><code>AG-PERM-002</code></td><td>Suspicious permission combination</td><td>high</td><td>permissions</td><td>CWE-250</td></tr><tr><td><code>AG-CODE-001</code></td><td>Dynamic code loading</td><td>high</td><td>code</td><td>CWE-829</td></tr><tr><td><code>AG-CODE-002</code></td><td>Reflection-heavy code</td><td>low</td><td>code</td><td>CWE-470</td></tr><tr><td><code>AG-CODE-003</code></td><td>WebView JavaScript interface exposed</td><td>medium</td><td>code</td><td>CWE-749</td></tr><tr><td><code>AG-CODE-004</code></td><td>Insecure WebView configuration</td><td>high</td><td>code</td><td>CWE-295</td></tr><tr><td><code>AG-CODE-005</code></td><td>Weak cipher or cipher mode</td><td>medium</td><td>code</td><td>CWE-327</td></tr><tr><td><code>AG-CODE-006</code></td><td>Weak hash algorithm</td><td>medium</td><td>code</td><td>CWE-328</td></tr><tr><td><code>AG-CODE-007</code></td><td>Hardcoded cryptographic key or IV</td><td>high</td><td>code</td><td>CWE-321</td></tr><tr><td><code>AG-CODE-008</code></td><td>Insecure TrustManager</td><td>high</td><td>code</td><td>CWE-295</td></tr><tr><td><code>AG-CODE-009</code></td><td>Insecure HostnameVerifier</td><td>high</td><td>code</td><td>CWE-297</td></tr><tr><td><code>AG-SEC-001</code></td><td>Hardcoded secret</td><td>high</td><td>secrets</td><td>CWE-798</td></tr></tbody></table></div>
+</main><script>
+const off=new Set();const q=document.getElementById('q');
+function apply(){const t=q.value.toLowerCase();let shown=0;
+document.querySelectorAll('details.f').forEach(d=>{const ok=!off.has(d.dataset.sev)&&
+(!t||d.textContent.toLowerCase().includes(t));d.hidden=!ok;if(ok)shown++;});
+document.getElementById('shown').textContent=shown;}
+document.querySelectorAll('.card').forEach(c=>c.addEventListener('click',()=>{
+const s=c.dataset.sev;off.has(s)?off.delete(s):off.add(s);c.classList.toggle('off');apply();}));
+q.addEventListener('input',apply);apply();
+</script></body></html>

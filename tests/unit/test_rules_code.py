@@ -169,6 +169,7 @@ MIXED = "Landroid/webkit/WebSettings;->setMixedContentMode(I)V"
 def test_universal_file_access_true_is_high() -> None:
     findings = run(InsecureWebViewRule(), code_ctx(const(1, 1), invoke(UNIVERSAL, 0, 1)))
     assert [f.severity for f in findings] == [Severity.HIGH]
+    assert findings[0].evidence == "setAllowUniversalAccessFromFileURLs(true)"
 
 
 def test_universal_file_access_false_is_clean() -> None:

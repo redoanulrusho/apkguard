@@ -71,11 +71,12 @@ class InsecureWebViewRule(Rule):
                 if call.target_class == WEBSETTINGS and call.target_name in INSECURE_SETTERS:
                     bad_value, severity, why = INSECURE_SETTERS[call.target_name]
                     if call.arg(0) == bad_value:
+                        shown = _display(call.target, bad_value)
                         yield self.finding(
                             f"{method.short_name} calls WebSettings.{call.target_name}"
-                            f"({bad_value}), which {why}.",
+                            f"({shown}), which {why}.",
                             method_location(cls, method),
-                            evidence=f"{call.target_name}({bad_value})",
+                            evidence=f"{call.target_name}({shown})",
                             severity=severity,
                         )
                 elif method.name == "onReceivedSslError" and call.short_target == SSL_PROCEED:
@@ -86,3 +87,10 @@ class InsecureWebViewRule(Rule):
                         evidence=call.target,
                         severity=Severity.HIGH,
                     )
+
+
+def _display(target: str, value: int) -> str:
+    """Render boolean setter arguments as true/false, everything else as the raw integer."""
+    if "(Z)" in target:
+        return "true" if value else "false"
+    return str(value)

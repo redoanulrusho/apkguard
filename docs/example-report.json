@@ -1,0 +1,331 @@
+{
+  "tool": {
+    "name": "apkguard",
+    "version": "0.1.0"
+  },
+  "apk": {
+    "path": "tests\\fixtures\\apks\\org.billthefarmer.diary_1105.apk",
+    "package": "org.billthefarmer.diary",
+    "version_name": "1.105",
+    "min_sdk": 21,
+    "target_sdk": 28
+  },
+  "summary": {
+    "total": 11,
+    "suppressed": 0,
+    "by_severity": {
+      "critical": 0,
+      "high": 1,
+      "medium": 3,
+      "low": 2,
+      "info": 5
+    },
+    "duration_seconds": 0.399
+  },
+  "findings": [
+    {
+      "rule_id": "AG-MAN-003",
+      "title": "Cleartext network traffic allowed",
+      "severity": "high",
+      "category": "manifest",
+      "message": "The <application> element sets android:usesCleartextTraffic=\"true\".",
+      "location": {
+        "file": "AndroidManifest.xml",
+        "symbol": "application"
+      },
+      "remediation": "Use HTTPS for all connections. Remove android:usesCleartextTraffic=\"true\" and set cleartextTrafficPermitted=\"false\" in the network security config base-config. If a legacy host truly requires HTTP, allow it only for that domain with a <domain-config>.",
+      "evidence": "android:usesCleartextTraffic=\"true\"",
+      "fingerprint": "124b16baa63250f3a40a178e4bc6cb96",
+      "suppressed": false
+    },
+    {
+      "rule_id": "AG-MAN-002",
+      "title": "Application data backup is enabled",
+      "severity": "medium",
+      "category": "manifest",
+      "message": "The <application> element sets android:allowBackup=\"true\". No backup rules restrict which files are included.",
+      "location": {
+        "file": "AndroidManifest.xml",
+        "symbol": "application"
+      },
+      "remediation": "Set android:allowBackup=\"false\", or keep it enabled but restrict what is backed up with android:fullBackupContent (Android 11 and lower) and android:dataExtractionRules (Android 12+), excluding tokens, credentials and other sensitive files.",
+      "evidence": "android:allowBackup=\"true\"",
+      "fingerprint": "641b1b31bb430537ea4642b9e835fef7",
+      "suppressed": false
+    },
+    {
+      "rule_id": "AG-MAN-004",
+      "title": "Exported component without permission",
+      "severity": "medium",
+      "category": "manifest",
+      "message": "receiver org.billthefarmer.diary.DiaryWidgetProvider is exported (android:exported=\"true\") without a permission.",
+      "location": {
+        "file": "AndroidManifest.xml",
+        "symbol": "org.billthefarmer.diary.DiaryWidgetProvider"
+      },
+      "remediation": "Set android:exported=\"false\" on components that are only used inside the app. If the component must be reachable by other apps, protect it with android:permission using a signature-level custom permission, and validate all incoming intent data.",
+      "evidence": "<receiver android:name=\"org.billthefarmer.diary.DiaryWidgetProvider\"> actions: android.appwidget.action.APPWIDGET_UPDATE",
+      "fingerprint": "ad7e75cc22793e1f5e7500e7853badb7",
+      "suppressed": false
+    },
+    {
+      "rule_id": "AG-MAN-005",
+      "title": "Outdated SDK version",
+      "severity": "medium",
+      "category": "manifest",
+      "message": "targetSdkVersion is 28; at least 34 is recommended.",
+      "location": {
+        "file": "AndroidManifest.xml",
+        "symbol": "uses-sdk/targetSdkVersion"
+      },
+      "remediation": "Raise targetSdkVersion to the level currently required by Google Play and test the behaviour changes. Consider raising minSdkVersion to at least 23 so that runtime permissions and modern TLS defaults are always available.",
+      "evidence": "targetSdkVersion=28",
+      "fingerprint": "3e7df96662e7f9c34f52d5e2efb5bc14",
+      "suppressed": false
+    },
+    {
+      "rule_id": "AG-MAN-004",
+      "title": "Exported component without permission",
+      "severity": "low",
+      "category": "manifest",
+      "message": "activity org.billthefarmer.diary.Editor is exported (android:exported=\"true\") without a permission.",
+      "location": {
+        "file": "AndroidManifest.xml",
+        "symbol": "org.billthefarmer.diary.Editor"
+      },
+      "remediation": "Set android:exported=\"false\" on components that are only used inside the app. If the component must be reachable by other apps, protect it with android:permission using a signature-level custom permission, and validate all incoming intent data.",
+      "evidence": "<activity android:name=\"org.billthefarmer.diary.Editor\"> actions: android.intent.action.VIEW, android.intent.action.EDIT",
+      "fingerprint": "48d086034a8ad52d29c1464077f1e2e6",
+      "suppressed": false
+    },
+    {
+      "rule_id": "AG-MAN-005",
+      "title": "Outdated SDK version",
+      "severity": "low",
+      "category": "manifest",
+      "message": "minSdkVersion is 21; the app can run on Android versions without current security patches (recommended minimum: 23).",
+      "location": {
+        "file": "AndroidManifest.xml",
+        "symbol": "uses-sdk/minSdkVersion"
+      },
+      "remediation": "Raise targetSdkVersion to the level currently required by Google Play and test the behaviour changes. Consider raising minSdkVersion to at least 23 so that runtime permissions and modern TLS defaults are always available.",
+      "evidence": "minSdkVersion=21",
+      "fingerprint": "a87c157f29cc3e75e7d14e8647772727",
+      "suppressed": false
+    },
+    {
+      "rule_id": "AG-CODE-004",
+      "title": "Insecure WebView configuration",
+      "severity": "info",
+      "category": "code",
+      "message": "Lorg/billthefarmer/diary/Diary;->onCreate calls WebSettings.setJavaScriptEnabled(true), which runs JavaScript from loaded pages; make sure only trusted HTTPS content is loaded.",
+      "location": {
+        "file": "classes.dex",
+        "symbol": "Lorg/billthefarmer/diary/Diary;->onCreate"
+      },
+      "remediation": "Keep setAllowFileAccessFromFileURLs and setAllowUniversalAccessFromFileURLs false (the default since API 16), use MIXED_CONTENT_NEVER_ALLOW, load local content via WebViewAssetLoader, and never call handler.proceed() in onReceivedSslError - call handler.cancel() instead.",
+      "evidence": "setJavaScriptEnabled(true)",
+      "fingerprint": "4a033bf1cc42eb234355d63636ffe597",
+      "suppressed": false
+    },
+    {
+      "rule_id": "AG-PERM-001",
+      "title": "Dangerous or high-risk permissions requested",
+      "severity": "info",
+      "category": "permissions",
+      "message": "Requests dangerous (runtime) permission android.permission.READ_CALENDAR.",
+      "location": {
+        "file": "AndroidManifest.xml",
+        "symbol": "android.permission.READ_CALENDAR"
+      },
+      "remediation": "Remove permissions that are not strictly needed (check transitive library manifests with the merged-manifest view), prefer privacy-preserving alternatives (photo picker, Storage Access Framework, coarse location) and request runtime permissions only when the feature is used.",
+      "evidence": "<uses-permission android:name=\"android.permission.READ_CALENDAR\"/>",
+      "fingerprint": "93fcc0d9a25f09a2b0d37fee171297d7",
+      "suppressed": false
+    },
+    {
+      "rule_id": "AG-PERM-001",
+      "title": "Dangerous or high-risk permissions requested",
+      "severity": "info",
+      "category": "permissions",
+      "message": "Requests dangerous (runtime) permission android.permission.READ_EXTERNAL_STORAGE.",
+      "location": {
+        "file": "AndroidManifest.xml",
+        "symbol": "android.permission.READ_EXTERNAL_STORAGE"
+      },
+      "remediation": "Remove permissions that are not strictly needed (check transitive library manifests with the merged-manifest view), prefer privacy-preserving alternatives (photo picker, Storage Access Framework, coarse location) and request runtime permissions only when the feature is used.",
+      "evidence": "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\"/>",
+      "fingerprint": "bbde250002355e004e40c6c721d35aa2",
+      "suppressed": false
+    },
+    {
+      "rule_id": "AG-PERM-001",
+      "title": "Dangerous or high-risk permissions requested",
+      "severity": "info",
+      "category": "permissions",
+      "message": "Requests dangerous (runtime) permission android.permission.WRITE_CALENDAR.",
+      "location": {
+        "file": "AndroidManifest.xml",
+        "symbol": "android.permission.WRITE_CALENDAR"
+      },
+      "remediation": "Remove permissions that are not strictly needed (check transitive library manifests with the merged-manifest view), prefer privacy-preserving alternatives (photo picker, Storage Access Framework, coarse location) and request runtime permissions only when the feature is used.",
+      "evidence": "<uses-permission android:name=\"android.permission.WRITE_CALENDAR\"/>",
+      "fingerprint": "6028a211d16d9d74f69672dedefd1ebc",
+      "suppressed": false
+    },
+    {
+      "rule_id": "AG-PERM-001",
+      "title": "Dangerous or high-risk permissions requested",
+      "severity": "info",
+      "category": "permissions",
+      "message": "Requests dangerous (runtime) permission android.permission.WRITE_EXTERNAL_STORAGE.",
+      "location": {
+        "file": "AndroidManifest.xml",
+        "symbol": "android.permission.WRITE_EXTERNAL_STORAGE"
+      },
+      "remediation": "Remove permissions that are not strictly needed (check transitive library manifests with the merged-manifest view), prefer privacy-preserving alternatives (photo picker, Storage Access Framework, coarse location) and request runtime permissions only when the feature is used.",
+      "evidence": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
+      "fingerprint": "12adf28e30161131c70beaec9f6c045c",
+      "suppressed": false
+    }
+  ],
+  "rules": [
+    {
+      "id": "AG-MAN-001",
+      "title": "Application is debuggable",
+      "severity": "high",
+      "category": "manifest",
+      "cwe": "CWE-489",
+      "masvs": "MASVS-RESILIENCE-4"
+    },
+    {
+      "id": "AG-MAN-002",
+      "title": "Application data backup is enabled",
+      "severity": "medium",
+      "category": "manifest",
+      "cwe": "CWE-530",
+      "masvs": "MASVS-STORAGE-2"
+    },
+    {
+      "id": "AG-MAN-003",
+      "title": "Cleartext network traffic allowed",
+      "severity": "high",
+      "category": "manifest",
+      "cwe": "CWE-319",
+      "masvs": "MASVS-NETWORK-1"
+    },
+    {
+      "id": "AG-MAN-004",
+      "title": "Exported component without permission",
+      "severity": "medium",
+      "category": "manifest",
+      "cwe": "CWE-926",
+      "masvs": "MASVS-PLATFORM-1"
+    },
+    {
+      "id": "AG-MAN-005",
+      "title": "Outdated SDK version",
+      "severity": "medium",
+      "category": "manifest",
+      "cwe": "CWE-1104",
+      "masvs": "MASVS-CODE-1"
+    },
+    {
+      "id": "AG-PERM-001",
+      "title": "Dangerous or high-risk permissions requested",
+      "severity": "info",
+      "category": "permissions",
+      "cwe": "CWE-250",
+      "masvs": "MASVS-PRIVACY-1"
+    },
+    {
+      "id": "AG-PERM-002",
+      "title": "Suspicious permission combination",
+      "severity": "high",
+      "category": "permissions",
+      "cwe": "CWE-250",
+      "masvs": "MASVS-PRIVACY-1"
+    },
+    {
+      "id": "AG-CODE-001",
+      "title": "Dynamic code loading",
+      "severity": "high",
+      "category": "code",
+      "cwe": "CWE-829",
+      "masvs": "MASVS-CODE-4"
+    },
+    {
+      "id": "AG-CODE-002",
+      "title": "Reflection-heavy code",
+      "severity": "low",
+      "category": "code",
+      "cwe": "CWE-470",
+      "masvs": "MASVS-CODE-4"
+    },
+    {
+      "id": "AG-CODE-003",
+      "title": "WebView JavaScript interface exposed",
+      "severity": "medium",
+      "category": "code",
+      "cwe": "CWE-749",
+      "masvs": "MASVS-PLATFORM-2"
+    },
+    {
+      "id": "AG-CODE-004",
+      "title": "Insecure WebView configuration",
+      "severity": "high",
+      "category": "code",
+      "cwe": "CWE-295",
+      "masvs": "MASVS-PLATFORM-2"
+    },
+    {
+      "id": "AG-CODE-005",
+      "title": "Weak cipher or cipher mode",
+      "severity": "medium",
+      "category": "code",
+      "cwe": "CWE-327",
+      "masvs": "MASVS-CRYPTO-1"
+    },
+    {
+      "id": "AG-CODE-006",
+      "title": "Weak hash algorithm",
+      "severity": "medium",
+      "category": "code",
+      "cwe": "CWE-328",
+      "masvs": "MASVS-CRYPTO-1"
+    },
+    {
+      "id": "AG-CODE-007",
+      "title": "Hardcoded cryptographic key or IV",
+      "severity": "high",
+      "category": "code",
+      "cwe": "CWE-321",
+      "masvs": "MASVS-CRYPTO-2"
+    },
+    {
+      "id": "AG-CODE-008",
+      "title": "Insecure TrustManager",
+      "severity": "high",
+      "category": "code",
+      "cwe": "CWE-295",
+      "masvs": "MASVS-NETWORK-1"
+    },
+    {
+      "id": "AG-CODE-009",
+      "title": "Insecure HostnameVerifier",
+      "severity": "high",
+      "category": "code",
+      "cwe": "CWE-297",
+      "masvs": "MASVS-NETWORK-1"
+    },
+    {
+      "id": "AG-SEC-001",
+      "title": "Hardcoded secret",
+      "severity": "high",
+      "category": "secrets",
+      "cwe": "CWE-798",
+      "masvs": "MASVS-STORAGE-1"
+    }
+  ],
+  "errors": []
+}

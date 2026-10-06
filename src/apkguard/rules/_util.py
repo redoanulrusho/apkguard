@@ -21,14 +21,3 @@ def method_location(cls: ClassInfo, method: MethodInfo) -> Location:
 
 def class_location(cls: ClassInfo) -> Location:
     return Location(cls.source_dex, cls.name)
-
-
-def java_name(smali: str) -> str:
-    """``Lcom/example/Foo;`` -> ``com.example.Foo``."""
-    if smali.startswith("L") and smali.endswith(";"):
-        return smali[1:-1].replace("/", ".")
-    return smali
-
-
-def implements(cls: ClassInfo, *types: str) -> bool:
-    return any(t in cls.interfaces or t == cls.superclass for t in types)
