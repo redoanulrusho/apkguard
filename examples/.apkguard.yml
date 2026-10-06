@@ -1,0 +1,39 @@
+# Example APKGuard configuration. Place it in the directory you run `apkguard` from
+# (usually the repository root) as .apkguard.yml, or pass it with --config.
+
+# Exit with code 1 when an unsuppressed finding has at least this severity.
+# One of: info, low, medium, high, critical, none. The --fail-on flag overrides it.
+fail_on: high
+
+# Rules to turn off entirely.
+disable:
+  - AG-PERM-001        # we review permissions in the manifest PR template instead
+
+# Change the severity of every finding from a rule.
+severity_overrides:
+  AG-MAN-005: low
+
+# Skip third-party code for code and secret rules (Java package names or smali prefixes).
+exclude_packages:
+  - com.google.android.gms
+  - com.google.firebase
+  - kotlin
+
+# Tune individual rules.
+rule_options:
+  AG-CODE-002:
+    threshold: 12      # report classes with at least 12 reflective calls
+  AG-MAN-005:
+    min_target_sdk: 35
+    min_min_sdk: 24
+
+# Accept specific findings. `location` is a glob matched against the finding's file,
+# symbol, or "file:symbol". Suppressed findings still appear in reports (marked as
+# suppressed, and as SARIF suppressions) but never fail the build.
+suppress:
+  - rule: AG-MAN-004
+    location: "com.example.app.DeepLinkActivity"
+    reason: "Public deep-link entry point; intent data is validated in onCreate"
+  - rule: AG-CODE-006
+    location: "Lcom/example/app/cache/*"
+    reason: "MD5 used only for cache file names"

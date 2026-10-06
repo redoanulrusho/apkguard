@@ -1,0 +1,39 @@
+"""Sanity checks for shipped, non-Python project files (example config, GitHub Action)."""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+import yaml
+
+from apkguard.config import load_config
+from apkguard.model import Severity
+from apkguard.rules import RULES_BY_ID
+
+ROOT = Path(__file__).resolve().parents[2]
+
+
+def test_example_config_is_valid() -> None:
+    cfg = load_config(ROOT / "examples" / ".apkguard.yml", set(RULES_BY_ID))
+    assert cfg.fail_on is Severity.HIGH
+    assert cfg.suppress, "example should demonstrate suppressions"
+
+
+def test_action_definition() -> None:
+    action = yaml.safe_load((ROOT / "action.yml").read_text(encoding="utf-8"))
+    assert action["runs"]["using"] == "composite"
+    assert action["inputs"]["apk"]["required"] is True
+    assert action["inputs"]["fail-on"]["default"] == "high"
+    steps = action["runs"]["steps"]
+    scan = next(s for s in steps if s.get("id") == "scan")
+    # Untrusted inputs must reach the shell via env, never be interpolated into the script.
+    assert "${{" not in scan["run"]
+    uses = [s["uses"] for s in steps if "uses" in s]
+    assert any(u.startswith("github/codeql-action/upload-sarif@") for u in uses)
+
+
+def test_workflows_are_valid_yaml() -> None:
+    for path in [*(ROOT / ".github" / "workflows").glob("*.yml"), ROOT / "examples" /
+                 "github-workflow.yml"]:  # fmt: skip
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+        assert "jobs" in data, path
