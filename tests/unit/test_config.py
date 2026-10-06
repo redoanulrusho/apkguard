@@ -45,7 +45,10 @@ def test_full_config_parses() -> None:
 
 
 def test_fail_on_none() -> None:
-    assert parse_config({"fail_on": "none"}).fail_on is None
+    cfg = parse_config({"fail_on": "none"})
+    assert cfg.fail_on is None
+    assert cfg.fail_on_set
+    assert not parse_config({}).fail_on_set
 
 
 @pytest.mark.parametrize(
@@ -59,6 +62,10 @@ def test_fail_on_none() -> None:
         ({"suppress": [{"location": "x"}]}, "needs at least a 'rule'"),
         ({"suppress": [{"rule": "AG-MAN-001", "path": "x"}]}, "unknown key"),
         ({"rule_options": {"AG-CODE-002": 5}}, "rule_options"),
+        ({"rule_options": {"AG-CODE-002": {"treshold": 3}}}, "unknown option"),
+        ({"rule_options": {"AG-CODE-002": {"threshold": "high"}}}, "expected a number"),
+        ({"rule_options": {"AG-MAN-005": {"min_target_sdk": 34.5}}}, "expected an integer"),
+        ({"rule_options": {"AG-MAN-001": {"anything": 1}}}, "valid: none"),
         ([], "mapping"),
     ],
 )

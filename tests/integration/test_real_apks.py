@@ -149,6 +149,9 @@ def test_cli_config_file(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Non
     assert main(["scan", str(TUNER), "-q"]) == 0
     (tmp_path / ".apkguard.yml").write_text("fail_on: medium\n", encoding="utf-8")
     assert main(["scan", str(TUNER), "-q"]) == 1
+    (tmp_path / ".apkguard.yml").write_text("fail_on: none\n", encoding="utf-8")
+    assert main(["scan", str(NOTES), "-q"]) == 0  # config 'none' beats the default 'high'
+    assert main(["scan", str(NOTES), "-q", "--fail-on", "high"]) == 1  # CLI beats config
     (tmp_path / ".apkguard.yml").write_text("bogus_key: 1\n", encoding="utf-8")
     assert main(["scan", str(TUNER), "-q"]) == 2
 

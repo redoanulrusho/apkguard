@@ -59,6 +59,8 @@ class Suppression:
 @dataclass
 class Config:
     fail_on: Severity | None = None
+    #: True when the file sets ``fail_on`` (including ``none``), so it overrides the CLI default.
+    fail_on_set: bool = False
     disable: set[str] = field(default_factory=set)
     severity_overrides: dict[str, Severity] = field(default_factory=dict)
     exclude_packages: tuple[str, ...] = ()
@@ -131,6 +133,7 @@ def parse_config(raw: Any, known_rules: set[str] | None = None) -> Config:
     if raw.get("fail_on") is not None:
         value = str(raw["fail_on"])
         config.fail_on = None if value.lower() == "none" else severity(value, "fail_on")
+        config.fail_on_set = True
 
     disable = raw.get("disable") or []
     if not isinstance(disable, list):
@@ -154,6 +157,7 @@ def parse_config(raw: Any, known_rules: set[str] | None = None) -> Config:
     if not isinstance(options, dict) or not all(isinstance(v, dict) for v in options.values()):
         raise ConfigError("rule_options must map rule ids to mappings of option -> value")
     config.rule_options = {check_rule(k, "rule_options"): dict(v) for k, v in options.items()}
+    _validate_rule_options(config.rule_options)
 
     suppress = raw.get("suppress") or []
     if not isinstance(suppress, list):
@@ -173,3 +177,28 @@ def parse_config(raw: Any, known_rules: set[str] | None = None) -> Config:
             )
         )
     return config
+
+
+def _validate_rule_options(options: dict[str, dict[str, Any]]) -> None:
+    """Reject option names a rule does not define, so typos do not silently do nothing."""
+    from apkguard.rules import RULES_BY_ID
+
+    for rule_id, opts in options.items():
+        rule = RULES_BY_ID.get(rule_id)
+        if rule is None:
+            continue
+        unknown = set(opts) - set(rule.default_options)
+        if unknown:
+            valid = ", ".join(sorted(rule.default_options)) or "none"
+            raise ConfigError(
+                f"rule_options.{rule_id}: unknown option(s) {', '.join(sorted(unknown))} "
+                f"(valid: {valid})"
+            )
+        for name, value in opts.items():
+            default = rule.default_options[name]
+            if isinstance(value, bool) or not isinstance(value, int | float):
+                raise ConfigError(
+                    f"rule_options.{rule_id}.{name}: expected a number, got {value!r}"
+                )
+            if isinstance(default, int) and not isinstance(value, int):
+                raise ConfigError(f"rule_options.{rule_id}.{name}: expected an integer")

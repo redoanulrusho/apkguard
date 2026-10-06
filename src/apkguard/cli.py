@@ -161,7 +161,7 @@ def _scan(args: argparse.Namespace) -> int:
 
     if args.fail_on is not None:
         threshold = None if args.fail_on == "none" else Severity.parse(args.fail_on)
-    elif config.source is not None and config.fail_on is not None:
+    elif config.fail_on_set:
         threshold = config.fail_on
     else:
         threshold = DEFAULT_FAIL_ON
