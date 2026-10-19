@@ -8,7 +8,7 @@
           "name": "APKGuard",
           "version": "0.1.0",
           "semanticVersion": "0.1.0",
-          "informationUri": "https://github.com/apkguard/apkguard",
+          "informationUri": "https://github.com/YOUR_GITHUB_USER/apkguard",
           "rules": [
             {
               "id": "AG-MAN-001",
@@ -473,28 +473,28 @@
         }
       },
       "automationDetails": {
-        "id": "apkguard/org.billthefarmer.diary/"
+        "id": "apkguard/info.varden.hauk/"
       },
       "artifacts": [
         {
           "location": {
-            "uri": "tests/fixtures/apks/org.billthefarmer.diary_1105.apk",
+            "uri": "evaluation/apks/info.varden.hauk_15.apk",
             "uriBaseId": "%SRCROOT%"
           }
         }
       ],
       "results": [
         {
-          "ruleId": "AG-MAN-003",
+          "ruleId": "AG-CODE-009",
           "level": "error",
           "message": {
-            "text": "The <application> element sets android:usesCleartextTraffic=\"true\". [AndroidManifest.xml:application]"
+            "text": "Linfo/varden/hauk/http/security/InsecureHostnameVerifier;.verify() always returns true. [classes.dex:Linfo/varden/hauk/http/security/InsecureHostnameVerifier;->verify]"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "tests/fixtures/apks/org.billthefarmer.diary_1105.apk",
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {
@@ -503,35 +503,1195 @@
               },
               "logicalLocations": [
                 {
-                  "fullyQualifiedName": "AndroidManifest.xml:application",
+                  "fullyQualifiedName": "classes.dex:Linfo/varden/hauk/http/security/InsecureHostnameVerifier;->verify",
                   "kind": "member",
-                  "name": "application"
+                  "name": "Linfo/varden/hauk/http/security/InsecureHostnameVerifier;->verify"
                 }
               ]
             }
           ],
           "partialFingerprints": {
-            "apkguardFingerprint/v1": "124b16baa63250f3a40a178e4bc6cb96"
+            "apkguardFingerprint/v1": "aff1660490793e04f61b9f97855ed75c"
           },
           "properties": {
             "severity": "high",
             "security-severity": "8.0",
-            "apkEntry": "AndroidManifest.xml",
-            "evidence": "android:usesCleartextTraffic=\"true\""
+            "apkEntry": "classes.dex",
+            "evidence": "Linfo/varden/hauk/http/security/InsecureHostnameVerifier;->verify(Ljava/lang/String;Ljavax/net/ssl/SSLSession;)Z: return true",
+            "origin": "app",
+            "library": null
           },
-          "ruleIndex": 2
+          "ruleIndex": 15
         },
         {
-          "ruleId": "AG-MAN-002",
-          "level": "warning",
+          "ruleId": "AG-MAN-003",
+          "level": "error",
           "message": {
-            "text": "The <application> element sets android:allowBackup=\"true\". No backup rules restrict which files are included. [AndroidManifest.xml:application]"
+            "text": "The network security config base-config allows cleartext traffic for all domains. [res/ad.xml:base-config]"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "tests/fixtures/apks/org.billthefarmer.diary_1105.apk",
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "res/ad.xml:base-config",
+                  "kind": "member",
+                  "name": "base-config"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "e5c7029fd8032ea443823f132a297822"
+          },
+          "properties": {
+            "severity": "high",
+            "security-severity": "8.0",
+            "apkEntry": "res/ad.xml",
+            "evidence": "<base-config cleartextTrafficPermitted=\"true\">",
+            "origin": "app",
+            "library": null
+          },
+          "ruleIndex": 2
+        },
+        {
+          "ruleId": "AG-MAN-004",
+          "level": "warning",
+          "message": {
+            "text": "receiver info.varden.hauk.global.Receiver is exported (android:exported=\"true\") without a permission. [AndroidManifest.xml:info.varden.hauk.global.Receiver]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "AndroidManifest.xml:info.varden.hauk.global.Receiver",
+                  "kind": "member",
+                  "name": "info.varden.hauk.global.Receiver"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "f22c5179b7bc210f58c0d7144c79bce7"
+          },
+          "properties": {
+            "severity": "medium",
+            "security-severity": "5.5",
+            "apkEntry": "AndroidManifest.xml",
+            "evidence": "<receiver android:name=\"info.varden.hauk.global.Receiver\"> actions: info.varden.hauk.START_ALONE_THEN_SHARE_VIA, info.varden.hauk.START_ALONE_THEN_MAKE_TOAST",
+            "origin": "app",
+            "library": null
+          },
+          "ruleIndex": 3
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/appcompat/app/ResourcesFlusher; makes 11 reflective calls (0 with non-constant names) using forName, getDeclaredField, setAccessible. [classes.dex:Landroidx/appcompat/app/ResourcesFlusher;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/appcompat/app/ResourcesFlusher;",
+                  "kind": "member",
+                  "name": "Landroidx/appcompat/app/ResourcesFlusher;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "286fcec80204b768869178b6e72aff1f"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/appcompat/widget/DropDownListView$Api30Impl; makes 9 reflective calls (0 with non-constant names) using getDeclaredMethod, invoke, setAccessible. [classes.dex:Landroidx/appcompat/widget/DropDownListView$Api30Impl;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/appcompat/widget/DropDownListView$Api30Impl;",
+                  "kind": "member",
+                  "name": "Landroidx/appcompat/widget/DropDownListView$Api30Impl;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "cd3f1b18441aae3e443792dde4d35cdb"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/appcompat/widget/SearchView$PreQAutoCompleteTextViewReflector; makes 9 reflective calls (0 with non-constant names) using getDeclaredMethod, getMethod, invoke, setAccessible. [classes.dex:Landroidx/appcompat/widget/SearchView$PreQAutoCompleteTextViewReflector;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/appcompat/widget/SearchView$PreQAutoCompleteTextViewReflector;",
+                  "kind": "member",
+                  "name": "Landroidx/appcompat/widget/SearchView$PreQAutoCompleteTextViewReflector;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "cfad2297b2d8aeff32cc7bc88dd81019"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/constraintlayout/motion/utils/CustomSupport; makes 12 reflective calls (6 with non-constant names) using getMethod, invoke. [classes.dex:Landroidx/constraintlayout/motion/utils/CustomSupport;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/constraintlayout/motion/utils/CustomSupport;",
+                  "kind": "member",
+                  "name": "Landroidx/constraintlayout/motion/utils/CustomSupport;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "af988dabca83a4e1c1b26ff23f5b600d"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/constraintlayout/widget/ConstraintAttribute; makes 32 reflective calls (16 with non-constant names) using getMethod, invoke. [classes.dex:Landroidx/constraintlayout/widget/ConstraintAttribute;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/constraintlayout/widget/ConstraintAttribute;",
+                  "kind": "member",
+                  "name": "Landroidx/constraintlayout/widget/ConstraintAttribute;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "b6599b70e970329e27bd4fd6e18281d0"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/core/app/ActivityRecreator; uses reflection to reach non-SDK platform internals: android.app.ActivityThread. [classes.dex:Landroidx/core/app/ActivityRecreator;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/core/app/ActivityRecreator;",
+                  "kind": "member",
+                  "name": "Landroidx/core/app/ActivityRecreator;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "a99b1548be7851087077c18745f8247d"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": "android.app.ActivityThread",
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/core/app/ActivityRecreator; makes 12 reflective calls (0 with non-constant names) using forName, getDeclaredField, getDeclaredMethod, invoke, setAccessible. [classes.dex:Landroidx/core/app/ActivityRecreator;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/core/app/ActivityRecreator;",
+                  "kind": "member",
+                  "name": "Landroidx/core/app/ActivityRecreator;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "8b0d575aee9759257f7e9b93e8c096ac"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/core/app/AppComponentFactory; makes 15 reflective calls (5 with non-constant names) using forName, getDeclaredConstructor, newInstance. [classes.dex:Landroidx/core/app/AppComponentFactory;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/core/app/AppComponentFactory;",
+                  "kind": "member",
+                  "name": "Landroidx/core/app/AppComponentFactory;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "41d9f8a85e2f155fa2ff6590594cdd16"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/core/app/NotificationCompatJellybean; makes 9 reflective calls (0 with non-constant names) using forName, getDeclaredField, set, setAccessible. [classes.dex:Landroidx/core/app/NotificationCompatJellybean;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/core/app/NotificationCompatJellybean;",
+                  "kind": "member",
+                  "name": "Landroidx/core/app/NotificationCompatJellybean;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "7f1df821411000ffc4cd820579569b01"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/core/graphics/TypefaceCompatApi26Impl; makes 13 reflective calls (0 with non-constant names) using forName, getDeclaredMethod, getMethod, invoke, newInstance, setAccessible. [classes.dex:Landroidx/core/graphics/TypefaceCompatApi26Impl;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/core/graphics/TypefaceCompatApi26Impl;",
+                  "kind": "member",
+                  "name": "Landroidx/core/graphics/TypefaceCompatApi26Impl;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "9a7d4ec616ee2d7531aa05492a87e2f8"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/core/graphics/WeightTypefaceApi21; makes 10 reflective calls (0 with non-constant names) using getDeclaredConstructor, getDeclaredField, getDeclaredMethod, invoke, newInstance, setAccessible. [classes.dex:Landroidx/core/graphics/WeightTypefaceApi21;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/core/graphics/WeightTypefaceApi21;",
+                  "kind": "member",
+                  "name": "Landroidx/core/graphics/WeightTypefaceApi21;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "84fe7ae0e845f491f6b76725506f2f08"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/core/graphics/drawable/IconCompat$Api23Impl; makes 8 reflective calls (0 with non-constant names) using getMethod, invoke. [classes.dex:Landroidx/core/graphics/drawable/IconCompat$Api23Impl;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/core/graphics/drawable/IconCompat$Api23Impl;",
+                  "kind": "member",
+                  "name": "Landroidx/core/graphics/drawable/IconCompat$Api23Impl;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "7529f2de9addd562a6de450f4b3f9c7e"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/core/location/LocationManagerCompat$Api19Impl; makes 8 reflective calls (0 with non-constant names) using forName, getDeclaredMethod, invoke, setAccessible. [classes.dex:Landroidx/core/location/LocationManagerCompat$Api19Impl;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/core/location/LocationManagerCompat$Api19Impl;",
+                  "kind": "member",
+                  "name": "Landroidx/core/location/LocationManagerCompat$Api19Impl;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "e171c59836e506a0401905e8390f2e5f"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/core/location/LocationManagerCompat; makes 10 reflective calls (0 with non-constant names) using forName, getDeclaredConstructor, getDeclaredMethod, invoke, newInstance, setAccessible. [classes.dex:Landroidx/core/location/LocationManagerCompat;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/core/location/LocationManagerCompat;",
+                  "kind": "member",
+                  "name": "Landroidx/core/location/LocationManagerCompat;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "f0beb94ed708dc406ec2fc3cf723dd0e"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/core/location/LocationRequestCompat$Api19Impl; makes 16 reflective calls (0 with non-constant names) using forName, getDeclaredMethod, invoke, setAccessible. [classes.dex:Landroidx/core/location/LocationRequestCompat$Api19Impl;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/core/location/LocationRequestCompat$Api19Impl;",
+                  "kind": "member",
+                  "name": "Landroidx/core/location/LocationRequestCompat$Api19Impl;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "f41f4c4d9a620b166e6ef86dfceea370"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/core/os/TraceCompat; makes 9 reflective calls (0 with non-constant names) using getField, getMethod, invoke. [classes.dex:Landroidx/core/os/TraceCompat;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/core/os/TraceCompat;",
+                  "kind": "member",
+                  "name": "Landroidx/core/os/TraceCompat;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "bc39aaef4c14c0e48e1edadc1707dbad"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/core/view/WindowInsetsCompat$Impl20; makes 8 reflective calls (0 with non-constant names) using forName, getDeclaredField, getDeclaredMethod, invoke, setAccessible. [classes.dex:Landroidx/core/view/WindowInsetsCompat$Impl20;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/core/view/WindowInsetsCompat$Impl20;",
+                  "kind": "member",
+                  "name": "Landroidx/core/view/WindowInsetsCompat$Impl20;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "169228513d575c9f5af2c9e108ec1124"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/core/widget/TextViewCompat$OreoCallback; uses reflection to reach non-SDK platform internals: com.android.internal.view.menu.MenuBuilder. [classes.dex:Landroidx/core/widget/TextViewCompat$OreoCallback;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/core/widget/TextViewCompat$OreoCallback;",
+                  "kind": "member",
+                  "name": "Landroidx/core/widget/TextViewCompat$OreoCallback;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "601f207917dbbffc06da9abafd0caefa"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": "com.android.internal.view.menu.MenuBuilder",
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/tracing/Trace; makes 9 reflective calls (0 with non-constant names) using getField, getMethod, invoke. [classes.dex:Landroidx/tracing/Trace;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/tracing/Trace;",
+                  "kind": "member",
+                  "name": "Landroidx/tracing/Trace;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "46f82a355c11b9ce2025e6f29da566f8"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/window/layout/SidecarAdapter$Companion; makes 8 reflective calls (0 with non-constant names) using getMethod, invoke. [classes.dex:Landroidx/window/layout/SidecarAdapter$Companion;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/window/layout/SidecarAdapter$Companion;",
+                  "kind": "member",
+                  "name": "Landroidx/window/layout/SidecarAdapter$Companion;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "5e2a6ddd744600449fb05bb99d75907a"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/window/layout/SidecarCompat; makes 12 reflective calls (0 with non-constant names) using getMethod, invoke. [classes.dex:Landroidx/window/layout/SidecarCompat;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/window/layout/SidecarCompat;",
+                  "kind": "member",
+                  "name": "Landroidx/window/layout/SidecarCompat;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "fdef77b86116cf73e87f9d2f551555fe"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Landroidx/window/layout/WindowMetricsCalculatorCompat; makes 17 reflective calls (0 with non-constant names) using forName, getDeclaredField, getDeclaredMethod, invoke, newInstance, setAccessible. [classes.dex:Landroidx/window/layout/WindowMetricsCalculatorCompat;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Landroidx/window/layout/WindowMetricsCalculatorCompat;",
+                  "kind": "member",
+                  "name": "Landroidx/window/layout/WindowMetricsCalculatorCompat;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "1844cb7b4eef6b0360524c17cf1fb514"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "androidx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (androidx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Lkotlin/internal/PlatformImplementationsKt; makes 8 reflective calls (0 with non-constant names) using forName, newInstance. [classes.dex:Lkotlin/internal/PlatformImplementationsKt;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Lkotlin/internal/PlatformImplementationsKt;",
+                  "kind": "member",
+                  "name": "Lkotlin/internal/PlatformImplementationsKt;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "f35a5fb1ea0c915b9cd7fa54bb64613f"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "kotlin"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (kotlin)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-CODE-002",
+          "level": "note",
+          "message": {
+            "text": "Lkotlinx/coroutines/internal/FastServiceLoader; makes 12 reflective calls (2 with non-constant names) using forName, getDeclaredConstructor, newInstance. [classes.dex:Lkotlinx/coroutines/internal/FastServiceLoader;]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 1
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "classes.dex:Lkotlinx/coroutines/internal/FastServiceLoader;",
+                  "kind": "member",
+                  "name": "Lkotlinx/coroutines/internal/FastServiceLoader;"
+                }
+              ]
+            }
+          ],
+          "partialFingerprints": {
+            "apkguardFingerprint/v1": "9def29d30d84e675ef9b6c30d3bd691c"
+          },
+          "properties": {
+            "severity": "low",
+            "security-severity": "3.0",
+            "apkEntry": "classes.dex",
+            "evidence": null,
+            "origin": "library",
+            "library": "kotlinx"
+          },
+          "ruleIndex": 8,
+          "suppressions": [
+            {
+              "kind": "external",
+              "justification": "Third-party library code (kotlinx)"
+            }
+          ]
+        },
+        {
+          "ruleId": "AG-MAN-002",
+          "level": "note",
+          "message": {
+            "text": "The <application> element sets android:allowBackup=\"true\". Backup rules (fullBackupContent/dataExtractionRules) are defined; verify they exclude sensitive data. [AndroidManifest.xml:application]"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {
@@ -551,209 +1711,26 @@
             "apkguardFingerprint/v1": "641b1b31bb430537ea4642b9e835fef7"
           },
           "properties": {
-            "severity": "medium",
-            "security-severity": "5.5",
+            "severity": "low",
+            "security-severity": "3.0",
             "apkEntry": "AndroidManifest.xml",
-            "evidence": "android:allowBackup=\"true\""
+            "evidence": "android:allowBackup=\"true\"",
+            "origin": "app",
+            "library": null
           },
           "ruleIndex": 1
         },
         {
-          "ruleId": "AG-MAN-004",
-          "level": "warning",
-          "message": {
-            "text": "receiver org.billthefarmer.diary.DiaryWidgetProvider is exported (android:exported=\"true\") without a permission. [AndroidManifest.xml:org.billthefarmer.diary.DiaryWidgetProvider]"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "tests/fixtures/apks/org.billthefarmer.diary_1105.apk",
-                  "uriBaseId": "%SRCROOT%"
-                },
-                "region": {
-                  "startLine": 1
-                }
-              },
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "AndroidManifest.xml:org.billthefarmer.diary.DiaryWidgetProvider",
-                  "kind": "member",
-                  "name": "org.billthefarmer.diary.DiaryWidgetProvider"
-                }
-              ]
-            }
-          ],
-          "partialFingerprints": {
-            "apkguardFingerprint/v1": "ad7e75cc22793e1f5e7500e7853badb7"
-          },
-          "properties": {
-            "severity": "medium",
-            "security-severity": "5.5",
-            "apkEntry": "AndroidManifest.xml",
-            "evidence": "<receiver android:name=\"org.billthefarmer.diary.DiaryWidgetProvider\"> actions: android.appwidget.action.APPWIDGET_UPDATE"
-          },
-          "ruleIndex": 3
-        },
-        {
-          "ruleId": "AG-MAN-005",
-          "level": "warning",
-          "message": {
-            "text": "targetSdkVersion is 28; at least 34 is recommended. [AndroidManifest.xml:uses-sdk/targetSdkVersion]"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "tests/fixtures/apks/org.billthefarmer.diary_1105.apk",
-                  "uriBaseId": "%SRCROOT%"
-                },
-                "region": {
-                  "startLine": 1
-                }
-              },
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "AndroidManifest.xml:uses-sdk/targetSdkVersion",
-                  "kind": "member",
-                  "name": "uses-sdk/targetSdkVersion"
-                }
-              ]
-            }
-          ],
-          "partialFingerprints": {
-            "apkguardFingerprint/v1": "3e7df96662e7f9c34f52d5e2efb5bc14"
-          },
-          "properties": {
-            "severity": "medium",
-            "security-severity": "5.5",
-            "apkEntry": "AndroidManifest.xml",
-            "evidence": "targetSdkVersion=28"
-          },
-          "ruleIndex": 4
-        },
-        {
-          "ruleId": "AG-MAN-004",
-          "level": "note",
-          "message": {
-            "text": "activity org.billthefarmer.diary.Editor is exported (android:exported=\"true\") without a permission. [AndroidManifest.xml:org.billthefarmer.diary.Editor]"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "tests/fixtures/apks/org.billthefarmer.diary_1105.apk",
-                  "uriBaseId": "%SRCROOT%"
-                },
-                "region": {
-                  "startLine": 1
-                }
-              },
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "AndroidManifest.xml:org.billthefarmer.diary.Editor",
-                  "kind": "member",
-                  "name": "org.billthefarmer.diary.Editor"
-                }
-              ]
-            }
-          ],
-          "partialFingerprints": {
-            "apkguardFingerprint/v1": "48d086034a8ad52d29c1464077f1e2e6"
-          },
-          "properties": {
-            "severity": "low",
-            "security-severity": "3.0",
-            "apkEntry": "AndroidManifest.xml",
-            "evidence": "<activity android:name=\"org.billthefarmer.diary.Editor\"> actions: android.intent.action.VIEW, android.intent.action.EDIT"
-          },
-          "ruleIndex": 3
-        },
-        {
-          "ruleId": "AG-MAN-005",
-          "level": "note",
-          "message": {
-            "text": "minSdkVersion is 21; the app can run on Android versions without current security patches (recommended minimum: 23). [AndroidManifest.xml:uses-sdk/minSdkVersion]"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "tests/fixtures/apks/org.billthefarmer.diary_1105.apk",
-                  "uriBaseId": "%SRCROOT%"
-                },
-                "region": {
-                  "startLine": 1
-                }
-              },
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "AndroidManifest.xml:uses-sdk/minSdkVersion",
-                  "kind": "member",
-                  "name": "uses-sdk/minSdkVersion"
-                }
-              ]
-            }
-          ],
-          "partialFingerprints": {
-            "apkguardFingerprint/v1": "a87c157f29cc3e75e7d14e8647772727"
-          },
-          "properties": {
-            "severity": "low",
-            "security-severity": "3.0",
-            "apkEntry": "AndroidManifest.xml",
-            "evidence": "minSdkVersion=21"
-          },
-          "ruleIndex": 4
-        },
-        {
-          "ruleId": "AG-CODE-004",
-          "level": "note",
-          "message": {
-            "text": "Lorg/billthefarmer/diary/Diary;->onCreate calls WebSettings.setJavaScriptEnabled(true), which runs JavaScript from loaded pages; make sure only trusted HTTPS content is loaded. [classes.dex:Lorg/billthefarmer/diary/Diary;->onCreate]"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "tests/fixtures/apks/org.billthefarmer.diary_1105.apk",
-                  "uriBaseId": "%SRCROOT%"
-                },
-                "region": {
-                  "startLine": 1
-                }
-              },
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "classes.dex:Lorg/billthefarmer/diary/Diary;->onCreate",
-                  "kind": "member",
-                  "name": "Lorg/billthefarmer/diary/Diary;->onCreate"
-                }
-              ]
-            }
-          ],
-          "partialFingerprints": {
-            "apkguardFingerprint/v1": "4a033bf1cc42eb234355d63636ffe597"
-          },
-          "properties": {
-            "severity": "info",
-            "security-severity": "1.0",
-            "apkEntry": "classes.dex",
-            "evidence": "setJavaScriptEnabled(true)"
-          },
-          "ruleIndex": 10
-        },
-        {
           "ruleId": "AG-PERM-001",
           "level": "note",
           "message": {
-            "text": "Requests dangerous (runtime) permission android.permission.READ_CALENDAR. [AndroidManifest.xml:android.permission.READ_CALENDAR]"
+            "text": "Requests dangerous (runtime) permission android.permission.ACCESS_COARSE_LOCATION. [AndroidManifest.xml:android.permission.ACCESS_COARSE_LOCATION]"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "tests/fixtures/apks/org.billthefarmer.diary_1105.apk",
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {
@@ -762,21 +1739,23 @@
               },
               "logicalLocations": [
                 {
-                  "fullyQualifiedName": "AndroidManifest.xml:android.permission.READ_CALENDAR",
+                  "fullyQualifiedName": "AndroidManifest.xml:android.permission.ACCESS_COARSE_LOCATION",
                   "kind": "member",
-                  "name": "android.permission.READ_CALENDAR"
+                  "name": "android.permission.ACCESS_COARSE_LOCATION"
                 }
               ]
             }
           ],
           "partialFingerprints": {
-            "apkguardFingerprint/v1": "93fcc0d9a25f09a2b0d37fee171297d7"
+            "apkguardFingerprint/v1": "ec55ed359738029c77e84b04dc88a500"
           },
           "properties": {
             "severity": "info",
             "security-severity": "1.0",
             "apkEntry": "AndroidManifest.xml",
-            "evidence": "<uses-permission android:name=\"android.permission.READ_CALENDAR\"/>"
+            "evidence": "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
+            "origin": "app",
+            "library": null
           },
           "ruleIndex": 5
         },
@@ -784,13 +1763,13 @@
           "ruleId": "AG-PERM-001",
           "level": "note",
           "message": {
-            "text": "Requests dangerous (runtime) permission android.permission.READ_EXTERNAL_STORAGE. [AndroidManifest.xml:android.permission.READ_EXTERNAL_STORAGE]"
+            "text": "Requests dangerous (runtime) permission android.permission.ACCESS_FINE_LOCATION. [AndroidManifest.xml:android.permission.ACCESS_FINE_LOCATION]"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "tests/fixtures/apks/org.billthefarmer.diary_1105.apk",
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {
@@ -799,21 +1778,23 @@
               },
               "logicalLocations": [
                 {
-                  "fullyQualifiedName": "AndroidManifest.xml:android.permission.READ_EXTERNAL_STORAGE",
+                  "fullyQualifiedName": "AndroidManifest.xml:android.permission.ACCESS_FINE_LOCATION",
                   "kind": "member",
-                  "name": "android.permission.READ_EXTERNAL_STORAGE"
+                  "name": "android.permission.ACCESS_FINE_LOCATION"
                 }
               ]
             }
           ],
           "partialFingerprints": {
-            "apkguardFingerprint/v1": "bbde250002355e004e40c6c721d35aa2"
+            "apkguardFingerprint/v1": "5ac0f9e9a576b8edc1ee10162bcd4a37"
           },
           "properties": {
             "severity": "info",
             "security-severity": "1.0",
             "apkEntry": "AndroidManifest.xml",
-            "evidence": "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\"/>"
+            "evidence": "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+            "origin": "app",
+            "library": null
           },
           "ruleIndex": 5
         },
@@ -821,13 +1802,13 @@
           "ruleId": "AG-PERM-001",
           "level": "note",
           "message": {
-            "text": "Requests dangerous (runtime) permission android.permission.WRITE_CALENDAR. [AndroidManifest.xml:android.permission.WRITE_CALENDAR]"
+            "text": "Requests dangerous (runtime) permission android.permission.POST_NOTIFICATIONS. [AndroidManifest.xml:android.permission.POST_NOTIFICATIONS]"
           },
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "tests/fixtures/apks/org.billthefarmer.diary_1105.apk",
+                  "uri": "evaluation/apks/info.varden.hauk_15.apk",
                   "uriBaseId": "%SRCROOT%"
                 },
                 "region": {
@@ -836,58 +1817,23 @@
               },
               "logicalLocations": [
                 {
-                  "fullyQualifiedName": "AndroidManifest.xml:android.permission.WRITE_CALENDAR",
+                  "fullyQualifiedName": "AndroidManifest.xml:android.permission.POST_NOTIFICATIONS",
                   "kind": "member",
-                  "name": "android.permission.WRITE_CALENDAR"
+                  "name": "android.permission.POST_NOTIFICATIONS"
                 }
               ]
             }
           ],
           "partialFingerprints": {
-            "apkguardFingerprint/v1": "6028a211d16d9d74f69672dedefd1ebc"
+            "apkguardFingerprint/v1": "95c9b18d09ff725058142d2f67391203"
           },
           "properties": {
             "severity": "info",
             "security-severity": "1.0",
             "apkEntry": "AndroidManifest.xml",
-            "evidence": "<uses-permission android:name=\"android.permission.WRITE_CALENDAR\"/>"
-          },
-          "ruleIndex": 5
-        },
-        {
-          "ruleId": "AG-PERM-001",
-          "level": "note",
-          "message": {
-            "text": "Requests dangerous (runtime) permission android.permission.WRITE_EXTERNAL_STORAGE. [AndroidManifest.xml:android.permission.WRITE_EXTERNAL_STORAGE]"
-          },
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "tests/fixtures/apks/org.billthefarmer.diary_1105.apk",
-                  "uriBaseId": "%SRCROOT%"
-                },
-                "region": {
-                  "startLine": 1
-                }
-              },
-              "logicalLocations": [
-                {
-                  "fullyQualifiedName": "AndroidManifest.xml:android.permission.WRITE_EXTERNAL_STORAGE",
-                  "kind": "member",
-                  "name": "android.permission.WRITE_EXTERNAL_STORAGE"
-                }
-              ]
-            }
-          ],
-          "partialFingerprints": {
-            "apkguardFingerprint/v1": "12adf28e30161131c70beaec9f6c045c"
-          },
-          "properties": {
-            "severity": "info",
-            "security-severity": "1.0",
-            "apkEntry": "AndroidManifest.xml",
-            "evidence": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>"
+            "evidence": "<uses-permission android:name=\"android.permission.POST_NOTIFICATIONS\"/>",
+            "origin": "app",
+            "library": null
           },
           "ruleIndex": 5
         }

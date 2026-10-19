@@ -21,6 +21,7 @@ from typing import Any
 
 from apkguard.baseline import NEW, Baseline
 from apkguard.config import Config
+from apkguard.model import Severity
 from apkguard.scanner import scan_apk
 
 from run_evaluation import HERE, looks_obfuscated, write_text
@@ -32,6 +33,7 @@ def compare_versions(previous: Path, current: Path) -> dict[str, Any]:
     new = scan_apk(current, Config())
     comparison = new.compare_with_baseline(baseline)
     new_findings = [f for f in new.active_findings if f.baseline_state == NEW]
+    gating_high = [f for f in new.gating_findings if f.severity >= Severity.HIGH]
     return {
         "previous_findings": len(old.active_findings),
         "current_findings": len(new.active_findings),
@@ -39,10 +41,22 @@ def compare_versions(previous: Path, current: Path) -> dict[str, Any]:
         "unchanged": comparison.unchanged,
         "absent": comparison.absent,
         "new_gating": len(new.gating_findings),
+        # What a default CI gate (--fail-on high, library findings separate) would fail on.
+        "new_gating_high": len(gating_high),
         "new_by_rule": dict(Counter(f.rule_id for f in new_findings)),
         "new_in_obfuscated_classes": sum(
             looks_obfuscated(f.location.symbol or "") for f in new_findings
         ),
+        "new_findings": [
+            {
+                "rule_id": f.rule_id,
+                "severity": f.severity.label,
+                "location": str(f.location),
+                "library": f.library,
+                "obfuscated": looks_obfuscated(f.location.symbol or ""),
+            }
+            for f in new_findings
+        ],
     }
 
 
@@ -85,7 +99,15 @@ def main() -> int:
 
     totals = {
         key: sum(p[key] for p in pairs)
-        for key in ("current_findings", "new", "unchanged", "absent", "new_in_obfuscated_classes")
+        for key in (
+            "current_findings",
+            "new",
+            "unchanged",
+            "absent",
+            "new_in_obfuscated_classes",
+            "new_gating",
+            "new_gating_high",
+        )
     }
     rules: Counter[str] = Counter()
     for p in pairs:

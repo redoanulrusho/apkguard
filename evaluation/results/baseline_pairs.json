@@ -1,0 +1,1869 @@
+{
+  "pairs": 42,
+  "totals": {
+    "current_findings": 645,
+    "new": 162,
+    "unchanged": 483,
+    "absent": 176,
+    "new_in_obfuscated_classes": 138,
+    "new_gating": 153,
+    "new_gating_high": 2
+  },
+  "apps_with_no_new_findings": 19,
+  "new_by_rule": {
+    "AG-CODE-002": 144,
+    "AG-PERM-001": 4,
+    "AG-CODE-006": 3,
+    "AG-MAN-004": 3,
+    "AG-CODE-004": 3,
+    "AG-CODE-003": 2,
+    "AG-CODE-001": 2,
+    "AG-MAN-002": 1
+  },
+  "apps": [
+    {
+      "package": "app.zornslemma.mypricelog",
+      "previous_version": "0.3.3",
+      "current_version": "0.3.4",
+      "previous_findings": 8,
+      "current_findings": 8,
+      "new": 0,
+      "unchanged": 8,
+      "absent": 0,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "cc.polysfaer.stochapop",
+      "previous_version": "1.3.0",
+      "current_version": "1.4.0",
+      "previous_findings": 5,
+      "current_findings": 5,
+      "new": 0,
+      "unchanged": 5,
+      "absent": 0,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "com.bartixxx.opflashcontrol",
+      "previous_version": "1.6.1",
+      "current_version": "1.6.2",
+      "previous_findings": 8,
+      "current_findings": 8,
+      "new": 0,
+      "unchanged": 8,
+      "absent": 0,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "com.cg.lrceditor",
+      "previous_version": "3.2.6",
+      "current_version": "3.2.7",
+      "previous_findings": 12,
+      "current_findings": 13,
+      "new": 7,
+      "unchanged": 6,
+      "absent": 6,
+      "new_gating": 5,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 7
+      },
+      "new_in_obfuscated_classes": 5,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Landroidx/appcompat/widget/SearchView;",
+          "library": "androidx",
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Landroidx/lifecycle/p;",
+          "library": "androidx",
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lb/a0;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Ln/e;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Ln/e;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lq/f;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Ly/g;",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    },
+    {
+      "package": "com.eblan.launcher",
+      "previous_version": "1.0.4-alpha",
+      "current_version": "1.0.5-alpha",
+      "previous_findings": 18,
+      "current_findings": 18,
+      "new": 4,
+      "unchanged": 14,
+      "absent": 4,
+      "new_gating": 4,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 4
+      },
+      "new_in_obfuscated_classes": 4,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lbu3;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lhw3;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lj14;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lzr1;",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    },
+    {
+      "package": "com.exner.tools.immichuploader",
+      "previous_version": "3.0.1",
+      "current_version": "3.1.0",
+      "previous_findings": 18,
+      "current_findings": 17,
+      "new": 8,
+      "unchanged": 9,
+      "absent": 9,
+      "new_gating": 8,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 8
+      },
+      "new_in_obfuscated_classes": 8,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lbj0;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lh04;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lhx;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lkt2;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lq43;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lvr3;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lwr3;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lyi;",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    },
+    {
+      "package": "com.kbul.spicycrab",
+      "previous_version": "0.8.0",
+      "current_version": "0.9.0",
+      "previous_findings": 26,
+      "current_findings": 26,
+      "new": 7,
+      "unchanged": 19,
+      "absent": 7,
+      "new_gating": 7,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 7
+      },
+      "new_in_obfuscated_classes": 7,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lga4;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lhf4;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lii4;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Luo4;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Luq4;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lx83;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lxa4;",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    },
+    {
+      "package": "com.lenshrv.foss",
+      "previous_version": "1.0.1",
+      "current_version": "1.0.2",
+      "previous_findings": 12,
+      "current_findings": 12,
+      "new": 0,
+      "unchanged": 12,
+      "absent": 0,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "com.looker.droidify",
+      "previous_version": "0.7.7",
+      "current_version": "0.7.8",
+      "previous_findings": 27,
+      "current_findings": 26,
+      "new": 0,
+      "unchanged": 26,
+      "absent": 1,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "com.lukeneedham.videodiary",
+      "previous_version": "1.0.7",
+      "current_version": "1.0.8",
+      "previous_findings": 18,
+      "current_findings": 19,
+      "new": 9,
+      "unchanged": 10,
+      "absent": 8,
+      "new_gating": 8,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 9
+      },
+      "new_in_obfuscated_classes": 8,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LE4/a;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LH1/i;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LN3/a;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LO1/N;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LP0/z;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LR1/i;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Landroidx/datastore/preferences/protobuf/s0;",
+          "library": "androidx",
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lf1/H;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lz/c;",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    },
+    {
+      "package": "com.mde.potdroid",
+      "previous_version": "5.5.5",
+      "current_version": "5.6.0",
+      "previous_findings": 29,
+      "current_findings": 31,
+      "new": 13,
+      "unchanged": 18,
+      "absent": 11,
+      "new_gating": 13,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-003": 2,
+        "AG-CODE-006": 1,
+        "AG-CODE-002": 6,
+        "AG-MAN-004": 2,
+        "AG-CODE-004": 2
+      },
+      "new_in_obfuscated_classes": 5,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-003",
+          "severity": "medium",
+          "location": "classes.dex:Lcom/mde/potdroid/fragments/i;->G2",
+          "library": null,
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-CODE-003",
+          "severity": "medium",
+          "location": "classes.dex:Lcom/mde/potdroid/fragments/s;->C3",
+          "library": null,
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-CODE-006",
+          "severity": "medium",
+          "location": "classes.dex:Lcom/mde/potdroid/helpers/o;->v",
+          "library": null,
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:La0/k;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Li0/y1$g;",
+          "library": null,
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lo7/h;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lo7/j$a;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lx/d;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lx/d;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-MAN-004",
+          "severity": "low",
+          "location": "AndroidManifest.xml:com.mde.potdroid.OAuthActivity",
+          "library": null,
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-MAN-004",
+          "severity": "low",
+          "location": "AndroidManifest.xml:com.mde.potdroid.ShareImageActivity",
+          "library": null,
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-CODE-004",
+          "severity": "info",
+          "location": "classes.dex:Lcom/mde/potdroid/fragments/i;->G2",
+          "library": null,
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-CODE-004",
+          "severity": "info",
+          "location": "classes.dex:Lcom/mde/potdroid/fragments/s;->C3",
+          "library": null,
+          "obfuscated": false
+        }
+      ]
+    },
+    {
+      "package": "com.mostafa.brickblast",
+      "previous_version": "1.5.1",
+      "current_version": "1.6.0",
+      "previous_findings": 12,
+      "current_findings": 12,
+      "new": 11,
+      "unchanged": 1,
+      "absent": 11,
+      "new_gating": 11,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 11
+      },
+      "new_in_obfuscated_classes": 11,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Ld42;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Le02;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lhm0;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lja2;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lk4;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lsh;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lv3;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lv3;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lv52;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lw52;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lx52;",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    },
+    {
+      "package": "com.mshdabiola.playnotepad.foss",
+      "previous_version": "1.3.6",
+      "current_version": "1.3.7",
+      "previous_findings": 21,
+      "current_findings": 21,
+      "new": 0,
+      "unchanged": 21,
+      "absent": 0,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "com.nicue.onetwo",
+      "previous_version": "2.1.4",
+      "current_version": "2.2.0",
+      "previous_findings": 11,
+      "current_findings": 11,
+      "new": 9,
+      "unchanged": 2,
+      "absent": 9,
+      "new_gating": 9,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 9
+      },
+      "new_in_obfuscated_classes": 9,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Led0;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lel;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Ll4;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Llc;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lmh0;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lua0;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lwp;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lz1;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lz1;",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    },
+    {
+      "package": "com.nvllz.piggsy",
+      "previous_version": "1.12",
+      "current_version": "1.12.1",
+      "previous_findings": 12,
+      "current_findings": 12,
+      "new": 10,
+      "unchanged": 2,
+      "absent": 10,
+      "new_gating": 10,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 10
+      },
+      "new_in_obfuscated_classes": 10,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LA/p;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LE/c;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LE/c;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LH/h;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LL0/i;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LL1/a;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LP/m0;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LT/i;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lb/v;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lh/v;",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    },
+    {
+      "package": "com.rechnen.app",
+      "previous_version": "3.0",
+      "current_version": "3.1",
+      "previous_findings": 9,
+      "current_findings": 7,
+      "new": 6,
+      "unchanged": 1,
+      "absent": 8,
+      "new_gating": 3,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 6
+      },
+      "new_in_obfuscated_classes": 2,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LA1/d0$f;",
+          "library": null,
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Landroidx/appcompat/widget/v$b;",
+          "library": "androidx",
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Landroidx/compose/ui/platform/AndroidComposeView$a;",
+          "library": "androidx",
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Landroidx/core/widget/f$e;",
+          "library": "androidx",
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Ls1/o;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lx0/k0;",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    },
+    {
+      "package": "com.reteclock",
+      "previous_version": "0.55.0",
+      "current_version": "0.56.0",
+      "previous_findings": 6,
+      "current_findings": 6,
+      "new": 0,
+      "unchanged": 6,
+      "absent": 0,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "com.siarheikuchuk.ftpsserver",
+      "previous_version": "2026.09.36",
+      "current_version": "2026.10.08",
+      "previous_findings": 10,
+      "current_findings": 8,
+      "new": 1,
+      "unchanged": 7,
+      "absent": 3,
+      "new_gating": 1,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 1
+      },
+      "new_in_obfuscated_classes": 1,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lz1/a;",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    },
+    {
+      "package": "com.studio4plus.homerplayer2",
+      "previous_version": "1.5.12",
+      "current_version": "1.5.13",
+      "previous_findings": 20,
+      "current_findings": 20,
+      "new": 0,
+      "unchanged": 20,
+      "absent": 0,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "cz.kutner.why",
+      "previous_version": "1.0.1",
+      "current_version": "1.0.2",
+      "previous_findings": 8,
+      "current_findings": 8,
+      "new": 2,
+      "unchanged": 6,
+      "absent": 2,
+      "new_gating": 2,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 2
+      },
+      "new_in_obfuscated_classes": 2,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lja2;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lka2;",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    },
+    {
+      "package": "de.kromke.andreas.opus1musicplayer",
+      "previous_version": "2.65",
+      "current_version": "2.66",
+      "previous_findings": 18,
+      "current_findings": 18,
+      "new": 8,
+      "unchanged": 10,
+      "absent": 8,
+      "new_gating": 8,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 8
+      },
+      "new_in_obfuscated_classes": 8,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LD/g;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LD/g;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LG/j;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LO/q0;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LU/q;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lg/G;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lu0/a;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lz/n;",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    },
+    {
+      "package": "de.luhmer.owncloudnewsreader",
+      "previous_version": "0.9.9.95",
+      "current_version": "0.9.9.96",
+      "previous_findings": 30,
+      "current_findings": 30,
+      "new": 9,
+      "unchanged": 21,
+      "absent": 9,
+      "new_gating": 9,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 8,
+        "AG-CODE-004": 1
+      },
+      "new_in_obfuscated_classes": 9,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lar0;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lg81;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Ll41;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Ll71;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Llk;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Ltc1;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lwq0;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lxy;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-004",
+          "severity": "info",
+          "location": "classes.dex:Lsf0;->W",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    },
+    {
+      "package": "de.moooon.acrylicons",
+      "previous_version": "20.0",
+      "current_version": "21.0",
+      "previous_findings": 3,
+      "current_findings": 3,
+      "new": 0,
+      "unchanged": 3,
+      "absent": 0,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "de.pritcloud.appstow",
+      "previous_version": "3.0.1",
+      "current_version": "3.0.3",
+      "previous_findings": 6,
+      "current_findings": 7,
+      "new": 1,
+      "unchanged": 6,
+      "absent": 0,
+      "new_gating": 1,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-MAN-002": 1
+      },
+      "new_in_obfuscated_classes": 0,
+      "new_findings": [
+        {
+          "rule_id": "AG-MAN-002",
+          "severity": "low",
+          "location": "AndroidManifest.xml:application",
+          "library": null,
+          "obfuscated": false
+        }
+      ]
+    },
+    {
+      "package": "de.readeckapp",
+      "previous_version": "0.11.0",
+      "current_version": "0.12.0",
+      "previous_findings": 26,
+      "current_findings": 25,
+      "new": 0,
+      "unchanged": 25,
+      "absent": 1,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "dev.alexjyong.babbypaint",
+      "previous_version": "0.1.1",
+      "current_version": "0.1.2",
+      "previous_findings": 38,
+      "current_findings": 38,
+      "new": 0,
+      "unchanged": 38,
+      "absent": 0,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "dev.co508.soundboard",
+      "previous_version": "0.1.2",
+      "current_version": "0.1.3",
+      "previous_findings": 7,
+      "current_findings": 7,
+      "new": 0,
+      "unchanged": 7,
+      "absent": 0,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "dev.norsehorse.vaultpony",
+      "previous_version": "1.0.5",
+      "current_version": "1.1.0",
+      "previous_findings": 10,
+      "current_findings": 10,
+      "new": 1,
+      "unchanged": 9,
+      "absent": 1,
+      "new_gating": 1,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 1
+      },
+      "new_in_obfuscated_classes": 1,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Ls1/q;",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    },
+    {
+      "package": "dev.tn3w.shelf",
+      "previous_version": "1.2.0",
+      "current_version": "1.3.1",
+      "previous_findings": 17,
+      "current_findings": 19,
+      "new": 18,
+      "unchanged": 1,
+      "absent": 16,
+      "new_gating": 18,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-PERM-001": 2,
+        "AG-CODE-002": 16
+      },
+      "new_in_obfuscated_classes": 16,
+      "new_findings": [
+        {
+          "rule_id": "AG-PERM-001",
+          "severity": "medium",
+          "location": "AndroidManifest.xml:android.permission.REQUEST_INSTALL_PACKAGES",
+          "library": null,
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:La9;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:La9;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lcq2;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lcu3;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Ldu3;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lf20;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lfa;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lg43;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lij;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lmp;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lpz3;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lqt2;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lrr3;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Ls2;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lz14;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lzu1;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-PERM-001",
+          "severity": "info",
+          "location": "AndroidManifest.xml:android.permission.CAMERA",
+          "library": null,
+          "obfuscated": false
+        }
+      ]
+    },
+    {
+      "package": "dnsfilter.android",
+      "previous_version": "1.50.60.8",
+      "current_version": "1.50.61.3",
+      "previous_findings": 7,
+      "current_findings": 7,
+      "new": 0,
+      "unchanged": 7,
+      "absent": 0,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "dubrowgn.wattz",
+      "previous_version": "1.19",
+      "current_version": "1.20",
+      "previous_findings": 5,
+      "current_findings": 5,
+      "new": 0,
+      "unchanged": 5,
+      "absent": 0,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "duress.ultimate",
+      "previous_version": "21.0",
+      "current_version": "22.0",
+      "previous_findings": 4,
+      "current_findings": 4,
+      "new": 0,
+      "unchanged": 4,
+      "absent": 0,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "es.pile",
+      "previous_version": "1.1.3",
+      "current_version": "1.2.7",
+      "previous_findings": 10,
+      "current_findings": 10,
+      "new": 6,
+      "unchanged": 4,
+      "absent": 6,
+      "new_gating": 6,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 6
+      },
+      "new_in_obfuscated_classes": 6,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lgm;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lix3;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lrq3;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lsr;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lt2;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Luq3;",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    },
+    {
+      "package": "evil.spin",
+      "previous_version": "1.0.2",
+      "current_version": "1.0.3",
+      "previous_findings": 26,
+      "current_findings": 26,
+      "new": 0,
+      "unchanged": 26,
+      "absent": 0,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "info.varden.hauk",
+      "previous_version": "1.6.2",
+      "current_version": "1.6.3",
+      "previous_findings": 31,
+      "current_findings": 31,
+      "new": 1,
+      "unchanged": 30,
+      "absent": 1,
+      "new_gating": 1,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-PERM-001": 1
+      },
+      "new_in_obfuscated_classes": 0,
+      "new_findings": [
+        {
+          "rule_id": "AG-PERM-001",
+          "severity": "info",
+          "location": "AndroidManifest.xml:android.permission.POST_NOTIFICATIONS",
+          "library": null,
+          "obfuscated": false
+        }
+      ]
+    },
+    {
+      "package": "me.lecaro.breakout",
+      "previous_version": "29826425",
+      "current_version": "29856652",
+      "previous_findings": 2,
+      "current_findings": 2,
+      "new": 0,
+      "unchanged": 2,
+      "absent": 0,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "opencontacts.open.com.opencontacts",
+      "previous_version": "31.0",
+      "current_version": "32.0",
+      "previous_findings": 36,
+      "current_findings": 38,
+      "new": 11,
+      "unchanged": 27,
+      "absent": 9,
+      "new_gating": 11,
+      "new_gating_high": 2,
+      "new_by_rule": {
+        "AG-CODE-001": 2,
+        "AG-MAN-004": 1,
+        "AG-PERM-001": 1,
+        "AG-CODE-002": 6,
+        "AG-CODE-006": 1
+      },
+      "new_in_obfuscated_classes": 9,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-001",
+          "severity": "high",
+          "location": "classes.dex:LV0/c;->a",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-001",
+          "severity": "high",
+          "location": "classes.dex:LV0/c;->a",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-MAN-004",
+          "severity": "medium",
+          "location": "AndroidManifest.xml:opencontacts.open.com.opencontacts.mia.MIAActionHandler",
+          "library": null,
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-PERM-001",
+          "severity": "medium",
+          "location": "AndroidManifest.xml:android.permission.QUERY_ALL_PACKAGES",
+          "library": null,
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LA/k;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LH/f;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:LV0/g;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lh2/j;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lh2/l$a;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lo1/a;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-006",
+          "severity": "low",
+          "location": "classes.dex:Lj1/a$b;->run",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    },
+    {
+      "package": "org.dystopia.email",
+      "previous_version": "1.5.3",
+      "current_version": "1.5.4",
+      "previous_findings": 29,
+      "current_findings": 29,
+      "new": 0,
+      "unchanged": 29,
+      "absent": 0,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "org.ostrya.presencepublisher",
+      "previous_version": "2.6.6",
+      "current_version": "2.7.0",
+      "previous_findings": 23,
+      "current_findings": 21,
+      "new": 11,
+      "unchanged": 10,
+      "absent": 13,
+      "new_gating": 11,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 10,
+        "AG-CODE-006": 1
+      },
+      "new_in_obfuscated_classes": 11,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:La0/p;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Le0/d;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Le0/d;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lg/g0;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lg4/a;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lh2/g0;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Li0/j;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lq0/q1;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lr2/l;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lv0/p;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-006",
+          "severity": "low",
+          "location": "classes.dex:Lh5/d;->b",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    },
+    {
+      "package": "org.woheller69.browser",
+      "previous_version": "3.4",
+      "current_version": "3.5",
+      "previous_findings": 14,
+      "current_findings": 14,
+      "new": 0,
+      "unchanged": 14,
+      "absent": 0,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {},
+      "new_in_obfuscated_classes": 0,
+      "new_findings": []
+    },
+    {
+      "package": "page.codeberg.lanticy.guandan",
+      "previous_version": "1.2.1",
+      "current_version": "1.2.2",
+      "previous_findings": 20,
+      "current_findings": 7,
+      "new": 3,
+      "unchanged": 4,
+      "absent": 16,
+      "new_gating": 0,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 3
+      },
+      "new_in_obfuscated_classes": 0,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Landroidx/compose/ui/graphics/ColorKt;",
+          "library": "androidx",
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Landroidx/compose/ui/platform/InvertMatrixKt;",
+          "library": "androidx",
+          "obfuscated": false
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lkotlin/coroutines/jvm/internal/BaseContinuationImpl;",
+          "library": "kotlin",
+          "obfuscated": false
+        }
+      ]
+    },
+    {
+      "package": "threads.server",
+      "previous_version": "3.6.0",
+      "current_version": "4.0.0",
+      "previous_findings": 7,
+      "current_findings": 6,
+      "new": 6,
+      "unchanged": 0,
+      "absent": 7,
+      "new_gating": 6,
+      "new_gating_high": 0,
+      "new_by_rule": {
+        "AG-CODE-002": 6
+      },
+      "new_in_obfuscated_classes": 6,
+      "new_findings": [
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lbd;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lkv1;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lp2;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lrr1;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Lsr1;",
+          "library": null,
+          "obfuscated": true
+        },
+        {
+          "rule_id": "AG-CODE-002",
+          "severity": "low",
+          "location": "classes.dex:Ltr1;",
+          "library": null,
+          "obfuscated": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,26 +1,46 @@
 # APKGuard
 
+[![CI](https://github.com/YOUR_GITHUB_USER/apkguard/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_GITHUB_USER/apkguard/actions/workflows/ci.yml)
+![Python 3.10–3.13](https://img.shields.io/badge/python-3.10%E2%80%933.13-blue)
+![mypy strict](https://img.shields.io/badge/mypy-strict-informational)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
+
 **Static security scanner for Android APKs, built to run in CI/CD pipelines.**
 
 APKGuard inspects a compiled `.apk` (manifest, Dalvik bytecode, resources and assets) and reports
 security issues *before* you ship: debuggable builds, cleartext traffic, exported components,
-weak crypto, TLS validation bypasses, hardcoded secrets and more. It produces terminal, JSON,
-SARIF and HTML output, and its exit code and `--fail-on` threshold make it easy to gate a release.
+weak crypto, TLS validation bypasses, hardcoded secrets and more. It writes terminal, JSON,
+SARIF and HTML output, and its exit code gates a release.
 
-- **Fast.** No decompilation to Java. A small app scans in under a second.
-- **CI-native.** Exit codes, a severity threshold, SARIF for GitHub code scanning, and a ready-made GitHub Action.
-- **Actionable.** Every finding includes a location, evidence, remediation advice, CWE and OWASP MASVS references.
-- **Configurable.** Disable rules, override severities, exclude third-party packages and suppress accepted findings in `.apkguard.yml`.
+- **CI-native.** Exit codes, a `--fail-on` threshold, SARIF for GitHub code scanning, a ready-made
+  GitHub Action, and **baselines** so a PR only fails on *new* findings.
+- **Low-noise by default.** Findings inside AndroidX, Kotlin, OkHttp and other third-party
+  libraries are reported separately and don't fail the build. That's a third of all findings
+  on real apps.
+- **Actionable.** Every finding has a location, evidence, remediation, CWE and OWASP MASVS
+  references, plus triage guidance (how to verify it, when it is usually benign).
+- **Evaluated on real apps.** Scanned 50 F-Droid apps with a manual review of the findings.
+  The [results](EVALUATION.md) are published, false positives included.
+- **AI-assistant ready.** An optional [MCP](https://modelcontextprotocol.io) server lets Claude
+  Desktop, Claude Code and other MCP clients scan APKs and explain findings.
 
 > APKGuard is a static, heuristic scanner. It catches common misconfigurations and insecure API
 > usage. It does not replace a manual security review or dynamic testing.
 
 ---
 
+## Contents
+
+[Quick start](#quick-start) · [Example](#example-output) · [Evaluation](#evaluation-on-50-real-apps) ·
+[Rules](#rules) · [Exit codes](#exit-codes-and-thresholds) · [Configuration](#configuration) ·
+[CI and baselines](#ci-usage) · [MCP server](#use-with-ai-assistants-mcp) ·
+[Architecture](#architecture) · [Limitations](#limitations) · [Development](#development) ·
+[Roadmap](#roadmap)
+
 ## Quick start
 
 ```bash
-pip install .            # from a clone of this repository (Python 3.10+)
+pip install apkguard                 # Python 3.10+  (or: pip install . from a clone)
 apkguard scan app-release.apk
 ```
 
@@ -29,7 +49,7 @@ apkguard scan app-release.apk
 apkguard scan app.apk --fail-on medium \
   --sarif apkguard.sarif --html apkguard-report.html --json apkguard.json
 
-apkguard rules           # list all rules
+apkguard rules                       # list all rules
 ```
 
 With Docker:
@@ -41,70 +61,98 @@ docker run --rm -v "$PWD:/work" apkguard scan app.apk --html report.html
 
 ## Example output
 
-Scanning [Notes](https://github.com/billthefarmer/notes) from F-Droid, one of the test fixtures (columns trimmed for width):
+Scanning [Hauk](https://f-droid.org/packages/info.varden.hauk/) 1.6.3, a location-sharing app
+from the evaluation set (real output, rendered at 130 columns; info rows hidden with
+`--min-severity low`):
 
 ```text
-$ apkguard scan org.billthefarmer.notes_141.apk
-APKGuard 0.1.0  org.billthefarmer.notes  1.41  minSdk=23 targetSdk=35
-┌──────────┬─────────────┬──────────────────────────────────┬──────────────────────────────────────┬──────────────────────────────────────────┐
-│ Severity │ Rule        │ Title                            │ Location                             │ Details                                  │
-├──────────┼─────────────┼──────────────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────────┤
-│ HIGH     │ AG-MAN-003  │ Cleartext network traffic        │ AndroidManifest.xml:application      │ The <application> element sets           │
-│          │             │ allowed                          │                                      │ android:usesCleartextTraffic="true".     │
-│ MEDIUM   │ AG-MAN-002  │ Application data backup is       │ AndroidManifest.xml:application      │ The <application> element sets           │
-│          │             │ enabled                          │                                      │ android:allowBackup="true". No backup    │
-│          │             │                                  │                                      │ rules restrict which files are included. │
-│ MEDIUM   │ AG-PERM-001 │ Dangerous or high-risk           │ AndroidManifest.xml:android.permissi │ Requests high-risk permission            │
-│          │             │ permissions requested            │ on.MANAGE_EXTERNAL_STORAGE           │ android.permission.MANAGE_EXTERNAL_STORA │
-│          │             │                                  │                                      │ GE: allows the app to read and write all │
-│          │             │                                  │                                      │ files on shared storage.                 │
-│ LOW      │ AG-MAN-004  │ Exported component without       │ AndroidManifest.xml:org.billthefarme │ activity org.billthefarmer.notes.Shortcu │
-│          │             │ permission                       │ r.notes.Shortcut                     │ t is exported (android:exported="true")  │
-│          │             │                                  │                                      │ without a permission.                    │
-│ INFO     │ AG-CODE-004 │ Insecure WebView configuration   │ classes.dex:Lorg/billthefarmer/notes │ ...->onCreate calls                      │
-│          │             │                                  │ /Notes;->onCreate                    │ WebSettings.setJavaScriptEnabled(true),  │
-│          │             │                                  │                                      │ which runs JavaScript from loaded pages; │
-│          │             │                                  │                                      │ make sure only trusted HTTPS content is  │
-│          │             │                                  │                                      │ loaded.                                  │
-│ INFO     │ AG-PERM-001 │ Dangerous or high-risk ...       │ ...READ_EXTERNAL_STORAGE             │ Requests dangerous (runtime) permission  │
-│ INFO     │ AG-PERM-001 │ Dangerous or high-risk ...       │ ...WRITE_EXTERNAL_STORAGE            │ Requests dangerous (runtime) permission  │
-└──────────┴─────────────┴──────────────────────────────────┴──────────────────────────────────────┴──────────────────────────────────────────┘
-Summary: high: 1, medium: 2, low: 1, info: 3  (0.46s)
-FAIL: 1 finding(s) at or above severity 'high'.
-$ echo $?
-1
+$ apkguard scan info.varden.hauk_15.apk --min-severity low
+APKGuard 0.1.0  info.varden.hauk  1.6.3  minSdk=24 targetSdk=36
+┏━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Severity ┃ Rule        ┃ Title                            ┃ Location                        ┃ Details                          ┃
+┡━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ HIGH     │ AG-CODE-009 │ Insecure HostnameVerifier        │ classes.dex:Linfo/varden/hauk/h │ Linfo/varden/hauk/http/security/ │
+│          │             │                                  │ ttp/security/InsecureHostnameVe │ InsecureHostnameVerifier;.verify │
+│          │             │                                  │ rifier;->verify                 │ () always returns true.          │
+│ HIGH     │ AG-MAN-003  │ Cleartext network traffic        │ res/ad.xml:base-config          │ The network security config      │
+│          │             │ allowed                          │                                 │ base-config allows cleartext     │
+│          │             │                                  │                                 │ traffic for all domains.         │
+│ MEDIUM   │ AG-MAN-004  │ Exported component without       │ AndroidManifest.xml:info.varden │ receiver                         │
+│          │             │ permission                       │ .hauk.global.Receiver           │ info.varden.hauk.global.Receiver │
+│          │             │                                  │                                 │ is exported                      │
+│          │             │                                  │                                 │ (android:exported="true")        │
+│          │             │                                  │                                 │ without a permission.            │
+│ LOW      │ AG-MAN-002  │ Application data backup is       │ AndroidManifest.xml:application │ The <application> element sets   │
+│          │             │ enabled                          │                                 │ android:allowBackup="true".      │
+│          │             │                                  │                                 │ Backup rules                     │
+│          │             │                                  │                                 │ (fullBackupContent/dataExtractio │
+│          │             │                                  │                                 │ nRules) are defined; verify they │
+│          │             │                                  │                                 │ exclude sensitive data.          │
+└──────────┴─────────────┴──────────────────────────────────┴─────────────────────────────────┴──────────────────────────────────┘
+Summary: high: 2, medium: 1, low: 1, info: 3  (6.86s)
+Not shown: 24 finding(s) in third-party libraries (androidx 22, kotlin 1, kotlinx 1). They do not affect the exit code; use
+--library-findings include to list them.
+FAIL: 2 finding(s) at or above severity 'high'.
 ```
 
-Sample reports generated from the Diary fixture are in [`docs/`](docs/):
+The `InsecureHostnameVerifier` was confirmed in the bytecode (`verify()` is `return true`). The
+24 library findings, mostly reflection inside AndroidX, stay in the reports but out of the way.
+The reports from this scan are in [`docs/`](docs/):
 [HTML](docs/example-report.html), [SARIF](docs/example-report.sarif), [JSON](docs/example-report.json).
-The HTML report is a single self-contained file: no external scripts, fonts or styles, and it
-supports dark mode, severity filters and text search.
+The HTML report is a single self-contained file (no external scripts, fonts or styles) with dark
+mode, severity filters and text search.
+
+## Evaluation on 50 real apps
+
+APKGuard was run on 50 benign open-source apps from F-Droid (one per category, 0.3–6 MB, pinned
+by SHA-256 and re-downloadable with one script). Full write-up: **[EVALUATION.md](EVALUATION.md)**.
+
+| | Result |
+|---|---|
+| APKs scanned without errors | **50 / 50** |
+| Scan time per APK | median **5.4 s**, max 13.2 s (apps with ~7,000–8,700 classes) |
+| Findings incl. library code → app code only (default) | 737 → **492** (−33% from library detection) |
+| High-severity findings → in app code | 19 → **14** |
+| Manual review of 23 findings | 8 true positives, 13 correct but not actionable, **2 false positives** |
+| Bugs found and fixed through the evaluation | 2 (a false "hardcoded key", duplicate fingerprints) |
+| Baselines across 42 real upgrades | 75% of findings matched; **1 of 42** upgrades would fail the default gate |
+
+Detection is accurate: 21 of the 23 reviewed findings describe code or configuration that really
+is there. The weak spots are *actionability* (library code, behaviour that is intended for that
+kind of app) and conditions the analysis ignores: both false positives were Cordova code behind
+a condition (a debug-build check and an opt-in preference). Real issues found include a hostname verifier that accepts every
+certificate, a trust-all `TrustManager`, an unprotected exported service in a contacts app, a third-party API
+secret shipped in resources, and test code (`androidx.test`) shipped in a release build.
 
 ## Rules
 
-| ID | Title | Default severity | Category | CWE |
-|---|---|---|---|---|
-| `AG-MAN-001` | Application is debuggable | high | manifest | CWE-489 |
-| `AG-MAN-002` | Application data backup is enabled | medium | manifest | CWE-530 |
-| `AG-MAN-003` | Cleartext network traffic allowed | high | manifest | CWE-319 |
-| `AG-MAN-004` | Exported component without permission | medium | manifest | CWE-926 |
-| `AG-MAN-005` | Outdated SDK version | medium | manifest | CWE-1104 |
-| `AG-PERM-001` | Dangerous or high-risk permissions requested | info | permissions | CWE-250 |
-| `AG-PERM-002` | Suspicious permission combination | high | permissions | CWE-250 |
-| `AG-CODE-001` | Dynamic code loading | high | code | CWE-829 |
-| `AG-CODE-002` | Reflection-heavy code | low | code | CWE-470 |
-| `AG-CODE-003` | WebView JavaScript interface exposed | medium | code | CWE-749 |
-| `AG-CODE-004` | Insecure WebView configuration | high | code | CWE-295 |
-| `AG-CODE-005` | Weak cipher or cipher mode | medium | code | CWE-327 |
-| `AG-CODE-006` | Weak hash algorithm | medium | code | CWE-328 |
-| `AG-CODE-007` | Hardcoded cryptographic key or IV | high | code | CWE-321 |
-| `AG-CODE-008` | Insecure TrustManager | high | code | CWE-295 |
-| `AG-CODE-009` | Insecure HostnameVerifier | high | code | CWE-297 |
-| `AG-SEC-001` | Hardcoded secret | high | secrets | CWE-798 |
+| ID | Title | Default severity | CWE | Apps flagged in evaluation¹ |
+|---|---|---|---|---:|
+| `AG-MAN-001` | Application is debuggable | high | CWE-489 | 0 |
+| `AG-MAN-002` | Application data backup is enabled | medium | CWE-530 | 37 |
+| `AG-MAN-003` | Cleartext network traffic allowed | high | CWE-319 | 9 |
+| `AG-MAN-004` | Exported component without permission | medium | CWE-926 | 22 |
+| `AG-MAN-005` | Outdated SDK version | medium | CWE-1104 | 14 |
+| `AG-PERM-001` | Dangerous or high-risk permissions requested | info | CWE-250 | 33 |
+| `AG-PERM-002` | Suspicious permission combination | high | CWE-250 | 2 |
+| `AG-CODE-001` | Dynamic code loading | high | CWE-829 | 1 |
+| `AG-CODE-002` | Reflection-heavy code | low | CWE-470 | 36 |
+| `AG-CODE-003` | WebView JavaScript interface exposed | medium | CWE-749 | 2 |
+| `AG-CODE-004` | Insecure WebView configuration | high | CWE-295 | 6 |
+| `AG-CODE-005` | Weak cipher or cipher mode | medium | CWE-327 | 0 |
+| `AG-CODE-006` | Weak hash algorithm | medium | CWE-328 | 5 |
+| `AG-CODE-007` | Hardcoded cryptographic key or IV | high | CWE-321 | 0 |
+| `AG-CODE-008` | Insecure TrustManager | high | CWE-295 | 1 |
+| `AG-CODE-009` | Insecure HostnameVerifier | high | CWE-297 | 1 |
+| `AG-SEC-001` | Hardcoded secret | high | CWE-798 | 1 |
+
+¹ Out of 50 F-Droid apps, counting app code only (the default). Rules that never fire on benign
+apps are covered by unit tests with synthetic bytecode.
 
 The default severity is a starting point. Some rules adjust it per finding: an exported content
 provider is *high* but an exported activity is *low*, `DES` is *high* but `AES/ECB` is *medium*,
-and `setJavaScriptEnabled(true)` is *info*. Run `apkguard rules` for the live list.
+and `setJavaScriptEnabled(true)` is *info*. Every rule also maps to an OWASP MASVS control; run
+`apkguard rules` for the live list.
 
 <details>
 <summary>What each rule detects</summary>
@@ -122,7 +170,7 @@ and `setJavaScriptEnabled(true)` is *info*. Run `apkguard rules` for the live li
 - **AG-CODE-004**: `setAllowUniversalAccessFromFileURLs(true)`, `setAllowFileAccessFromFileURLs(true)`, `MIXED_CONTENT_ALWAYS_ALLOW`, `SslErrorHandler.proceed()` in `onReceivedSslError`, and `setJavaScriptEnabled(true)` (info).
 - **AG-CODE-005**: `Cipher.getInstance` with DES/3DES/RC4/Blowfish/RC2, ECB mode, a bare `"AES"` (defaults to ECB), or unpadded RSA.
 - **AG-CODE-006**: `MessageDigest`/`Mac` with MD2/MD4/MD5 (medium) or SHA-1/HmacMD5 (low).
-- **AG-CODE-007**: `SecretKeySpec`, `PBEKeySpec`, `DESKeySpec`, `IvParameterSpec`, `GCMParameterSpec` built from string literals (`getBytes`, `toCharArray`, `Base64.decode`) or array literals.
+- **AG-CODE-007**: `SecretKeySpec`, `PBEKeySpec`, `DESKeySpec`, `IvParameterSpec`, `GCMParameterSpec` built from string literals (`"…".getBytes()`, `toCharArray`, `Base64.decode`) or array literals.
 - **AG-CODE-008**: `X509TrustManager.checkServerTrusted` with an empty body.
 - **AG-CODE-009**: `HostnameVerifier.verify` that always returns `true`, `ALLOW_ALL_HOSTNAME_VERIFIER`, and `AllowAllHostnameVerifier`.
 - **AG-SEC-001**: private keys, AWS, GitHub, Slack, Stripe, OpenAI, Anthropic, SendGrid, Twilio and Google API keys, JWTs, credentials in URLs, plus high-entropy values in secret-looking resource names. Sources are code strings, `strings.xml`, and text files in `assets/` and `res/raw/`. Secrets are redacted in all reports.
@@ -133,9 +181,9 @@ and `setJavaScriptEnabled(true)` is *info*. Run `apkguard rules` for the live li
 
 | Code | Meaning |
 |---|---|
-| `0` | Scan finished. No unsuppressed finding at or above the threshold. |
-| `1` | At least one unsuppressed finding at or above `--fail-on`. |
-| `2` | Usage or configuration error (unknown rule ID, invalid `.apkguard.yml`, ...). |
+| `0` | Scan finished. No finding counts against the threshold. |
+| `1` | At least one finding at or above `--fail-on` that is not suppressed, not in library code (default mode) and not in the baseline. |
+| `2` | Usage or configuration error (unknown rule ID, invalid `.apkguard.yml`, missing baseline, ...). |
 | `3` | The APK could not be read or parsed. |
 
 `--fail-on` accepts `info`, `low`, `medium`, `high` (default), `critical` or `none`. The CLI flag
@@ -183,9 +231,9 @@ fire inside them too, but you can't fix that code, so APKGuard recognises findin
 
 Add your own vendored SDKs with `--library-package com.vendor.sdk` or `library_packages:`. Code
 inside the app's own package is never treated as library code. In the
-[evaluation](EVALUATION.md#library-detection) this removed most AndroidX/Kotlin noise. It cannot
-recognise library code that R8 has renamed (`La2;`), so obfuscated apps still show some library
-findings.
+[evaluation](EVALUATION.md#library-detection) this cut findings by 33% and code findings by 47%.
+It cannot recognise library code that R8 has renamed (`La2;`), so obfuscated apps still show
+some library findings.
 
 `exclude_packages` is different: it skips classes *before* analysis (faster, but they are
 invisible in every report). Use it only for code you never want to scan.
@@ -205,10 +253,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: ./gradlew assembleRelease
-      - uses: YOUR_GITHUB_USER/apkguard@v0.1.0       # or a path/fork where this action is published
+      - uses: YOUR_GITHUB_USER/apkguard@v0.1.0
         with:
           apk: app/build/outputs/apk/release/app-release-unsigned.apk
           fail-on: high
+          baseline: apkguard-baseline.json   # optional, see below
           html-file: apkguard-report.html
 ```
 
@@ -216,7 +265,8 @@ The action installs APKGuard, writes a SARIF report, uploads it to **GitHub code
 (findings show up in the *Security* tab and as PR annotations), and *then* fails the job if the
 threshold is exceeded, so results are visible even on failing builds. Inputs: `apk`, `fail-on`,
 `config`, `baseline`, `library-findings`, `sarif-file`, `html-file`, `json-file`, `upload-sarif`,
-`python-version`. Output: `exit-code`. A full workflow is in
+`python-version`. Output: `exit-code`. All inputs reach the shell through environment variables,
+never through `${{ }}` interpolation. A full workflow is in
 [`examples/github-workflow.yml`](examples/github-workflow.yml).
 
 ### Baselines: fail only on new findings
@@ -233,6 +283,22 @@ git add apkguard-baseline.json
 apkguard scan app-release.apk --baseline apkguard-baseline.json --fail-on medium
 ```
 
+For example, with a baseline from [Hauk](https://f-droid.org/packages/info.varden.hauk/) 1.6.2,
+scanning 1.6.3 shows only what changed: the release added a notification permission (real
+output, table trimmed):
+
+```text
+$ apkguard scan info.varden.hauk_14.apk -q --write-baseline apkguard-baseline.json
+Wrote baseline with 31 finding(s) to apkguard-baseline.json
+$ apkguard scan info.varden.hauk_15.apk --baseline apkguard-baseline.json --fail-on medium
+│ INFO     │ AG-PERM-001 │ Dangerous or high-risk permissions requested │ AndroidManifest.xml:android.permission.POST_NOTIFICATIONS │
+Summary: info: 1  (6.98s)
+Not shown: 24 finding(s) in third-party libraries (androidx 22, kotlin 1, kotlinx 1). ...
+Baseline: 1 new, 30 unchanged (not shown, do not affect the exit code), 1 no longer present.
+$ echo $?
+0
+```
+
 With the GitHub Action, pass `baseline: apkguard-baseline.json`. Unchanged findings are hidden
 from the table, marked `"baseline_state": "unchanged"` in JSON, and get SARIF's own
 `baselineState`. The summary also counts baseline entries that are gone (fixed). Findings are
@@ -241,16 +307,19 @@ which `classesN.dex` a class is in). The baseline file lists rule, severity and 
 each fingerprint, so it can be reviewed in a pull request. Regenerate it when you deliberately
 accept new findings.
 
-Limitation: in apps obfuscated with R8, class names can change between builds, and findings in
-renamed classes then show up as new. The [evaluation](EVALUATION.md#baselines-across-real-releases)
-measures this on real releases.
+How well does it hold up? Across 42 real F-Droid upgrades (baseline from the previous release,
+scan of the new one), 75% of findings matched and 19 apps had no new findings at all; only 1 of
+42 upgrades would have failed the default `--fail-on high` gate. The catch is R8 obfuscation:
+when class names change between builds, findings in renamed classes show up as new. That was
+about 95% of the "new" findings, mostly low-severity reflection
+([details](EVALUATION.md#baselines-across-real-releases)).
 
 ### Any other CI (GitLab, Jenkins, Azure, ...)
 
 ```bash
-pip install git+https://<your-host>/apkguard.git
+pip install apkguard
 apkguard scan app/build/outputs/apk/release/app-release.apk \
-  --fail-on high --sarif apkguard.sarif --html apkguard-report.html
+  --fail-on high --baseline apkguard-baseline.json --sarif apkguard.sarif --html apkguard-report.html
 ```
 
 ## Use with AI assistants (MCP)
@@ -295,10 +364,9 @@ Config; on Windows the file is in `%APPDATA%\Claude\`, on macOS in
 
 If `apkguard-mcp` is not on the `PATH` that Claude Desktop sees (common with virtual
 environments), use the full path, e.g. `"C:\\path\\to\\.venv\\Scripts\\apkguard-mcp.exe"` (JSON
-needs doubled backslashes) or
-`"/path/to/.venv/bin/apkguard-mcp"`. Then ask something like *"Scan
-~/Downloads/app-release.apk and explain the high-severity findings"*. Pass absolute paths:
-the server resolves relative paths against its own working directory.
+needs doubled backslashes) or `"/path/to/.venv/bin/apkguard-mcp"`. Then ask something like
+*"Scan ~/Downloads/app-release.apk and explain the high-severity findings"*. Pass absolute
+paths: the server resolves relative paths against its own working directory.
 
 > **Prompt-injection note.** Finding messages and evidence contain text from the APK (component
 > names, string constants) that the APK's author controls. The server tells clients to treat
@@ -309,77 +377,118 @@ the server resolves relative paths against its own working directory.
 
 ```mermaid
 flowchart LR
-    APK[(app.apk)] --> L[loader.py<br/>androguard]
+    APK[(app.apk)] --> L["loader.py<br/>(only module using androguard)"]
+    L --> CTX["ApkContext<br/>manifest · classes/methods ·<br/>strings · network config"]
     CFG[.apkguard.yml] --> C[config.py]
-    L --> CTX[ApkContext<br/>manifest · classes/methods ·<br/>strings · network config]
-    CTX --> S[scanner.py]
-    C --> S
-    subgraph Rules [rules/ — one module per rule]
+
+    subgraph Rules ["rules/ (one module per rule)"]
         M[manifest_*]
         P[permissions_*]
-        CO[code_* + analysis.py]
+        CO["code_* + analysis.py<br/>(constant tracking)"]
         SE[secrets_*]
     end
-    S --> Rules
-    Rules --> F[Findings]
-    F --> S
-    S -->|disable · overrides · suppressions| R[ScanResult]
+
+    CTX --> S[scanner.py]
+    C --> S
+    S --> Rules --> S
+    S -->|"dedupe · overrides · suppressions ·<br/>library tagging (libraries.py)"| R[ScanResult]
+    BL[(baseline.json)] -->|"new / unchanged<br/>(baseline.py)"| R
+
     R --> T[terminal table]
     R --> J[JSON]
     R --> SA[SARIF 2.1.0]
     R --> H[HTML]
-    R --> X{exit code<br/>--fail-on}
+    R --> X{"exit code<br/>--fail-on"}
+
+    CLI[cli.py / GitHub Action] --> S
+    MCP["mcp_server.py<br/>scan_apk · list_rules · explain_finding"] --> S
+    G[guidance.py] --> MCP
 ```
 
-- **`loader.py`** is the only module that touches androguard. It converts the APK into a plain,
-  androguard-independent `ApkContext`: the decoded manifest as an lxml tree, every class/method
-  with simplified Dalvik instructions, resource and asset strings, and the network security
-  config.
-- **`analysis.py`** performs a single linear pass per method and tracks constants in registers
+- **`loader.py`** is the only module that touches androguard. It converts the APK into a plain
+  `ApkContext`: the decoded manifest as an lxml tree, every class/method with simplified Dalvik
+  instructions, resource and asset strings, and the network security config.
+- **`analysis.py`** makes a single linear pass per method and tracks constants in registers
   (ints, strings, byte arrays derived from string literals). Rules use it to answer questions
   such as "is the argument to `Cipher.getInstance` the literal `AES/ECB/...`?"
-- **`rules/`** holds one module per rule. Each rule has a `RuleMeta` (ID, title, severity, CWE,
-  MASVS, description, remediation, references) and a `check(ctx)` generator. Because rules only
-  see `ApkContext`, unit tests build contexts synthetically, with no APK needed.
-- **`scanner.py`** runs the rules, isolates rule crashes (reported, never fatal), and applies the
-  config: disabled rules, severity overrides and suppressions.
-- **`reporters/`** render the `ScanResult` as a terminal table, JSON, SARIF 2.1.0 (validated
+- **`rules/`** holds one module per rule: a `RuleMeta` (ID, title, severity, CWE, MASVS,
+  description, remediation, references) and a `check(ctx)` generator. Rules only see
+  `ApkContext`, so unit tests build contexts synthetically, with no APK needed.
+- **`scanner.py`** runs the rules, isolates rule crashes (reported, never fatal), merges
+  duplicate fingerprints, applies the config and tags library findings (**`libraries.py`**).
+  `ScanResult.gating_findings` is the single definition of "what counts" for the summary and
+  the exit code.
+- **`baseline.py`** writes and compares baseline files by fingerprint.
+- **`reporters/`** render a `ScanResult` as a terminal table, JSON, SARIF 2.1.0 (validated
   against the official schema in tests) and standalone HTML.
+- **`mcp_server.py`** exposes the same scanner as MCP tools. **`guidance.py`** holds per-rule
+  triage advice.
 
-### Adding a rule
+Design decisions, with the reasoning and trade-offs behind each, are in
+[DECISIONS.md](DECISIONS.md).
 
-1. Create `src/apkguard/rules/<category>_<name>.py` with a `Rule` subclass and `RuleMeta`.
-2. Register it in `src/apkguard/rules/__init__.py`.
-3. Add positive and negative unit tests in `tests/unit/test_rules_<category>.py`. A meta-test
-   fails if a rule class is not referenced by any rule test.
+## Limitations
+
+- **Intra-procedural, flow-insensitive analysis.** Constants are tracked within one method and
+  conditions are ignored. Values passed through fields or other methods are missed, and code
+  behind a condition (a debug-build check, an opt-in setting) is still reported. Both false
+  positives in the evaluation were of this kind.
+- **Library detection uses package names.** Library code renamed by R8/ProGuard (`La2;`) is
+  treated as app code; in the evaluation, 253 of the remaining app findings were in such
+  classes, mostly reflection. Conversely, a real issue inside a library package (test code
+  shipped in a release) is separated, not dropped.
+- **Baselines depend on stable names.** Findings in obfuscated classes can appear as new when
+  the obfuscation mapping changes between builds.
+- **Severity is per pattern, not per data flow.** An exported provider is *high* even when it
+  only serves public data.
+- **Recall is not measured.** The evaluation used benign apps; rules for patterns that rarely
+  occur there (hardcoded keys, `debuggable`) are tested with synthetic bytecode only.
+- **APK input only**: no AAB, no native (`.so`) analysis, no Kotlin/Java source analysis.
 
 ## Development
 
 ```bash
 python -m venv .venv && . .venv/bin/activate      # Windows: .venv\Scripts\activate
-pip install -e ".[dev]"
-ruff check src tests && ruff format --check src tests
-mypy src                                            # strict mode
-pytest                                              # unit + integration tests
+pip install -e ".[dev]"                             # includes the MCP extra, build and twine
+ruff check src tests evaluation && ruff format --check src tests evaluation
+mypy src evaluation                                 # strict mode
+pytest --cov=apkguard                               # unit + integration tests
 ```
 
-Test fixtures are small, benign GPL apps from F-Droid. See
-[`tests/fixtures/apks/README.md`](tests/fixtures/apks/README.md) for provenance and hashes.
+Reproduce the evaluation (downloads ~300 MB from f-droid.org, verified by SHA-256):
+
+```bash
+python evaluation/fetch_apks.py
+python evaluation/run_evaluation.py       # per-rule results -> evaluation/results/
+python evaluation/run_baseline_eval.py    # baselines across real releases
+```
+
+Test fixtures are small, benign GPL apps from F-Droid; see
+[`tests/fixtures/apks/README.md`](tests/fixtures/apks/README.md). Contributions are welcome: see
+[CONTRIBUTING.md](CONTRIBUTING.md) (adding a rule, reporting false positives) and
+[SECURITY.md](SECURITY.md).
 
 ## Roadmap
 
-- [ ] Baseline file (`--baseline`) to report only *new* findings on PRs
-- [ ] Inter-procedural / cross-method constant tracking (e.g. keys passed through fields)
-- [ ] Merged-manifest awareness: attribute findings to the library that introduced them
-- [ ] More rules: `PendingIntent` mutability, implicit intents with sensitive data, insecure
-      `SharedPreferences`/`MODE_WORLD_READABLE`, SQL injection in `rawQuery`, logging of secrets,
-      `FileProvider` root paths, Firebase open database URLs, native library hardening (NX, PIE,
-      RELRO via ELF parsing)
+- [x] Baselines (`--baseline`) so PRs fail only on new findings
+- [x] Third-party library separation
+- [x] MCP server for AI assistants
+- [ ] Obfuscation-aware library detection (code fingerprints, as in LibScout/LibID)
+- [ ] Branch-aware constant tracking, so code guarded by `FLAG_DEBUGGABLE` or a preference is
+      recognised (the main false-positive source in the evaluation)
+- [ ] Read the R8 `mapping.txt` to fingerprint original class names, so baselines survive
+      obfuscation changes
+- [ ] Recognise components the system must reach (sync adapters, authenticators, media buttons)
+      in AG-MAN-004
+- [ ] Inter-procedural constant tracking (keys passed through fields or helper methods)
+- [ ] More rules: `PendingIntent` mutability, `MODE_WORLD_READABLE`, SQL injection in
+      `rawQuery`, logging of secrets, `FileProvider` root paths, Firebase open database URLs,
+      native library hardening (NX, PIE, RELRO)
 - [ ] AAB (Android App Bundle) input
 - [ ] Network security config: user-trusted CAs, pin-set expiry
 - [ ] Rule plugins via Python entry points
-- [ ] Published PyPI package and container image
 
 ## License
 
-Apache License 2.0. See [LICENSE](LICENSE).
+Apache License 2.0. See [LICENSE](LICENSE). The F-Droid apps used as test fixtures and in the
+evaluation keep their own licenses and are not distributed with the package.
