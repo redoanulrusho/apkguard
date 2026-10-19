@@ -286,5 +286,20 @@ def main(argv: Sequence[str] | None = None) -> int:
     return EXIT_USAGE
 
 
+def mcp_main() -> int:
+    """Entry point of ``apkguard-mcp``: run the MCP server over stdio."""
+    try:
+        from apkguard.mcp_server import run
+    except ImportError as exc:  # the optional "mcp" extra is not installed
+        print(
+            f"apkguard-mcp needs the MCP extra ({exc.name} is missing). Install it with:\n"
+            '    pip install "apkguard[mcp]"',
+            file=sys.stderr,
+        )
+        return EXIT_USAGE
+    run()
+    return EXIT_OK
+
+
 if __name__ == "__main__":  # pragma: no cover
     raise SystemExit(main())

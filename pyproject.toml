@@ -24,6 +24,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+mcp = ["mcp>=2.3,<3"]
 dev = [
     "pytest>=8",
     "pytest-cov>=5",
@@ -31,10 +32,12 @@ dev = [
     "mypy>=1.10",
     "types-PyYAML",
     "jsonschema>=4",
+    "mcp>=2.3,<3",
 ]
 
 [project.scripts]
 apkguard = "apkguard.cli:main"
+apkguard-mcp = "apkguard.cli:mcp_main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

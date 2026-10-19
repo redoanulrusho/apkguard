@@ -93,6 +93,14 @@ remote, nothing pushed).
 - Action inputs `baseline` and `library-findings`; the scan step was executed locally in bash for
   all cases; CI runs the action against a generated baseline. 17 new tests.
 
+### Step 4 - MCP server
+- `pip install "apkguard[mcp]"`, command `apkguard-mcp` (stdio). Tools `scan_apk`, `list_rules`,
+  `explain_finding` with typed output schemas and read-only annotations.
+- 17 tests: tool functions, in-process MCP client, and a real stdio subprocess. The installed
+  `apkguard-mcp.exe` was also driven over stdio against an evaluation APK.
+- Not verified here: Claude Desktop / Claude Code themselves (not installed on this machine);
+  the README documents the standard configuration for both.
+
 ## How to run
 
 ```powershell

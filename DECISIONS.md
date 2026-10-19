@@ -171,4 +171,24 @@ can be reviewed and reversed.
     input (no `${{ }}` in scripts). The scan step was executed in Git Bash for no baseline, a
     valid baseline, a missing baseline and an invalid library mode. CI exercises the action
     with a generated baseline.
+44. **MCP server on the official SDK v2 (`mcp>=2.3,<3`, `MCPServer`), as the optional `mcp`
+    extra.** The core scanner keeps three dependencies; `apkguard-mcp` prints an install hint
+    (exit 2) when the extra is missing. v2 renamed `FastMCP` to `MCPServer`; the version is
+    capped below 3 because the SDK's API moved between majors before.
+45. **Three read-only tools with typed pydantic results:** `scan_apk`, `list_rules`,
+    `explain_finding`. The tools are plain functions registered with `add_tool`, so they are unit
+    tested directly *and* through the SDK's in-process client and a real stdio subprocess.
+    Anticipated failures raise `ToolError` (the model sees the message); argument limits
+    (`max_findings` 1-500, severity and mode enums) are in the JSON schema.
+46. **`scan_apk` returns app findings only by default** (library findings are counted, not
+    listed) and caps the list at 50, most severe first, with a `truncated` flag. *Why:* an
+    assistant's context is a scarce resource; 400 AndroidX reflection findings would drown the
+    two that matter.
+47. **Triage guidance lives in `guidance.py`**, one entry per rule (enforced by a test), written
+    from the manual review: how to verify a finding and when it is usually benign.
+    `explain_finding` also emits a suppression snippet that is tested to parse as a valid config.
+48. **Prompt injection is documented, not "solved".** Findings contain APK-controlled strings.
+    The server instructions and README tell clients to treat them as data; the server is
+    read-only and has no network access, which limits what an injected instruction could reach
+    through APKGuard itself.
 

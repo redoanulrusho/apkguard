@@ -253,6 +253,58 @@ apkguard scan app/build/outputs/apk/release/app-release.apk \
   --fail-on high --sarif apkguard.sarif --html apkguard-report.html
 ```
 
+## Use with AI assistants (MCP)
+
+APKGuard ships an optional [Model Context Protocol](https://modelcontextprotocol.io) server, so
+assistants such as Claude Desktop and Claude Code can scan APKs and explain findings for you.
+
+```bash
+pip install "apkguard[mcp]"     # adds the official MCP Python SDK and the apkguard-mcp command
+```
+
+| Tool | What it returns |
+|---|---|
+| `scan_apk(apk_path, min_severity="low", library_findings="separate", max_findings=50, config_path=None)` | Package info, counts per severity, and the findings (rule, severity, location, evidence, remediation, fingerprint, library), most severe first |
+| `list_rules(category=None)` | The rule catalogue with severity, CWE and OWASP MASVS IDs |
+| `explain_finding(rule_id, location=None)` | Description, remediation, how to verify the finding, when it is usually benign, references, and a ready-to-paste `.apkguard.yml` suppression |
+
+All tools are read-only and return structured JSON (typed output schemas). Errors such as a
+missing file come back as tool errors the assistant can read.
+
+**Claude Code:**
+
+```bash
+claude mcp add apkguard -- apkguard-mcp
+# or share it with your team through the project's .mcp.json:
+claude mcp add --scope project apkguard -- apkguard-mcp
+```
+
+**Claude Desktop:** add the server to `claude_desktop_config.json` (Settings → Developer → Edit
+Config; on Windows the file is in `%APPDATA%\Claude\`, on macOS in
+`~/Library/Application Support/Claude/`) and restart the app:
+
+```json
+{
+  "mcpServers": {
+    "apkguard": {
+      "command": "apkguard-mcp"
+    }
+  }
+}
+```
+
+If `apkguard-mcp` is not on the `PATH` that Claude Desktop sees (common with virtual
+environments), use the full path, e.g. `"C:\\path\\to\\.venv\\Scripts\\apkguard-mcp.exe"` (JSON
+needs doubled backslashes) or
+`"/path/to/.venv/bin/apkguard-mcp"`. Then ask something like *"Scan
+~/Downloads/app-release.apk and explain the high-severity findings"*. Pass absolute paths:
+the server resolves relative paths against its own working directory.
+
+> **Prompt-injection note.** Finding messages and evidence contain text from the APK (component
+> names, string constants) that the APK's author controls. The server tells clients to treat
+> them as data, but be careful when scanning APKs you don't trust with an assistant that can
+> also take actions.
+
 ## Architecture
 
 ```mermaid
