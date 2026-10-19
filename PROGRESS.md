@@ -62,6 +62,14 @@ remote, nothing pushed).
 
 ---
 
+## Session 2 log (2026-10-20)
+
+### Step 0 - git identity and baseline
+- Repo identity set to `Redoanul Karim Rusho <redoanulkarim1@gmail.com>`; all 6 commits rewritten
+  (author + committer). `git log --all --format='%ae%n%ce' | grep -c your_github_email` -> `0`.
+- Baseline quality gate (Windows 11, Python 3.11.6): ruff ✅, ruff format ✅ (47 files),
+  mypy --strict ✅ (34 files), **177 passed**, coverage **97%** (1527 statements, 46 missed).
+
 ## How to run
 
 ```powershell

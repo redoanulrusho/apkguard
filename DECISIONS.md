@@ -108,5 +108,8 @@ can be reviewed and reversed.
     tests (long smali signatures).
 29. **License: Apache-2.0** (same as androguard). Fixture APKs keep their own GPL-3.0 license and
     are only test data.
-30. **Git identity:** commits use the repository's existing git config (`Redoan Rusho`, placeholder
-    email `your_github_email@example.com`). This was not changed; see PROGRESS.md.
+30. **Git identity:** session 1 used a placeholder email. In session 2 (2026-10-20) the repo's
+    identity was set to `Redoanul Karim Rusho <redoanulkarim1@gmail.com>` and the author *and*
+    committer of all 6 existing commits were rewritten with `git filter-branch --env-filter`
+    (safe: never pushed). A `git bundle` of the old history was kept in the session scratchpad
+    before rewriting, and `refs/original` was removed afterwards so no placeholder remains.
