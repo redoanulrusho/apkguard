@@ -1,0 +1,46 @@
+name: Bug report
+description: APKGuard crashes, rejects valid input or produces broken output.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Please do **not** attach malware or APKs you are not allowed to share.
+        For a wrong or missing *finding*, use the "False positive / false negative" template instead.
+        Security issues in APKGuard itself: see SECURITY.md.
+  - type: input
+    id: version
+    attributes:
+      label: APKGuard version
+      description: Output of `apkguard --version`
+      placeholder: apkguard 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python version, and how you run APKGuard (pip, Docker, GitHub Action, MCP server)
+      placeholder: Ubuntu 24.04, Python 3.12, GitHub Action
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command and configuration
+      description: The exact command line, plus your `.apkguard.yml` if you use one.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened, and what did you expect?
+      description: Include the full error output or traceback.
+    validations:
+      required: true
+  - type: input
+    id: apk
+    attributes:
+      label: Public APK that reproduces it (optional)
+      description: A link to the app on f-droid.org or its source repository, if the problem depends on a specific APK.

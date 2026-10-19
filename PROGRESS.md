@@ -101,6 +101,14 @@ remote, nothing pushed).
 - Not verified here: Claude Desktop / Claude Code themselves (not installed on this machine);
   the README documents the standard configuration for both.
 
+### Step 5 - release readiness
+- Version 0.1.0 single-sourced; full metadata (author, PEP 639 license, classifiers, URLs,
+  keywords); CHANGELOG, CONTRIBUTING, SECURITY, 3 issue forms + config, PR template.
+- `python -m build` -> wheel (45 files) + sdist (no tests/APKs); `twine check` PASSED.
+- Fresh venv (Python 3.11.6): wheel install, `apkguard --version/rules/scan` with SARIF+HTML,
+  exit codes as expected; `apkguard-mcp` without the extra prints the install hint (exit 2); with
+  `[mcp]` it serves over stdio. Nothing was published.
+
 ## How to run
 
 ```powershell

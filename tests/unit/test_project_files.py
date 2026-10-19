@@ -42,3 +42,27 @@ def test_workflows_are_valid_yaml() -> None:
                  "github-workflow.yml"]:  # fmt: skip
         data = yaml.safe_load(path.read_text(encoding="utf-8"))
         assert "jobs" in data, path
+
+
+def test_issue_forms_are_well_formed() -> None:
+    forms = sorted((ROOT / ".github" / "ISSUE_TEMPLATE").glob("*.yml"))
+    assert len(forms) >= 3
+    for path in forms:
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+        if path.name == "config.yml":
+            assert data["blank_issues_enabled"] is False
+            continue
+        assert data["name"] and data["description"], path
+        ids = [item["id"] for item in data["body"] if "id" in item]
+        assert len(ids) == len(set(ids)), f"duplicate ids in {path.name}"
+        assert all(
+            item["type"] in {"markdown", "input", "textarea", "dropdown"} for item in data["body"]
+        )
+
+
+def test_version_is_single_sourced() -> None:
+    from apkguard import __version__
+
+    pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert 'dynamic = ["version"]' in pyproject
+    assert f"## [{__version__}]" in (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")

@@ -47,6 +47,29 @@ jobs:
       - name: Pytest
         run: pytest --cov=apkguard --cov-report=term-missing
 
+  package:
+    # Build the sdist and wheel, check the metadata, and install the wheel in a clean venv.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install build twine
+      - run: python -m build
+      - run: python -m twine check dist/*
+      - name: Install the wheel in a fresh venv and smoke-test it
+        run: |
+          python -m venv /tmp/fresh
+          /tmp/fresh/bin/pip install "$(ls dist/*.whl)[mcp]"
+          /tmp/fresh/bin/apkguard --version
+          /tmp/fresh/bin/apkguard scan tests/fixtures/apks/org.billthefarmer.tuner_158.apk --fail-on none
+          /tmp/fresh/bin/python -c "from apkguard.mcp_server import build_server; build_server()"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
   docker:
     runs-on: ubuntu-latest
     steps:

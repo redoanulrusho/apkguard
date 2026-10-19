@@ -1,0 +1,21 @@
+name: Feature or rule request
+description: Suggest a new rule, output format or integration.
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: For a new rule, describe the insecure pattern, why it matters, and a reference (CWE, OWASP MASTG/MASVS).
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: How should APKGuard detect or report it? What would a finding look like?
+  - type: textarea
+    id: noise
+    attributes:
+      label: False-positive risk
+      description: When would the pattern be present but harmless? Rules that fire on most benign apps are hard to accept.

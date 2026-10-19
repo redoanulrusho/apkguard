@@ -1,0 +1,51 @@
+name: False positive / false negative
+description: A finding is wrong, or an issue that should be found is missed.
+labels: ["rules", "false-positive"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Reports like this are the most valuable feedback for a static analyser. Please do **not** attach APKs;
+        link to a public app (e.g. on f-droid.org) or describe a minimal code snippet instead.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - False positive (finding is wrong or not applicable)
+        - False negative (an issue was missed)
+        - Wrong severity
+    validations:
+      required: true
+  - type: input
+    id: rule
+    attributes:
+      label: Rule ID
+      placeholder: AG-CODE-004
+    validations:
+      required: true
+  - type: textarea
+    id: finding
+    attributes:
+      label: Finding as reported
+      description: The finding from the JSON report (`--json report.json`), including location, evidence and fingerprint.
+      render: json
+  - type: textarea
+    id: why
+    attributes:
+      label: Why is it wrong (or what was missed)?
+      description: For example, "the call is only reachable in debug builds" or "the key comes from the Android Keystore".
+    validations:
+      required: true
+  - type: input
+    id: app
+    attributes:
+      label: Public app (optional)
+      description: Link to the app on f-droid.org or its source code, and the version you scanned.
+  - type: input
+    id: version
+    attributes:
+      label: APKGuard version
+      placeholder: apkguard 0.1.0
+    validations:
+      required: true

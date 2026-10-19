@@ -1,27 +1,48 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "apkguard"
-version = "0.1.0"
-description = "Static security scanner for Android APKs, built for CI/CD pipelines"
+dynamic = ["version"]  # from apkguard.__version__, so the CLI and package can't disagree
+description = "Static security scanner for Android APKs, built for CI/CD pipelines (SARIF, baselines, GitHub Action, MCP server)"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "Apache-2.0" }
-authors = [{ name = "APKGuard contributors" }]
-keywords = ["android", "apk", "security", "sast", "sarif", "ci"]
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "Redoanul Karim Rusho", email = "redoanulkarim1@gmail.com" }]
+maintainers = [{ name = "Redoanul Karim Rusho", email = "redoanulkarim1@gmail.com" }]
+keywords = ["android", "apk", "security", "sast", "static-analysis", "sarif", "ci", "mcp"]
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "Topic :: Security",
+    "Development Status :: 3 - Alpha",
     "Environment :: Console",
-    "License :: OSI Approved :: Apache Software License",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Testing",
+    "Typing :: Typed",
 ]
 dependencies = [
     "androguard>=4.1,<5",
+    "lxml>=4.9",  # imported directly (manifest/XML handling), not only via androguard
     "rich>=13",
     "pyyaml>=6",
 ]
+
+[project.urls]
+Homepage = "https://github.com/YOUR_GITHUB_USER/apkguard"
+Repository = "https://github.com/YOUR_GITHUB_USER/apkguard"
+Issues = "https://github.com/YOUR_GITHUB_USER/apkguard/issues"
+Changelog = "https://github.com/YOUR_GITHUB_USER/apkguard/blob/main/CHANGELOG.md"
+Documentation = "https://github.com/YOUR_GITHUB_USER/apkguard#readme"
 
 [project.optional-dependencies]
 mcp = ["mcp>=2.3,<3"]
@@ -33,17 +54,22 @@ dev = [
     "types-PyYAML",
     "jsonschema>=4",
     "mcp>=2.3,<3",
+    "build>=1",
+    "twine>=5",
 ]
 
 [project.scripts]
 apkguard = "apkguard.cli:main"
 apkguard-mcp = "apkguard.cli:mcp_main"
 
+[tool.setuptools.dynamic]
+version = { attr = "apkguard.__version__" }
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-apkguard = ["py.typed", "reporters/*.html"]
+apkguard = ["py.typed"]
 
 [tool.ruff]
 line-length = 100

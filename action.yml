@@ -1,6 +1,6 @@
 name: "APKGuard - Android APK security scan"
 description: "Static security scan of an Android APK, with SARIF upload to GitHub code scanning."
-author: "APKGuard contributors"
+author: "Redoanul Karim Rusho"
 branding:
   icon: "shield"
   color: "green"

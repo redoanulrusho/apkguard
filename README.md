@@ -205,7 +205,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: ./gradlew assembleRelease
-      - uses: apkguard/apkguard@v0.1.0       # or a path/fork where this action is published
+      - uses: YOUR_GITHUB_USER/apkguard@v0.1.0       # or a path/fork where this action is published
         with:
           apk: app/build/outputs/apk/release/app-release-unsigned.apk
           fail-on: high

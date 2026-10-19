@@ -60,7 +60,8 @@ can be reviewed and reversed.
     (`google_api_key`, ...) are downgraded to *low* because they are designed to ship in the APK.
     Generic "secret-looking resource" detection requires a secret-like name, length ≥ 16, no
     spaces, no placeholder words and Shannon entropy ≥ 3.5 to limit false positives.
-    **Secrets are always redacted** in output (first 4 characters plus length) so reports and
+    **Secrets are always redacted** in output (first 4 and last 2 characters plus length;
+    values of 8 characters or fewer are fully masked) so reports and
     SARIF uploads do not leak them further.
 16. Code-level secret scanning only looks at `const-string` values in non-excluded classes
     (not the whole DEX string table). That gives a precise method location and respects
@@ -191,4 +192,16 @@ can be reviewed and reversed.
     The server instructions and README tell clients to treat them as data; the server is
     read-only and has no network access, which limits what an injected instruction could reach
     through APKGuard itself.
+49. **Packaging: single-sourced version, PEP 639 license metadata, explicit `lxml`.** The version
+    lives only in `apkguard.__version__` (`dynamic = ["version"]`), so `apkguard --version`, the
+    SARIF tool version and the package version cannot drift. `license = "Apache-2.0"` with
+    `license-files` needs setuptools >= 77 at build time. `lxml` is imported directly, so it is
+    declared even though androguard already pulls it in.
+50. **The sdist excludes `tests/`, `evaluation/` and `docs/`** (MANIFEST.in). The fixtures are
+    third-party GPL APKs and the evaluation needs 300 MB of downloads; both stay in git, where
+    contributors get them. The wheel contains only `src/apkguard`.
+51. **Repository URLs use the placeholder `YOUR_GITHUB_USER`**, because the GitHub account name is
+    not known here. PROGRESS.md gives a one-line command to replace it before publishing.
+52. **CI gained a `package` job** that builds, runs `twine check`, installs the wheel (with the
+    `mcp` extra) into a fresh venv and smoke-tests it, mirroring the local release check.
 

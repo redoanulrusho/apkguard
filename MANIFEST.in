@@ -1,0 +1,9 @@
+# Source distribution contents. The wheel only ever contains src/apkguard.
+include LICENSE README.md CHANGELOG.md CONTRIBUTING.md SECURITY.md EVALUATION.md DECISIONS.md
+recursive-include examples *.yml
+# Test fixtures include third-party GPL APKs and the evaluation needs ~300 MB of downloads;
+# both stay in the git repository only.
+prune tests
+prune evaluation
+prune docs
+global-exclude *.py[cod] __pycache__
