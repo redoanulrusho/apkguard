@@ -74,7 +74,9 @@ def _artifact_uri(apk_path: str) -> str:
     return rel.replace(os.sep, "/")
 
 
-def _result(finding: Finding, rule_index: dict[str, int], uri: str) -> dict[str, object]:
+def _result(
+    finding: Finding, rule_index: dict[str, int], uri: str, separated: bool
+) -> dict[str, object]:
     loc = finding.location
     text = f"{finding.message} [{loc}]"
     logical: dict[str, object] = {"fullyQualifiedName": str(loc), "kind": "member"}
@@ -99,6 +101,8 @@ def _result(finding: Finding, rule_index: dict[str, int], uri: str) -> dict[str,
             "security-severity": SECURITY_SEVERITY[finding.severity],
             "apkEntry": loc.file,
             "evidence": finding.evidence,
+            "origin": "library" if finding.library else "app",
+            "library": finding.library,
         },
     }
     if finding.rule_id in rule_index:
@@ -106,6 +110,12 @@ def _result(finding: Finding, rule_index: dict[str, int], uri: str) -> dict[str,
     if finding.suppressed:
         result["suppressions"] = [
             {"kind": "external", "justification": finding.suppression_reason or ""}
+        ]
+    elif separated:
+        # Library findings do not gate the build, so they are reported like configuration
+        # suppressions: kept for auditing, but not shown as open alerts.
+        result["suppressions"] = [
+            {"kind": "external", "justification": f"Third-party library code ({finding.library})"}
         ]
     return result
 
@@ -135,7 +145,9 @@ def to_sarif(result: ScanResult) -> dict[str, object]:
                 },
                 "automationDetails": {"id": f"apkguard/{result.package}/"},
                 "artifacts": [{"location": {"uri": uri, "uriBaseId": "%SRCROOT%"}}],
-                "results": [_result(f, rule_index, uri) for f in result.findings],
+                "results": [
+                    _result(f, rule_index, uri, result.is_separated(f)) for f in result.findings
+                ],
                 "invocations": [
                     {
                         "executionSuccessful": not result.errors,

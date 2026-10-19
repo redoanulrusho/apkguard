@@ -78,6 +78,8 @@ class Finding:
     evidence: str | None = None
     suppressed: bool = False
     suppression_reason: str | None = None
+    #: Package of the third-party library the finding is in (e.g. ``androidx``), None for app code.
+    library: str | None = None
     extra: dict[str, object] = field(default_factory=dict)
 
     @property
@@ -98,6 +100,8 @@ class Finding:
             "remediation": self.remediation,
             "evidence": self.evidence,
             "fingerprint": self.fingerprint,
+            "origin": "library" if self.library else "app",
+            "library": self.library,
             "suppressed": self.suppressed,
         }
         if self.suppression_reason:

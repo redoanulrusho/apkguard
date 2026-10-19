@@ -18,9 +18,14 @@ def to_dict(result: ScanResult) -> dict[str, object]:
             "target_sdk": result.target_sdk,
         },
         "summary": {
-            "total": len(result.active_findings),
+            "total": len(result.gating_findings),
             "suppressed": len(result.findings) - len(result.active_findings),
             "by_severity": result.counts(),
+            "library_findings": {
+                "mode": result.library_mode.value,
+                "separated": len(result.separated_findings),
+                "by_library": result.library_counts(),
+            },
             "duration_seconds": round(result.duration_s, 3),
         },
         "findings": [f.to_dict() for f in result.findings],

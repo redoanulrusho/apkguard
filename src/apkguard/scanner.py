@@ -9,6 +9,7 @@ from pathlib import Path
 from apkguard import __version__
 from apkguard.config import Config
 from apkguard.context import ApkContext
+from apkguard.libraries import LibraryMode, tag_library_findings
 from apkguard.loader import load_apk
 from apkguard.model import Finding, RuleMeta, Severity
 from apkguard.rules import ALL_RULES, Rule
@@ -31,22 +32,46 @@ class ScanResult:
     rules: list[RuleMeta]
     duration_s: float
     errors: list[RuleError] = field(default_factory=list)
+    library_mode: LibraryMode = LibraryMode.SEPARATE
     tool_version: str = __version__
 
     @property
     def active_findings(self) -> list[Finding]:
+        """Findings not suppressed by configuration (app and library code)."""
         return [f for f in self.findings if not f.suppressed]
+
+    def is_separated(self, finding: Finding) -> bool:
+        """True if ``finding`` is in library code and library findings are kept separate."""
+        return self.library_mode is LibraryMode.SEPARATE and finding.library is not None
+
+    @property
+    def gating_findings(self) -> list[Finding]:
+        """Findings that count for the summary and the ``--fail-on`` threshold."""
+        return [f for f in self.active_findings if not self.is_separated(f)]
+
+    @property
+    def separated_findings(self) -> list[Finding]:
+        """Active library findings reported separately (``library_findings: separate``)."""
+        return [f for f in self.active_findings if self.is_separated(f)]
 
     def counts(self) -> dict[str, int]:
         out = {s.label: 0 for s in sorted(Severity, reverse=True)}
-        for f in self.active_findings:
+        for f in self.gating_findings:
             out[f.severity.label] += 1
         return out
+
+    def library_counts(self) -> dict[str, int]:
+        """Separated library findings per library package, most frequent first."""
+        counts: dict[str, int] = {}
+        for f in self.separated_findings:
+            assert f.library is not None
+            counts[f.library] = counts.get(f.library, 0) + 1
+        return dict(sorted(counts.items(), key=lambda item: (-item[1], item[0])))
 
     def exceeds(self, threshold: Severity | None) -> bool:
         if threshold is None:
             return False
-        return any(f.severity >= threshold for f in self.active_findings)
+        return any(f.severity >= threshold for f in self.gating_findings)
 
 
 def build_rules(config: Config) -> list[Rule]:
@@ -81,6 +106,9 @@ def run_rules(
                 finding.suppression_reason = sup.reason or "suppressed by configuration"
             findings.append(finding)
     findings = _deduplicate(findings)
+    tag_library_findings(findings, config.library_packages, ctx.manifest.package)
+    if config.library_mode is LibraryMode.EXCLUDE:
+        findings = [f for f in findings if f.library is None]
     findings.sort(key=lambda f: (-f.severity, f.rule_id, str(f.location)))
     return findings, [r.meta for r in rules], errors
 
@@ -116,6 +144,7 @@ def scan_context(ctx: ApkContext, config: Config | None = None) -> ScanResult:
         rules=metas,
         duration_s=time.perf_counter() - start,
         errors=errors,
+        library_mode=config.library_mode,
     )
 
 

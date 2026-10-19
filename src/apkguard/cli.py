@@ -13,7 +13,16 @@ from rich.console import Console
 from rich.table import Table
 
 from apkguard import __version__
-from apkguard.config import Config, ConfigError, find_config, load_config, to_smali_prefix
+from apkguard.config import (
+    Config,
+    ConfigError,
+    find_config,
+    load_config,
+    parse_library_mode,
+    to_java_package,
+    to_smali_prefix,
+)
+from apkguard.libraries import LibraryMode
 from apkguard.loader import ApkLoadError
 from apkguard.model import Severity
 from apkguard.rules import ALL_RULES, RULES_BY_ID
@@ -83,6 +92,21 @@ def _build_parser() -> argparse.ArgumentParser:
         help="skip code in this package for code/secret rules, e.g. com.google (repeatable)",
     )
     scan.add_argument(
+        "--library-findings",
+        choices=[m.value for m in LibraryMode],
+        default=None,
+        help="findings in third-party libraries (androidx, kotlin, okhttp3, ...): 'separate' "
+        "reports them apart and never fails the build (default), 'include' treats them like "
+        "app code, 'exclude' drops them",
+    )
+    scan.add_argument(
+        "--library-package",
+        metavar="PKG",
+        action="append",
+        default=[],
+        help="treat this package as third-party library code, e.g. com.vendor.sdk (repeatable)",
+    )
+    scan.add_argument(
         "--min-severity",
         choices=[s.label for s in Severity],
         default="info",
@@ -137,6 +161,9 @@ def _resolve_config(args: argparse.Namespace) -> Config:
         config.disable.add(rule_id)
     if args.exclude_package:
         config.exclude_packages += tuple(to_smali_prefix(p) for p in args.exclude_package)
+    if args.library_findings is not None:
+        config.library_mode = parse_library_mode(args.library_findings, "--library-findings")
+    config.library_packages += tuple(to_java_package(p) for p in args.library_package)
     return config
 
 
@@ -200,7 +227,7 @@ def _scan(args: argparse.Namespace) -> int:
 
     if result.exceeds(threshold):
         assert threshold is not None
-        failing = sum(1 for f in result.active_findings if f.severity >= threshold)
+        failing = sum(1 for f in result.gating_findings if f.severity >= threshold)
         err.print(
             f"[red]FAIL:[/red] {failing} finding(s) at or above severity '{threshold.label}'."
         )

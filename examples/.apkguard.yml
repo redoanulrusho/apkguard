@@ -13,7 +13,18 @@ disable:
 severity_overrides:
   AG-MAN-005: low
 
-# Skip third-party code for code and secret rules (Java package names or smali prefixes).
+# Findings inside well-known third-party libraries (androidx, kotlin, com.google, okhttp3, ...):
+#   separate - keep them in reports, tagged as library findings, but never fail the build (default)
+#   include  - treat them like app code
+#   exclude  - drop them
+library_findings: separate
+
+# Extra packages to treat as third-party library code (added to the built-in list).
+library_packages:
+  - com.vendor.analytics
+
+# Skip classes entirely for code and secret rules (Java package names or smali prefixes).
+# Faster than library detection, but excluded code never appears in any report.
 exclude_packages:
   - com.google.android.gms
   - com.google.firebase

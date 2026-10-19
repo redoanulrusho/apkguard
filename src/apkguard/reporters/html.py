@@ -65,7 +65,7 @@ q.addEventListener('input',apply);apply();
 """
 
 
-def _finding_html(f: Finding) -> str:
+def _finding_html(f: Finding, dimmed: bool) -> str:
     meta = RULES_BY_ID[f.rule_id].meta if f.rule_id in RULES_BY_ID else None
     refs = ""
     if meta and meta.references:
@@ -81,11 +81,13 @@ def _finding_html(f: Finding) -> str:
         tags = " ".join(
             f'<span class="tag">{escape(t)}</span>' for t in (meta.cwe, meta.masvs) if t
         )
+    if f.library:
+        tags += f' <span class="tag">library: {escape(f.library)}</span>'
     supp = ""
     if f.suppressed:
         supp = f"<dt>Suppressed</dt><dd>{escape(f.suppression_reason or '')}</dd>"
     evidence = f"<dt>Evidence</dt><dd><code>{escape(f.evidence)}</code></dd>" if f.evidence else ""
-    return f"""<details class="f{" supp" if f.suppressed else ""}" data-sev="{f.severity.label}">
+    return f"""<details class="f{" supp" if dimmed else ""}" data-sev="{f.severity.label}">
 <summary><span class="sev" style="--c:var(--{f.severity.label})">{f.severity.label}</span>
 <span class="rid">{escape(f.rule_id)}</span><span class="title">{escape(f.title)}</span>{tags}
 <span class="loc"><code>{escape(str(f.location))}</code></span></summary>
@@ -100,7 +102,9 @@ def render_html(result: ScanResult) -> str:
         f'title="Click to hide/show"><div class="n">{n}</div><div class="l">{label}</div></div>'
         for label, n in counts.items()
     )
-    findings = "".join(_finding_html(f) for f in result.findings)
+    findings = "".join(
+        _finding_html(f, f.suppressed or result.is_separated(f)) for f in result.findings
+    )
     if not result.findings:
         findings = '<div class="empty">No findings - nice work.</div>'
     rules_rows = "".join(
@@ -121,7 +125,8 @@ def render_html(result: ScanResult) -> str:
         )
     generated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     suppressed = len(result.findings) - len(result.active_findings)
-    worst = max((f.severity for f in result.active_findings), default=None)
+    in_libraries = len(result.separated_findings)
+    worst = max((f.severity for f in result.gating_findings), default=None)
     verdict = f"Highest severity: {worst.label}" if worst is not None else "No active findings"
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
@@ -140,7 +145,7 @@ def render_html(result: ScanResult) -> str:
 </div>
 <div class="cards">{cards}</div>
 <h2>Findings <span class="muted">(<span id="shown">{len(result.findings)}</span> shown,
-{suppressed} suppressed)</span></h2>
+{suppressed} suppressed, {in_libraries} in third-party libraries)</span></h2>
 <div class="toolbar"><input id="q" type="search" placeholder="Filter by text, rule, class...">
 </div>
 {findings}

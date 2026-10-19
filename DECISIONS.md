@@ -133,4 +133,24 @@ can be reviewed and reversed.
 34. **Findings are de-duplicated by fingerprint** in the scanner (e.g. the same
     `addJavascriptInterface` call twice in one method). The merged finding carries
     `occurrences`. Fingerprints must be unique per scan for SARIF and baselines to work.
+35. **Library detection by package prefix, default `separate`.** Findings whose class (code
+    findings) or component (AG-MAN-004) is in a known library package get `Finding.library`.
+    Three modes: `separate` (default: kept in reports and SARIF, marked as suppressed there, but
+    left out of the summary and the exit code), `include`, `exclude`. *Why separate rather than
+    exclude by default:* the evaluation showed that package names can hide a real issue
+    (`androidx.test` code shipped in a release build), so nothing is silently discarded. *Why not
+    `include`:* a third of all findings were library noise. Precedence: CLI > config > default.
+36. **Whole-segment matching, longest prefix wins, the app's own package is never a library.**
+    `kotlin` must not match `kotlinapp`, and an app like `com.google.zxing.client.android` must
+    not have its own code hidden by the broad `com.google` entry. Permission findings are never
+    classified, even though `com.google.android.c2dm.permission.RECEIVE` looks like a package.
+37. **`library_packages` extends the built-in list instead of replacing it,** so a project that
+    adds one vendored SDK does not lose AndroidX/Kotlin detection. Five built-in entries were
+    added after seeing the evaluation; EVALUATION.md reports their effect separately (15 findings).
+38. **Separated library findings go into SARIF as `suppressions`** (justification "Third-party
+    library code (...)"), the same mechanism as config suppressions. GitHub code scanning then
+    keeps them out of the open alerts while the SARIF stays complete for auditing.
+39. **No obfuscation-aware library detection.** R8-renamed library classes (`La2;`) are not
+    recognised. Fingerprinting library code (LibScout/LibID style) would fix it but is a project of
+    its own. The evaluation quantifies the gap (253 remaining findings are in obfuscated classes).
 

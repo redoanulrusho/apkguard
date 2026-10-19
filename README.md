@@ -151,8 +151,11 @@ fail_on: high
 disable: [AG-PERM-001]
 severity_overrides:
   AG-MAN-005: low
-exclude_packages:            # skip third-party code in code/secret rules
-  - com.google.android.gms
+library_findings: separate   # separate | include | exclude (see below)
+library_packages:            # extra third-party packages, on top of the built-in list
+  - com.vendor.sdk
+exclude_packages:            # skip these classes entirely in code/secret rules
+  - com.example.generated
 rule_options:
   AG-CODE-002: { threshold: 12 }
 suppress:
@@ -164,6 +167,28 @@ suppress:
 Suppressed findings stay in the JSON, HTML and SARIF reports (SARIF `suppressions`) for
 auditability, but never fail the build. Unknown keys and rule IDs are rejected, so typos don't
 silently disable checks.
+
+### Third-party library findings
+
+Most apps bundle large libraries (AndroidX, Kotlin, Google Play services, OkHttp, ...). Rules
+fire inside them too, but you can't fix that code, so APKGuard recognises findings located in
+[well-known library packages](src/apkguard/libraries.py) and handles them according to
+`--library-findings` (or `library_findings:` in the config):
+
+| Mode | Behaviour |
+|---|---|
+| `separate` (default) | Library findings stay in the JSON/HTML/SARIF reports, tagged with the library (`"origin": "library"`), but are left out of the terminal table and summary, and never fail the build. SARIF marks them as suppressed. |
+| `include` | Library findings are treated exactly like findings in app code. |
+| `exclude` | Library findings are dropped from all output. |
+
+Add your own vendored SDKs with `--library-package com.vendor.sdk` or `library_packages:`. Code
+inside the app's own package is never treated as library code. In the
+[evaluation](EVALUATION.md#library-detection) this removed most AndroidX/Kotlin noise. It cannot
+recognise library code that R8 has renamed (`La2;`), so obfuscated apps still show some library
+findings.
+
+`exclude_packages` is different: it skips classes *before* analysis (faster, but they are
+invisible in every report). Use it only for code you never want to scan.
 
 ## CI usage
 

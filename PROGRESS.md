@@ -78,6 +78,14 @@ remote, nothing pushed).
 - Review found and fixed a real bug (`getBytes("UTF-8")` treated as a constant key, DECISIONS
   #33) and duplicate fingerprints (#34). Write-up: EVALUATION.md.
 
+### Step 2 - library detection
+- `src/apkguard/libraries.py`, `--library-findings separate|include|exclude` (default separate),
+  `--library-package`, config `library_findings` / `library_packages`. Reported in JSON
+  (`origin`, `library`, summary block), SARIF (suppressed), HTML (tag), terminal (one-line note).
+- Evaluation: 737 -> 492 findings (-33%), code findings -47%, high 19 -> 14, apps failing the
+  default gate 12 -> 10; both reviewed FPs leave the gate, one TP (`androidx.test`) is separated.
+- 19 new tests (199 total), coverage 97%.
+
 ## How to run
 
 ```powershell

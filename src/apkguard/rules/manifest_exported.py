@@ -75,6 +75,7 @@ class ExportedComponentRule(Rule):
                 evidence=_evidence(comp),
                 severity=_SEVERITY_BY_TAG.get(comp.tag, Severity.MEDIUM),
                 component_type=comp.tag,
+                component=comp.name,
             )
 
 

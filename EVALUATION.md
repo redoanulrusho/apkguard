@@ -33,7 +33,8 @@ python evaluation/run_evaluation.py    # writes evaluation/results/{findings.csv
 
 ## Findings per rule
 
-737 findings in total (median 12 per app, between 2 and 38). By severity: 19 high, 75 medium,
+737 findings in total (median 12 per app, between 2 and 38), counting library code too
+(`--library-findings include`; the default view is in [Library detection](#library-detection)). By severity: 19 high, 75 medium,
 550 low, 93 info, 0 critical.
 
 | Rule | What it checks | Findings | Apps |
@@ -134,7 +135,45 @@ How to read this:
 
 ## Library detection
 
-*(Added in step 2; see below.)*
+The review showed that library code is the biggest source of findings that are correct but not
+actionable. APKGuard now tags every finding whose class is in a
+[known library package](src/apkguard/libraries.py) (AndroidX, Kotlin, `com.google`, OkHttp,
+BouncyCastle, ...). By default (`--library-findings separate`) those findings stay in the
+reports but are kept out of the summary and the `--fail-on` gate. The evaluation runner uses
+`include` mode and records each finding's origin, so both views come from the same scan.
+
+| | All findings | App code only (default) | Change |
+|---|---:|---:|---:|
+| Findings | 737 | 492 | **−33%** |
+| Code findings (`classes*.dex`) | 507 | 271 | −47% |
+| AG-CODE-002 reflection | 467 | 250 | −46% |
+| High severity | 19 | 14 | −26% |
+| Medium severity | 75 | 65 | −13% |
+| Apps that fail the default gate (`--fail-on high`) | 12 | 10 | −2 apps |
+
+Most separated findings are AndroidX (195 of 245), followed by `com.google` (9), `kotlinx` (7),
+`com.sun` (JavaMail, 7), `kotlin` (6) and `okhttp3` (6). Manifest findings are only separated for
+components declared by a library (e.g. `androidx.media.session.MediaButtonReceiver`); permission,
+backup and SDK findings always belong to the app.
+
+**Effect on the reviewed sample.** 6 of the 23 reviewed findings are now separated: both false
+positives (Cordova's guarded `proceed()` and file-access settings), three correct but
+non-actionable findings (BouncyCastle, JavaMail's DES for NTLM, `androidx.tracing`), and **one
+true positive**: the `androidx.test` activity that Play Notepad accidentally ships. So the gate
+loses both FPs, and the true-positive share among the remaining reviewed findings rises from 35%
+to 41% (7 of 17). The lost TP is the price of trusting package names. That's why separated
+findings stay visible in JSON/HTML/SARIF instead of being dropped.
+
+**What it cannot do.** It matches package names, so it cannot recognise library code that R8 has
+renamed. 253 of the 492 remaining "app" findings are in classes with obfuscated names (every
+package and class name ≤ 3 characters, e.g. `La2;`, `Lq/f;`). Almost all of them are reflection
+findings, and most are probably renamed AndroidX code. That's why the median app only loses 8% of
+its findings: well-separated apps lose a lot, obfuscated apps lose little. Recognising renamed
+libraries would need code fingerprinting (as LibScout or LibID do), which is on the roadmap.
+
+**Honesty note.** Five entries in the default list (`com.sun`, `com.getcapacitor`, `org.xbill`,
+`io.flutter`, `com.facebook`) were added after looking at this evaluation. They account for 15
+of the 245 separated findings; without them the reduction is 31% instead of 33%.
 
 ## Limitations of this evaluation
 

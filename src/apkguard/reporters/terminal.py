@@ -37,7 +37,9 @@ def print_table(
     shown = [
         f
         for f in result.findings
-        if f.severity >= min_severity and (show_suppressed or not f.suppressed)
+        if f.severity >= min_severity
+        and (show_suppressed or not f.suppressed)
+        and not result.is_separated(f)
     ]
     if shown:
         table = Table(show_lines=False, header_style="bold", expand=False)
@@ -50,6 +52,8 @@ def print_table(
             sev = Text(f.severity.label.upper(), style=STYLES[f.severity])
             if f.suppressed:
                 sev.append(" (suppressed)", style="dim")
+            if f.library:
+                sev.append(f" [{f.library}]", style="dim")
             table.add_row(sev, f.rule_id, f.title, str(f.location), f.message)
         console.print(table)
     else:
@@ -64,5 +68,18 @@ def print_table(
     if suppressed:
         summary += f" [dim](+{suppressed} suppressed)[/dim]"
     console.print(f"Summary: {summary}  [dim]({result.duration_s:.2f}s)[/dim]")
+    _print_library_note(result, console)
     for err in result.errors:
         console.print(f"[red]Rule {err.rule_id} failed:[/red] {err.error}")
+
+
+def _print_library_note(result: ScanResult, console: Console) -> None:
+    by_library = result.library_counts()
+    if not by_library:
+        return
+    top = ", ".join(f"{lib} {n}" for lib, n in list(by_library.items())[:5])
+    console.print(
+        f"[dim]Not shown: {sum(by_library.values())} finding(s) in third-party libraries "
+        f"({top}). They do not affect the exit code; use --library-findings include to "
+        "list them.[/dim]"
+    )

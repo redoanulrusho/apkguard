@@ -12,6 +12,9 @@ Example::
     rule_options:
       AG-CODE-002:
         threshold: 12
+    library_findings: separate     # separate (default) | include | exclude
+    library_packages:
+      - com.example.vendored_sdk
     suppress:
       - rule: AG-MAN-004
         location: "com.example.DeepLinkActivity"
@@ -27,11 +30,12 @@ from typing import Any
 
 import yaml
 
+from apkguard.libraries import DEFAULT_LIBRARY_PACKAGES, LibraryMode
 from apkguard.model import Finding, Severity
 
 DEFAULT_CONFIG_NAMES = (".apkguard.yml", ".apkguard.yaml", "apkguard.yml")
 _KNOWN_KEYS = {"fail_on", "disable", "severity_overrides", "exclude_packages", "rule_options",
-               "suppress"}  # fmt: skip
+               "suppress", "library_findings", "library_packages"}  # fmt: skip
 
 
 class ConfigError(Exception):
@@ -66,6 +70,9 @@ class Config:
     exclude_packages: tuple[str, ...] = ()
     rule_options: dict[str, dict[str, Any]] = field(default_factory=dict)
     suppress: list[Suppression] = field(default_factory=list)
+    library_mode: LibraryMode = LibraryMode.SEPARATE
+    #: Dotted package prefixes treated as third-party library code.
+    library_packages: tuple[str, ...] = DEFAULT_LIBRARY_PACKAGES
     source: str | None = None
 
     def suppression_for(self, finding: Finding) -> Suppression | None:
@@ -82,6 +89,22 @@ def to_smali_prefix(package: str) -> str:
         return pkg if pkg.endswith(("/", ";")) else pkg + "/"
     pkg = pkg.rstrip(".*").replace(".", "/")
     return f"L{pkg}/"
+
+
+def parse_library_mode(value: Any, where: str = "library_findings") -> LibraryMode:
+    try:
+        return LibraryMode(str(value).strip().lower())
+    except ValueError as exc:
+        choices = ", ".join(m.value for m in LibraryMode)
+        raise ConfigError(f"{where}: expected one of {choices}, got {value!r}") from exc
+
+
+def to_java_package(package: str) -> str:
+    """``Lcom/foo/`` or ``com.foo.*`` -> ``com.foo``."""
+    pkg = package.strip()
+    if pkg.startswith("L") and "/" in pkg:
+        pkg = pkg[1:].replace("/", ".")
+    return pkg.rstrip(".*;")
 
 
 def find_config(start: Path | None = None) -> Path | None:
@@ -158,6 +181,13 @@ def parse_config(raw: Any, known_rules: set[str] | None = None) -> Config:
         raise ConfigError("rule_options must map rule ids to mappings of option -> value")
     config.rule_options = {check_rule(k, "rule_options"): dict(v) for k, v in options.items()}
     _validate_rule_options(config.rule_options)
+
+    if raw.get("library_findings") is not None:
+        config.library_mode = parse_library_mode(raw["library_findings"])
+    libraries = raw.get("library_packages") or []
+    if not isinstance(libraries, list) or not all(isinstance(e, str) for e in libraries):
+        raise ConfigError("library_packages must be a list of package names")
+    config.library_packages += tuple(to_java_package(e) for e in libraries)
 
     suppress = raw.get("suppress") or []
     if not isinstance(suppress, list):
