@@ -17,6 +17,14 @@ inputs:
     description: "Path to an .apkguard.yml configuration file. Defaults to ./.apkguard.yml if it exists."
     required: false
     default: ""
+  baseline:
+    description: "Optional baseline file (created with `apkguard scan app.apk --write-baseline FILE`). Only findings that are not in it fail the step."
+    required: false
+    default: ""
+  library-findings:
+    description: "Findings in third-party libraries: separate (reported, never fail the step), include, or exclude. Defaults to the config file value, or separate."
+    required: false
+    default: ""
   sarif-file:
     description: "Where to write the SARIF report."
     required: false
@@ -68,12 +76,16 @@ runs:
         APK: ${{ inputs.apk }}
         FAIL_ON: ${{ inputs.fail-on }}
         CONFIG: ${{ inputs.config }}
+        BASELINE: ${{ inputs.baseline }}
+        LIBRARY_FINDINGS: ${{ inputs.library-findings }}
         SARIF: ${{ inputs.sarif-file }}
         HTML: ${{ inputs.html-file }}
         JSON: ${{ inputs.json-file }}
       run: |
         args=(scan "$APK" --fail-on "$FAIL_ON" --sarif "$SARIF")
         [ -n "$CONFIG" ] && args+=(--config "$CONFIG")
+        [ -n "$BASELINE" ] && args+=(--baseline "$BASELINE")
+        [ -n "$LIBRARY_FINDINGS" ] && args+=(--library-findings "$LIBRARY_FINDINGS")
         [ -n "$HTML" ] && args+=(--html "$HTML")
         [ -n "$JSON" ] && args+=(--json "$JSON")
         set +e
@@ -97,5 +109,5 @@ runs:
       env:
         FAIL_ON: ${{ inputs.fail-on }}
       run: |
-        echo "::error title=APKGuard::Findings at or above severity '$FAIL_ON' were detected."
+        echo "::error title=APKGuard::New findings at or above severity '$FAIL_ON' were detected."
         exit 1

@@ -27,6 +27,9 @@ jobs:
         with:
           apk: app/build/outputs/apk/release/app-release-unsigned.apk
           fail-on: high
+          # Optional: only fail on findings that are not in the committed baseline.
+          # Create it once with: apkguard scan app-release.apk --write-baseline apkguard-baseline.json
+          baseline: apkguard-baseline.json
           html-file: apkguard-report.html
       - name: Keep the HTML report
         if: always()

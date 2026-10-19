@@ -24,7 +24,14 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8", "pytest-cov>=5", "ruff>=0.6", "mypy>=1.10", "types-PyYAML", "jsonschema>=4"]
+dev = [
+    "pytest>=8",
+    "pytest-cov>=5",
+    "ruff>=0.6",
+    "mypy>=1.10",
+    "types-PyYAML",
+    "jsonschema>=4",
+]
 
 [project.scripts]
 apkguard = "apkguard.cli:main"
@@ -55,7 +62,7 @@ ignore_missing_imports = true
 
 [tool.ruff.lint.isort]
 known-first-party = ["apkguard"]
-known-local-folder = ["helpers"]
+known-local-folder = ["helpers", "run_evaluation"]
 
 [tool.ruff.lint.per-file-ignores]
 # Smali signatures and inline XML in tests are long by nature.

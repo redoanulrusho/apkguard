@@ -107,6 +107,8 @@ def _result(
     }
     if finding.rule_id in rule_index:
         result["ruleIndex"] = rule_index[finding.rule_id]
+    if finding.baseline_state is not None:
+        result["baselineState"] = finding.baseline_state  # SARIF's own "new" / "unchanged"
     if finding.suppressed:
         result["suppressions"] = [
             {"kind": "external", "justification": finding.suppression_reason or ""}

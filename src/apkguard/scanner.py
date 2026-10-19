@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from apkguard import __version__
+from apkguard.baseline import UNCHANGED, Baseline, BaselineComparison, apply_baseline
 from apkguard.config import Config
 from apkguard.context import ApkContext
 from apkguard.libraries import LibraryMode, tag_library_findings
@@ -33,6 +34,8 @@ class ScanResult:
     duration_s: float
     errors: list[RuleError] = field(default_factory=list)
     library_mode: LibraryMode = LibraryMode.SEPARATE
+    #: Set by :meth:`compare_with_baseline` when the scan runs with ``--baseline``.
+    baseline: BaselineComparison | None = None
     tool_version: str = __version__
 
     @property
@@ -46,8 +49,16 @@ class ScanResult:
 
     @property
     def gating_findings(self) -> list[Finding]:
-        """Findings that count for the summary and the ``--fail-on`` threshold."""
-        return [f for f in self.active_findings if not self.is_separated(f)]
+        """Findings that count for the summary and the ``--fail-on`` threshold.
+
+        That is every finding that is not suppressed, not separated library code and not
+        already accepted in the baseline.
+        """
+        return [
+            f
+            for f in self.active_findings
+            if not self.is_separated(f) and f.baseline_state != UNCHANGED
+        ]
 
     @property
     def separated_findings(self) -> list[Finding]:
@@ -67,6 +78,11 @@ class ScanResult:
             assert f.library is not None
             counts[f.library] = counts.get(f.library, 0) + 1
         return dict(sorted(counts.items(), key=lambda item: (-item[1], item[0])))
+
+    def compare_with_baseline(self, baseline: Baseline) -> BaselineComparison:
+        """Mark active findings as new/unchanged; suppressed ones are never in a baseline."""
+        self.baseline = apply_baseline(self.active_findings, baseline)
+        return self.baseline
 
     def exceeds(self, threshold: Severity | None) -> bool:
         if threshold is None:

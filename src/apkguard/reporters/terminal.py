@@ -6,6 +6,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.text import Text
 
+from apkguard.baseline import UNCHANGED
 from apkguard.model import Severity
 from apkguard.scanner import ScanResult
 
@@ -40,6 +41,7 @@ def print_table(
         if f.severity >= min_severity
         and (show_suppressed or not f.suppressed)
         and not result.is_separated(f)
+        and f.baseline_state != UNCHANGED
     ]
     if shown:
         table = Table(show_lines=False, header_style="bold", expand=False)
@@ -69,6 +71,7 @@ def print_table(
         summary += f" [dim](+{suppressed} suppressed)[/dim]"
     console.print(f"Summary: {summary}  [dim]({result.duration_s:.2f}s)[/dim]")
     _print_library_note(result, console)
+    _print_baseline_note(result, console)
     for err in result.errors:
         console.print(f"[red]Rule {err.rule_id} failed:[/red] {err.error}")
 
@@ -82,4 +85,14 @@ def _print_library_note(result: ScanResult, console: Console) -> None:
         f"[dim]Not shown: {sum(by_library.values())} finding(s) in third-party libraries "
         f"({top}). They do not affect the exit code; use --library-findings include to "
         "list them.[/dim]"
+    )
+
+
+def _print_baseline_note(result: ScanResult, console: Console) -> None:
+    comparison = result.baseline
+    if comparison is None:
+        return
+    console.print(
+        f"Baseline: [bold]{comparison.new} new[/bold], {comparison.unchanged} unchanged "
+        f"(not shown, do not affect the exit code), {comparison.absent} no longer present."
     )

@@ -5,7 +5,8 @@ Usage::
     python evaluation/fetch_apks.py            # download into evaluation/apks/
     python evaluation/fetch_apks.py --dest DIR
 
-The list of apps (package, version code, SHA-256) is pinned in ``evaluation/apks.json``. Only
+The list of apps (package, version code, SHA-256) is pinned in ``evaluation/apks.json``: the 50
+current versions plus the previous version of 42 of them (for the baseline evaluation). Only
 ``https://f-droid.org/repo/`` is ever contacted, and a file whose SHA-256 does not match the
 pinned value is deleted, so the evaluation always runs on exactly the same bytes.
 Standard library only, so it runs before APKGuard is installed.
@@ -69,7 +70,8 @@ def main() -> int:
     parser.add_argument("--dest", type=Path, default=HERE / "apks", help="download directory")
     args = parser.parse_args()
     args.dest.mkdir(parents=True, exist_ok=True)
-    entries = json.loads(MANIFEST.read_text(encoding="utf-8"))["apks"]
+    pinned = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    entries = pinned["apks"] + pinned.get("previous_versions", [])
     failures = sum(not fetch(entry, args.dest) for entry in entries)
     print(f"{len(entries) - failures}/{len(entries)} APKs present and verified in {args.dest}")
     return 1 if failures else 0

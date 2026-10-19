@@ -553,5 +553,386 @@
       "license": "Apache-2.0",
       "category": "Download"
     }
+  ],
+  "previous_versions_note": "For the baseline evaluation: the next-older version of each app still in the F-Droid repository on 2026-10-20 (42 of the 50 apps have one).",
+  "previous_versions": [
+    {
+      "package": "app.zornslemma.mypricelog",
+      "version_code": 7,
+      "version_name": "0.3.3",
+      "file": "app.zornslemma.mypricelog_7.apk",
+      "sha256": "5918bd0a7017971b0171d8496937709faf8c8b6d059fc73f0bf94b74f97d0291",
+      "size": 4581215,
+      "current_version_code": 8
+    },
+    {
+      "package": "cc.polysfaer.stochapop",
+      "version_code": 7,
+      "version_name": "1.3.0",
+      "file": "cc.polysfaer.stochapop_7.apk",
+      "sha256": "179694bcfb20b7da925c54067342d8c8f493783743c5dba2eff42f97e88e6dfe",
+      "size": 2889405,
+      "current_version_code": 8
+    },
+    {
+      "package": "com.bartixxx.opflashcontrol",
+      "version_code": 49,
+      "version_name": "1.6.1",
+      "file": "com.bartixxx.opflashcontrol_49.apk",
+      "sha256": "38cab387db7656e8b46c30464f31d00ae56fbe306d88cf3243462b11db9d093a",
+      "size": 5471412,
+      "current_version_code": 50
+    },
+    {
+      "package": "com.cg.lrceditor",
+      "version_code": 56,
+      "version_name": "3.2.6",
+      "file": "com.cg.lrceditor_56.apk",
+      "sha256": "558ccae28678e565852e312ea88f4ed98558bfba14a773202d9c8154656e7da6",
+      "size": 1407691,
+      "current_version_code": 57
+    },
+    {
+      "package": "com.eblan.launcher",
+      "version_code": 104,
+      "version_name": "1.0.4-alpha",
+      "file": "com.eblan.launcher_104.apk",
+      "sha256": "14d0e27e088c289a1d93850e42b8018b55e526a2074eb5c3cf87f65a01c5502a",
+      "size": 2883766,
+      "current_version_code": 105
+    },
+    {
+      "package": "com.exner.tools.immichuploader",
+      "version_code": 23,
+      "version_name": "3.0.1",
+      "file": "com.exner.tools.immichuploader_23.apk",
+      "sha256": "601b9189437902f1e71064471bc66e098f5671c5277d606e5c37b5eda857e911",
+      "size": 4709316,
+      "current_version_code": 24
+    },
+    {
+      "package": "com.kbul.spicycrab",
+      "version_code": 16,
+      "version_name": "0.8.0",
+      "file": "com.kbul.spicycrab_16.apk",
+      "sha256": "ca66d5273846d9e9cbedc74986601421ca6f6213951efb4abbf9e0cb89d3128d",
+      "size": 3257492,
+      "current_version_code": 17
+    },
+    {
+      "package": "com.lenshrv.foss",
+      "version_code": 2,
+      "version_name": "1.0.1",
+      "file": "com.lenshrv.foss_2.apk",
+      "sha256": "4407bf95b38f911ef696e6429259af836175dc837f03681d49bbc7ef98db47c5",
+      "size": 2404178,
+      "current_version_code": 3
+    },
+    {
+      "package": "com.looker.droidify",
+      "version_code": 770,
+      "version_name": "0.7.7",
+      "file": "com.looker.droidify_770.apk",
+      "sha256": "da3070f3f18bdbed1eab666677afd39e4b19a60c70f0bfca68a5730147f81f10",
+      "size": 6132710,
+      "current_version_code": 780
+    },
+    {
+      "package": "com.lukeneedham.videodiary",
+      "version_code": 8,
+      "version_name": "1.0.7",
+      "file": "com.lukeneedham.videodiary_8.apk",
+      "sha256": "5a258d405af95ef06d47e1720b4dcae12b49c01bcd5aabc3bee343b7cb9255fd",
+      "size": 3447430,
+      "current_version_code": 9
+    },
+    {
+      "package": "com.mde.potdroid",
+      "version_code": 93,
+      "version_name": "5.5.5",
+      "file": "com.mde.potdroid_93.apk",
+      "sha256": "34dec78e1ee754bf933668522f2f29d41ac28d2b1826bbe887a51c5aa4a94559",
+      "size": 4197408,
+      "current_version_code": 94
+    },
+    {
+      "package": "com.mostafa.brickblast",
+      "version_code": 9,
+      "version_name": "1.5.1",
+      "file": "com.mostafa.brickblast_9.apk",
+      "sha256": "94d7805c3786da39b3c04578b48debf465c72649f3bbbe4f0408818dc5443c99",
+      "size": 2811802,
+      "current_version_code": 10
+    },
+    {
+      "package": "com.mshdabiola.playnotepad.foss",
+      "version_code": 136,
+      "version_name": "1.3.6",
+      "file": "com.mshdabiola.playnotepad.foss_136.apk",
+      "sha256": "c4ac9fff7f0849ae917d7764c1ec7ec6cabbd3661b2bce7121ec9a17694030d0",
+      "size": 3811927,
+      "current_version_code": 137
+    },
+    {
+      "package": "com.nicue.onetwo",
+      "version_code": 41,
+      "version_name": "2.1.4",
+      "file": "com.nicue.onetwo_41.apk",
+      "sha256": "1880f773a85d501fcc80d74f1a3cde3d29e7a428cbfd5b09a2352be5fe44be13",
+      "size": 3773595,
+      "current_version_code": 42
+    },
+    {
+      "package": "com.nvllz.piggsy",
+      "version_code": 6,
+      "version_name": "1.12",
+      "file": "com.nvllz.piggsy_6.apk",
+      "sha256": "b3704f0a48fa792688d4b707af8156baaa29eb15f6abe50a2e0b5727e1f0250b",
+      "size": 2657049,
+      "current_version_code": 7
+    },
+    {
+      "package": "com.rechnen.app",
+      "version_code": 21,
+      "version_name": "3.0",
+      "file": "com.rechnen.app_21.apk",
+      "sha256": "cb8824d015a9dc2070c3db314cec641c099cd71eabe807353b5ae2dbdb8de054",
+      "size": 4298464,
+      "current_version_code": 22
+    },
+    {
+      "package": "com.reteclock",
+      "version_code": 88,
+      "version_name": "0.55.0",
+      "file": "com.reteclock_88.apk",
+      "sha256": "b104fcf422a63ba2f39f59e813b679f5e3af43db2d737de42899de968c22e3f4",
+      "size": 690690,
+      "current_version_code": 90
+    },
+    {
+      "package": "com.siarheikuchuk.ftpsserver",
+      "version_code": 20260936,
+      "version_name": "2026.09.36",
+      "file": "com.siarheikuchuk.ftpsserver_20260936.apk",
+      "sha256": "24d8b55e0ca75d2e4cde06c0ee7ed37c8b87c53604b975dd8991f7c25f2037f2",
+      "size": 5120826,
+      "current_version_code": 20261008
+    },
+    {
+      "package": "com.studio4plus.homerplayer2",
+      "version_code": 47,
+      "version_name": "1.5.12",
+      "file": "com.studio4plus.homerplayer2_47.apk",
+      "sha256": "fafdb94bbe25f4061935c1a14eab05ac0081320c3457937e7338f45cdbeb58c0",
+      "size": 4446925,
+      "current_version_code": 48
+    },
+    {
+      "package": "cz.kutner.why",
+      "version_code": 10001,
+      "version_name": "1.0.1",
+      "file": "cz.kutner.why_10001.apk",
+      "sha256": "6a563456c414532a9feadea96cd79ffde6143a62fbee801fd04380bf10ed7ac2",
+      "size": 3489763,
+      "current_version_code": 10002
+    },
+    {
+      "package": "de.kromke.andreas.opus1musicplayer",
+      "version_code": 76,
+      "version_name": "2.65",
+      "file": "de.kromke.andreas.opus1musicplayer_76.apk",
+      "sha256": "08ad76230189e2e39cbdf6c6aa8b0acddf2fc2924024f6c816803d76449e2269",
+      "size": 2831100,
+      "current_version_code": 77
+    },
+    {
+      "package": "de.luhmer.owncloudnewsreader",
+      "version_code": 196,
+      "version_name": "0.9.9.95",
+      "file": "de.luhmer.owncloudnewsreader_196.apk",
+      "sha256": "529f25f74afb4e83d956dd72355c5788c3e18aac55f46ab0f2c81d10f0361c17",
+      "size": 4081103,
+      "current_version_code": 197
+    },
+    {
+      "package": "de.moooon.acrylicons",
+      "version_code": 20,
+      "version_name": "20.0",
+      "file": "de.moooon.acrylicons_20.apk",
+      "sha256": "c0ca2f7f6378e8c58474057adeb9679a34ccafd14ec3a5250c83c9842ff42cd7",
+      "size": 4162723,
+      "current_version_code": 21
+    },
+    {
+      "package": "de.pritcloud.appstow",
+      "version_code": 14,
+      "version_name": "3.0.1",
+      "file": "de.pritcloud.appstow_14.apk",
+      "sha256": "38076a4154203479b1551dca346e6f207c41c6bd618bed063b40c2826d3ac534",
+      "size": 2939458,
+      "current_version_code": 16
+    },
+    {
+      "package": "de.readeckapp",
+      "version_code": 1100,
+      "version_name": "0.11.0",
+      "file": "de.readeckapp_1100.apk",
+      "sha256": "474e038efd512ad3eca24dec6be3d593a9786e9e71eafbbd21de6d3ac68d8939",
+      "size": 3838619,
+      "current_version_code": 1200
+    },
+    {
+      "package": "dev.alexjyong.babbypaint",
+      "version_code": 8,
+      "version_name": "0.1.1",
+      "file": "dev.alexjyong.babbypaint_8.apk",
+      "sha256": "b8101459ed620d0d676e6b0563b90762873a0b5c66269a5109c20f909f92053d",
+      "size": 4200307,
+      "current_version_code": 9
+    },
+    {
+      "package": "dev.co508.soundboard",
+      "version_code": 1002,
+      "version_name": "0.1.2",
+      "file": "dev.co508.soundboard_1002.apk",
+      "sha256": "4d54eed6c63b8e02b9abd4b8d9d9587b7e8325aa08de831c8a23529c0cd09954",
+      "size": 2209801,
+      "current_version_code": 1003
+    },
+    {
+      "package": "dev.norsehorse.vaultpony",
+      "version_code": 6,
+      "version_name": "1.0.5",
+      "file": "dev.norsehorse.vaultpony_6.apk",
+      "sha256": "82848a27659f366649cf346854a69a3f65b53d8d362f9e2fe59483eb53a9a341",
+      "size": 5385019,
+      "current_version_code": 7
+    },
+    {
+      "package": "dev.tn3w.shelf",
+      "version_code": 10,
+      "version_name": "1.2.0",
+      "file": "dev.tn3w.shelf_10.apk",
+      "sha256": "fa4d947279b82253e3124f21e70fa2a07c7e9f0977fdbb2ae1e701f28caae417",
+      "size": 3002073,
+      "current_version_code": 13
+    },
+    {
+      "package": "dnsfilter.android",
+      "version_code": 1506008,
+      "version_name": "1.50.60.8",
+      "file": "dnsfilter.android_1506008.apk",
+      "sha256": "f0971ae301e11495f9ed3870d5fd6cb9fbc862e0d33ab21fc59ddd8d511e6e21",
+      "size": 637281,
+      "current_version_code": 1506103
+    },
+    {
+      "package": "dubrowgn.wattz",
+      "version_code": 19,
+      "version_name": "1.19",
+      "file": "dubrowgn.wattz_19.apk",
+      "sha256": "1e2433f7618aa7710cde043e333b7801117ecaac6df0f8af0edf86e246299cbf",
+      "size": 696447,
+      "current_version_code": 20
+    },
+    {
+      "package": "duress.ultimate",
+      "version_code": 21,
+      "version_name": "21.0",
+      "file": "duress.ultimate_21.apk",
+      "sha256": "529ce10b1c05ea3df235f3ec04d7bf5c9553ff8e24ef86403acdd1983f96041e",
+      "size": 345408,
+      "current_version_code": 22
+    },
+    {
+      "package": "es.pile",
+      "version_code": 10,
+      "version_name": "1.1.3",
+      "file": "es.pile_10.apk",
+      "sha256": "738727446ec3a3961844f2a8ffee124d48c2442bf54d64f3421c230284a827e7",
+      "size": 4755725,
+      "current_version_code": 19
+    },
+    {
+      "package": "evil.spin",
+      "version_code": 102,
+      "version_name": "1.0.2",
+      "file": "evil.spin_102.apk",
+      "sha256": "afd354b88bf6f69906ee572c5708c8aec96560395f45c96cffa3b0b5bf7b7ab8",
+      "size": 5201717,
+      "current_version_code": 103
+    },
+    {
+      "package": "info.varden.hauk",
+      "version_code": 14,
+      "version_name": "1.6.2",
+      "file": "info.varden.hauk_14.apk",
+      "sha256": "0965ffda20c419c69b081d4848abdd7502a1e3801a2e30124e0369dd2051478e",
+      "size": 3485562,
+      "current_version_code": 15
+    },
+    {
+      "package": "me.lecaro.breakout",
+      "version_code": 29826425,
+      "version_name": "29826425",
+      "file": "me.lecaro.breakout_29826425.apk",
+      "sha256": "cea85b917cf53eaf851f697a471b3bdf0ba19d63cd71458ec0b7797ed148ae09",
+      "size": 553155,
+      "current_version_code": 29856652
+    },
+    {
+      "package": "opencontacts.open.com.opencontacts",
+      "version_code": 31,
+      "version_name": "31.0",
+      "file": "opencontacts.open.com.opencontacts_31.apk",
+      "sha256": "e18a2ac8c241b0007faa5551be991f072dadce48229979c1ddee5dee28e23217",
+      "size": 4500060,
+      "current_version_code": 32
+    },
+    {
+      "package": "org.dystopia.email",
+      "version_code": 120,
+      "version_name": "1.5.3",
+      "file": "org.dystopia.email_120.apk",
+      "sha256": "53d427627d2cf247d9fa15c2f53233dcf8424299b6091e8501d60d5aa1b4faf7",
+      "size": 2857944,
+      "current_version_code": 121
+    },
+    {
+      "package": "org.ostrya.presencepublisher",
+      "version_code": 58,
+      "version_name": "2.6.6",
+      "file": "org.ostrya.presencepublisher_58.apk",
+      "sha256": "2048626c1f55932e9d4a06317340d24e57c386cc7ecb93e4a29b6ed925e5459c",
+      "size": 3546726,
+      "current_version_code": 59
+    },
+    {
+      "package": "org.woheller69.browser",
+      "version_code": 3400,
+      "version_name": "3.4",
+      "file": "org.woheller69.browser_3400.apk",
+      "sha256": "47b148b1bee50fae83fafc471f7dd4475f75fdaf1d984336cd32e6827d0edbf3",
+      "size": 5416612,
+      "current_version_code": 3500
+    },
+    {
+      "package": "page.codeberg.lanticy.guandan",
+      "version_code": 6,
+      "version_name": "1.2.1",
+      "file": "page.codeberg.lanticy.guandan_6.apk",
+      "sha256": "293d90559c7395747ede81d64818ba7cb965a34c484e3933beca10a8b61697b5",
+      "size": 11312632,
+      "current_version_code": 7
+    },
+    {
+      "package": "threads.server",
+      "version_code": 360,
+      "version_name": "3.6.0",
+      "file": "threads.server_360.apk",
+      "sha256": "66f9b155764e369b93ea2f704987471f67898290c28d558b70f1b29f9712553a",
+      "size": 4373721,
+      "current_version_code": 400
+    }
   ]
 }

@@ -86,6 +86,13 @@ remote, nothing pushed).
   default gate 12 -> 10; both reviewed FPs leave the gate, one TP (`androidx.test`) is separated.
 - 19 new tests (199 total), coverage 97%.
 
+### Step 3 - baseline mode
+- `src/apkguard/baseline.py`; `--write-baseline FILE` (exit 0) and `--baseline FILE` (only new
+  findings gate). JSON/SARIF/HTML/terminal show new vs unchanged and count fixed entries.
+- Fingerprints hardened (DEX number ignored, no call count in reflection evidence).
+- Action inputs `baseline` and `library-findings`; the scan step was executed locally in bash for
+  all cases; CI runs the action against a generated baseline. 17 new tests.
+
 ## How to run
 
 ```powershell

@@ -101,7 +101,8 @@ class ReflectionRule(Rule):
                     f"{cls.name} makes {total} reflective calls ({dynamic} with non-constant "
                     f"names) using {', '.join(sorted(apis))}.",
                     class_location(cls),
-                    evidence=f"{total} reflective calls",
+                    # No count-based evidence: it feeds the fingerprint, and one extra call
+                    # must not turn an accepted (baselined) finding into a "new" one.
                     reflective_calls=total,
                     dynamic_names=dynamic,
                 )

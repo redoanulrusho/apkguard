@@ -153,4 +153,22 @@ can be reviewed and reversed.
 39. **No obfuscation-aware library detection.** R8-renamed library classes (`La2;`) are not
     recognised. Fingerprinting library code (LibScout/LibID style) would fix it but is a project of
     its own. The evaluation quantifies the gap (253 remaining findings are in obfuscated classes).
+40. **Baselines are matched by fingerprint only, and the file is reviewable.** `--write-baseline`
+    stores fingerprint + rule + severity + location per finding, sorted, LF line endings, so
+    regenerating an unchanged baseline is a no-op diff and reviewers can see what was accepted.
+    `--write-baseline` always exits 0 (creating a baseline *is* accepting the current state).
+    Suppressed findings are not written, since the config already accepts them.
+41. **Fingerprints were made more stable before the first release** (nothing published yet, so
+    no compatibility break): the DEX file number is ignored (`classes2.dex` == `classes.dex`),
+    because classes move between DEX files as an app grows, and the reflection rule no longer
+    puts the call count in its evidence. Message wording and severity were already excluded.
+    Manifest findings have the same fingerprint in every app (e.g. `allowBackup`), which is
+    fine because a baseline belongs to one app. The CLI warns on a package mismatch.
+42. **Unchanged findings stay in every report** (`baseline_state` in JSON, SARIF's native
+    `baselineState`, a tag in HTML) and are only hidden from the terminal table and the gate.
+    GitHub code scanning already tracks alert state across runs, so SARIF does not suppress them.
+43. **The action takes `baseline` and `library-findings` inputs** through `env:` like every other
+    input (no `${{ }}` in scripts). The scan step was executed in Git Bash for no baseline, a
+    valid baseline, a missing baseline and an invalid library mode. CI exercises the action
+    with a generated baseline.
 

@@ -28,6 +28,11 @@ def test_action_definition() -> None:
     scan = next(s for s in steps if s.get("id") == "scan")
     # Untrusted inputs must reach the shell via env, never be interpolated into the script.
     assert "${{" not in scan["run"]
+    # Every optional input reaches the CLI through an environment variable.
+    for name, env in (("baseline", "BASELINE"), ("library-findings", "LIBRARY_FINDINGS")):
+        assert action["inputs"][name]["default"] == ""
+        assert scan["env"][env] == f"${{{{ inputs.{name} }}}}"
+        assert f'"${env}"' in scan["run"]
     uses = [s["uses"] for s in steps if "uses" in s]
     assert any(u.startswith("github/codeql-action/upload-sarif@") for u in uses)
 

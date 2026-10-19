@@ -77,6 +77,22 @@ jobs:
           test "${{ steps.apkguard.outputs.exit-code }}" = "0"
           test -s apkguard.sarif
           test -s apkguard-report.html
+      - name: Create a baseline (apkguard is on PATH after the action ran)
+        run: >
+          apkguard scan tests/fixtures/apks/org.billthefarmer.notes_141.apk -q
+          --write-baseline apkguard-baseline.json
+      - name: Run APKGuard action against the baseline
+        id: with-baseline
+        uses: ./
+        with:
+          # Notes has a HIGH cleartext finding, so this would fail without the baseline.
+          apk: tests/fixtures/apks/org.billthefarmer.notes_141.apk
+          fail-on: low
+          baseline: apkguard-baseline.json
+          sarif-file: apkguard-baseline-run.sarif
+          upload-sarif: "false"
+      - name: Check the baseline run passed
+        run: test "${{ steps.with-baseline.outputs.exit-code }}" = "0"
       - uses: actions/upload-artifact@v4
         with:
           name: apkguard-reports

@@ -3,8 +3,12 @@
 from __future__ import annotations
 
 import hashlib
+import re
 from dataclasses import dataclass, field
 from enum import IntEnum
+
+# classes.dex, classes2.dex, ...: which DEX file holds a class is a build detail.
+_DEX_FILE = re.compile(r"classes\d*\.dex")
 
 
 class Severity(IntEnum):
@@ -78,15 +82,23 @@ class Finding:
     evidence: str | None = None
     suppressed: bool = False
     suppression_reason: str | None = None
+    #: "new" or "unchanged" when the scan is compared with a baseline (``--baseline``).
+    baseline_state: str | None = None
     #: Package of the third-party library the finding is in (e.g. ``androidx``), None for app code.
     library: str | None = None
     extra: dict[str, object] = field(default_factory=dict)
 
     @property
     def fingerprint(self) -> str:
-        """Stable identifier used to de-duplicate findings across runs (SARIF, baselines)."""
+        """Stable identifier used to de-duplicate findings across runs (SARIF, baselines).
+
+        It deliberately ignores the message and severity (wording and severity overrides may
+        change) and the number of the DEX file (classes move between ``classes.dex`` and
+        ``classes2.dex`` as an app grows).
+        """
         loc = self.location
-        raw = f"{self.rule_id}|{loc.file}|{loc.symbol or ''}|{self.evidence or ''}"
+        file = "classes.dex" if _DEX_FILE.fullmatch(loc.file) else loc.file
+        raw = f"{self.rule_id}|{file}|{loc.symbol or ''}|{self.evidence or ''}"
         return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:32]
 
     def to_dict(self) -> dict[str, object]:
@@ -106,6 +118,8 @@ class Finding:
         }
         if self.suppression_reason:
             data["suppression_reason"] = self.suppression_reason
+        if self.baseline_state is not None:
+            data["baseline_state"] = self.baseline_state
         if "occurrences" in self.extra:
             data["occurrences"] = self.extra["occurrences"]
         return data

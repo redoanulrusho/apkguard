@@ -13,6 +13,7 @@ from rich.console import Console
 from rich.table import Table
 
 from apkguard import __version__
+from apkguard.baseline import Baseline, BaselineError, load_baseline, write_baseline
 from apkguard.config import (
     Config,
     ConfigError,
@@ -69,6 +70,17 @@ def _build_parser() -> argparse.ArgumentParser:
         default=None,
         help="exit with code 1 if any unsuppressed finding has at least this severity "
         f"(default: config value or '{DEFAULT_FAIL_ON.label}'; 'none' never fails)",
+    )
+    scan.add_argument(
+        "--baseline",
+        metavar="FILE",
+        help="only fail on findings that are not in this baseline file; existing ones are "
+        "reported as 'unchanged' and hidden from the table",
+    )
+    scan.add_argument(
+        "--write-baseline",
+        metavar="FILE",
+        help="write all current unsuppressed findings to a baseline FILE and exit 0",
     )
     scan.add_argument(
         "-c",
@@ -193,11 +205,27 @@ def _scan(args: argparse.Namespace) -> int:
     else:
         threshold = DEFAULT_FAIL_ON
 
+    baseline: Baseline | None = None
+    if args.baseline:
+        try:
+            baseline = load_baseline(args.baseline)  # before scanning, to fail fast
+        except BaselineError as exc:
+            err.print(f"[red]Baseline error:[/red] {exc}")
+            return EXIT_USAGE
+
     try:
         result = scan_apk(args.apk, config)
     except ApkLoadError as exc:
         err.print(f"[red]Error:[/red] {exc}")
         return EXIT_SCAN_ERROR
+
+    if baseline is not None:
+        if baseline.package and baseline.package != result.package:
+            err.print(
+                f"[yellow]Warning:[/yellow] baseline was created for {baseline.package}, "
+                f"but the APK is {result.package}."
+            )
+        result.compare_with_baseline(baseline)
 
     min_sev = Severity.parse(args.min_severity)
     if args.format == "table":
@@ -224,6 +252,13 @@ def _scan(args: argparse.Namespace) -> int:
         if path:
             _write(path, FILE_RENDERERS[fmt](result))
             err.print(f"[dim]Wrote {fmt.upper()} report to {path}[/dim]")
+
+    if args.write_baseline:
+        count = write_baseline(
+            args.write_baseline, result.active_findings, result.package, result.tool_version
+        )
+        err.print(f"Wrote baseline with {count} finding(s) to {args.write_baseline}")
+        return EXIT_OK  # creating a baseline accepts the current state
 
     if result.exceeds(threshold):
         assert threshold is not None

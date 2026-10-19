@@ -215,8 +215,35 @@ jobs:
 The action installs APKGuard, writes a SARIF report, uploads it to **GitHub code scanning**
 (findings show up in the *Security* tab and as PR annotations), and *then* fails the job if the
 threshold is exceeded, so results are visible even on failing builds. Inputs: `apk`, `fail-on`,
-`config`, `sarif-file`, `html-file`, `json-file`, `upload-sarif`, `python-version`. Output:
-`exit-code`. A full workflow is in [`examples/github-workflow.yml`](examples/github-workflow.yml).
+`config`, `baseline`, `library-findings`, `sarif-file`, `html-file`, `json-file`, `upload-sarif`,
+`python-version`. Output: `exit-code`. A full workflow is in
+[`examples/github-workflow.yml`](examples/github-workflow.yml).
+
+### Baselines: fail only on new findings
+
+Turning on a scanner in an existing project usually means dozens of findings on day one. A
+baseline records them as accepted, so CI only fails when a change introduces something *new*:
+
+```bash
+# once: accept the current state (always exits 0) and commit the file
+apkguard scan app-release.apk --write-baseline apkguard-baseline.json
+git add apkguard-baseline.json
+
+# in CI: findings in the baseline are "unchanged" and never fail the build
+apkguard scan app-release.apk --baseline apkguard-baseline.json --fail-on medium
+```
+
+With the GitHub Action, pass `baseline: apkguard-baseline.json`. Unchanged findings are hidden
+from the table, marked `"baseline_state": "unchanged"` in JSON, and get SARIF's own
+`baselineState`. The summary also counts baseline entries that are gone (fixed). Findings are
+matched by their fingerprint (rule + location + evidence, ignoring message wording, severity and
+which `classesN.dex` a class is in). The baseline file lists rule, severity and location next to
+each fingerprint, so it can be reviewed in a pull request. Regenerate it when you deliberately
+accept new findings.
+
+Limitation: in apps obfuscated with R8, class names can change between builds, and findings in
+renamed classes then show up as new. The [evaluation](EVALUATION.md#baselines-across-real-releases)
+measures this on real releases.
 
 ### Any other CI (GitLab, Jenkins, Azure, ...)
 

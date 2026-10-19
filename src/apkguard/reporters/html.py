@@ -83,6 +83,8 @@ def _finding_html(f: Finding, dimmed: bool) -> str:
         )
     if f.library:
         tags += f' <span class="tag">library: {escape(f.library)}</span>'
+    if f.baseline_state:
+        tags += f' <span class="tag">baseline: {escape(f.baseline_state)}</span>'
     supp = ""
     if f.suppressed:
         supp = f"<dt>Suppressed</dt><dd>{escape(f.suppression_reason or '')}</dd>"
@@ -102,9 +104,9 @@ def render_html(result: ScanResult) -> str:
         f'title="Click to hide/show"><div class="n">{n}</div><div class="l">{label}</div></div>'
         for label, n in counts.items()
     )
-    findings = "".join(
-        _finding_html(f, f.suppressed or result.is_separated(f)) for f in result.findings
-    )
+    # Findings that do not count (suppressed, library, baseline) are shown dimmed.
+    gating = {id(f) for f in result.gating_findings}
+    findings = "".join(_finding_html(f, id(f) not in gating) for f in result.findings)
     if not result.findings:
         findings = '<div class="empty">No findings - nice work.</div>'
     rules_rows = "".join(
@@ -126,6 +128,9 @@ def render_html(result: ScanResult) -> str:
     generated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     suppressed = len(result.findings) - len(result.active_findings)
     in_libraries = len(result.separated_findings)
+    in_baseline = (
+        f", {result.baseline.unchanged} unchanged since baseline" if result.baseline else ""
+    )
     worst = max((f.severity for f in result.gating_findings), default=None)
     verdict = f"Highest severity: {worst.label}" if worst is not None else "No active findings"
     return f"""<!doctype html>
@@ -145,7 +150,7 @@ def render_html(result: ScanResult) -> str:
 </div>
 <div class="cards">{cards}</div>
 <h2>Findings <span class="muted">(<span id="shown">{len(result.findings)}</span> shown,
-{suppressed} suppressed, {in_libraries} in third-party libraries)</span></h2>
+{suppressed} suppressed, {in_libraries} in third-party libraries{in_baseline})</span></h2>
 <div class="toolbar"><input id="q" type="search" placeholder="Filter by text, rule, class...">
 </div>
 {findings}

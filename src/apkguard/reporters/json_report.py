@@ -26,6 +26,7 @@ def to_dict(result: ScanResult) -> dict[str, object]:
                 "separated": len(result.separated_findings),
                 "by_library": result.library_counts(),
             },
+            "baseline": _baseline_summary(result),
             "duration_seconds": round(result.duration_s, 3),
         },
         "findings": [f.to_dict() for f in result.findings],
@@ -41,6 +42,17 @@ def to_dict(result: ScanResult) -> dict[str, object]:
             for m in result.rules
         ],
         "errors": [{"rule_id": e.rule_id, "error": e.error} for e in result.errors],
+    }
+
+
+def _baseline_summary(result: ScanResult) -> dict[str, object] | None:
+    if result.baseline is None:
+        return None
+    return {
+        "file": result.baseline.source,
+        "new": result.baseline.new,
+        "unchanged": result.baseline.unchanged,
+        "absent": result.baseline.absent,
     }
 
 
