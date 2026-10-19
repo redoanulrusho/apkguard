@@ -4,7 +4,7 @@ from collections.abc import Iterable
 
 from apkguard.config import Config, Suppression
 from apkguard.context import ApkContext
-from apkguard.model import Finding, Severity
+from apkguard.model import Finding, Location, Severity
 from apkguard.rules import ALL_RULES, RULES_BY_ID
 from apkguard.rules.base import Rule
 from apkguard.scanner import build_rules, run_rules, scan_context
@@ -106,3 +106,21 @@ def test_clean_app_has_no_findings_above_info() -> None:
     result = scan_context(ctx(clean))
     assert result.findings == []
     assert not result.exceeds(Severity.INFO)
+
+
+class _DuplicateRule(Rule):
+    meta = RULES_BY_ID["AG-MAN-001"].meta
+
+    def check(self, ctx: ApkContext) -> Iterable[Finding]:
+        for _ in range(3):  # the same call site pattern found three times in one method
+            yield self.finding("dup", Location("classes.dex", "LA;->b"), evidence="x")
+
+
+def test_identical_findings_are_merged_by_fingerprint(monkeypatch) -> None:  # type: ignore[no-untyped-def]
+    import apkguard.scanner as scanner
+
+    monkeypatch.setattr(scanner, "ALL_RULES", (_DuplicateRule,))
+    findings, _metas, _errors = run_rules(ctx(VULNERABLE), Config())
+    assert len(findings) == 1
+    assert findings[0].extra["occurrences"] == 3
+    assert findings[0].to_dict()["occurrences"] == 3

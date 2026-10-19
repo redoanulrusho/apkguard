@@ -80,8 +80,24 @@ def run_rules(
                 finding.suppressed = True
                 finding.suppression_reason = sup.reason or "suppressed by configuration"
             findings.append(finding)
+    findings = _deduplicate(findings)
     findings.sort(key=lambda f: (-f.severity, f.rule_id, str(f.location)))
     return findings, [r.meta for r in rules], errors
+
+
+def _deduplicate(findings: list[Finding]) -> list[Finding]:
+    """Merge findings with the same fingerprint (e.g. two identical calls in one method).
+
+    Fingerprints identify findings in SARIF and baselines, so they must be unique per scan.
+    The merged finding records how many times it was seen in ``extra["occurrences"]``.
+    """
+    unique: dict[str, Finding] = {}
+    for finding in findings:
+        first = unique.setdefault(finding.fingerprint, finding)
+        if first is not finding:
+            count = first.extra.get("occurrences", 1)
+            first.extra["occurrences"] = (count if isinstance(count, int) else 1) + 1
+    return list(unique.values())
 
 
 def scan_context(ctx: ApkContext, config: Config | None = None) -> ScanResult:

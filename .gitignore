@@ -11,3 +11,7 @@ dist/
 htmlcov/
 apkguard-report.*
 /reports/
+
+# Evaluation APKs are downloaded by evaluation/fetch_apks.py, never committed
+evaluation/apks/
+*.part

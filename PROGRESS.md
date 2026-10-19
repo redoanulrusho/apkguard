@@ -70,6 +70,14 @@ remote, nothing pushed).
 - Baseline quality gate (Windows 11, Python 3.11.6): ruff ✅, ruff format ✅ (47 files),
   mypy --strict ✅ (34 files), **177 passed**, coverage **97%** (1527 statements, 46 missed).
 
+### Step 1 - real-world evaluation
+- 50 F-Droid apps (pinned list + SHA-256 in `evaluation/apks.json`, downloader
+  `evaluation/fetch_apks.py`, runner `evaluation/run_evaluation.py`; APKs gitignored).
+- 50/50 scanned, no rule errors; median 7.5 s per APK, max 16.5 s; 737 findings, 63% from the
+  reflection rule. Manual review of 23 findings: 8 TP, 13 correct-but-not-actionable, 2 FP.
+- Review found and fixed a real bug (`getBytes("UTF-8")` treated as a constant key, DECISIONS
+  #33) and duplicate fingerprints (#34). Write-up: EVALUATION.md.
+
 ## How to run
 
 ```powershell

@@ -1,0 +1,149 @@
+# Real-world evaluation
+
+APKGuard was run on 50 benign open-source apps from the official F-Droid repository to answer
+three questions: does it run reliably on real APKs, how fast is it, and how useful are its
+findings? This document reports the results as measured, including the weak spots.
+
+## Setup
+
+| | |
+|---|---|
+| Source | `https://f-droid.org/repo/` only (official F-Droid repository). No other source, no malware. |
+| Selection | Latest version of each app, APK size 300 KB – 6 MB, updated in the last two years, no F-Droid anti-features, one app per primary category (seeded shuffle, seed `20261020`). Full rule in [`evaluation/apks.json`](evaluation/apks.json). |
+| Apps | 50 apps from 50 different categories (e.g. browser, email, launcher, keyboard, password vault, podcast player, games). Median size 3.2 MB, 163 MB in total. |
+| Integrity | Every APK is pinned by file name and SHA-256 in `evaluation/apks.json`; the downloader deletes any file whose hash differs. |
+| Configuration | Default rules and options, no config file. |
+| Machine | Windows 11, Python 3.11.6, androguard 4.1.4, single process. |
+
+Reproduce:
+
+```bash
+python evaluation/fetch_apks.py        # downloads + verifies the 50 APKs (not committed)
+python evaluation/run_evaluation.py    # writes evaluation/results/{findings.csv,summary.json,summary.md}
+```
+
+## Reliability and speed
+
+- **50 of 50 APKs scanned**, no crashes, and no rule raised an exception.
+- **Runtime per APK: median 7.5 s, mean 7.7 s, 90th percentile 13.9 s, max 16.5 s.** All 50
+  together took 6.4 minutes. Almost all of the time goes into androguard parsing the DEX files and
+  APKGuard converting every method's bytecode. The rules themselves are cheap.
+- Runtime grows with the amount of bytecode, not the APK size: an icon pack with 4 MB of images
+  scans in 0.1 s, while a 5 MB FTPS server that bundles BouncyCastle takes 16.5 s (the slowest).
+
+## Findings per rule
+
+737 findings in total (median 12 per app, between 2 and 38). By severity: 19 high, 75 medium,
+550 low, 93 info, 0 critical.
+
+| Rule | What it checks | Findings | Apps |
+|---|---|---:|---:|
+| AG-CODE-002 | Reflection-heavy code | 467 | 45 |
+| AG-PERM-001 | Dangerous permissions | 100 | 33 |
+| AG-MAN-004 | Exported components | 63 | 22 |
+| AG-MAN-002 | `allowBackup` | 37 | 37 |
+| AG-MAN-005 | Outdated target/min SDK | 18 | 14 |
+| AG-CODE-004 | Insecure WebView settings | 13 | 7 |
+| AG-CODE-006 | Weak hash (MD5/SHA-1) | 13 | 7 |
+| AG-MAN-003 | Cleartext traffic | 9 | 9 |
+| AG-CODE-003 | `addJavascriptInterface` | 7 | 3 |
+| AG-CODE-001 | Dynamic code loading | 3 | 1 |
+| AG-CODE-008 | Insecure TrustManager | 2 | 2 |
+| AG-PERM-002 | Suspicious permission combination | 2 | 2 |
+| AG-CODE-005 | Weak cipher | 1 | 1 |
+| AG-CODE-009 | Insecure HostnameVerifier | 1 | 1 |
+| AG-SEC-001 | Hardcoded secret | 1 | 1 |
+| AG-MAN-001, AG-CODE-007 | `debuggable`, hardcoded key | 0 | 0 |
+
+Per-app numbers are in [`evaluation/results/summary.md`](evaluation/results/summary.md) and every
+finding is in [`evaluation/results/findings.csv`](evaluation/results/findings.csv).
+
+**The reflection rule dominates: 467 of 737 findings (63%).** Nearly all of them are classes that
+use reflection with *constant* names. Most are in AndroidX, Kotlin and other libraries (AndroidX
+alone accounts for 185), and many more are in R8-obfuscated code (`Lq/f;`, `Ly1;`),
+which is usually library code too. These findings are correct as descriptions of the code, but
+they are almost never something an app developer can or should act on. See
+[Library detection](#library-detection) for how this noise is handled.
+
+## Manual review
+
+I reviewed **23 findings** by hand, looking at the decompiled bytecode or the manifest for each.
+The sample is deliberately weighted towards high and medium severity (all the rare
+high-severity code findings, plus a seeded random sample of the frequent rules), because those
+are the findings that would fail a CI build. Each finding got one of three labels:
+
+- **TP (true positive):** the weakness is really there and worth fixing or reviewing in this app.
+- **Correct, not actionable:** the code or manifest really does what the finding says, but in
+  context it is not a security problem (protocol-mandated, by design, library internals).
+- **FP (false positive):** the finding is wrong, or the flagged code cannot run in a release build.
+
+| # | App | Rule | Finding | Verdict | Why |
+|---|---|---|---|---|---|
+| 1 | Hauk | AG-CODE-009 | `InsecureHostnameVerifier.verify()` always returns true | TP | Confirmed in bytecode (`const/4 v0, 1; return v0`). The class name suggests an opt-in feature for self-signed servers, but the weakness is real. |
+| 2 | OpenContacts | AG-CODE-008 | `NetworkUtils$1.checkServerTrusted()` is empty | TP | Trust-all `X509TrustManager` in app code. |
+| 3 | OpenContacts | AG-MAN-004 | `DataSourceService` exported, custom action, no permission | TP | Any app can start or bind to the contacts app's data service; needs review. |
+| 4 | Play Notepad | AG-MAN-004 | `androidx.test...BootstrapActivity` exported | TP | Test-only library code shipped in a release build. |
+| 5 | potdroid | AG-MAN-004 | `CacheContentProvider` exported without permission | TP | Correct, but *lower* impact than its "high" severity: `openFile` maps the URI to an MD5 cache key, so there is no path traversal, and it only serves cached forum images. |
+| 6 | potdroid | AG-CODE-003 | JavaScript bridge `"api"` on a WebView | TP | Forum HTML is rendered in a WebView with a Java bridge; worth reviewing what the bridge exposes. |
+| 7 | Homer Player 2 | AG-SEC-001 | `string/podcastindex_secret` (40 chars) | TP | A real third-party API secret shipped in the APK. |
+| 8 | LRC Editor | AG-MAN-002 | `allowBackup="true"` with no backup rules | TP | Correct hardening finding (low impact: the app stores lyrics). |
+| 9 | Nextcloud News | AG-MAN-003 | `usesCleartextTraffic="true"` | Correct, not actionable | Client for self-hosted servers, so plain HTTP on a LAN is a deliberate feature. |
+| 10 | Nextcloud News | AG-MAN-004 | `OwnCloudSyncService` exported | Correct, not actionable | Sync adapter services must be exported for the system `SyncManager`. |
+| 11 | Calculator (Fossify) | AG-MAN-004 | `FossifyBroadcastReceiver` exported | Correct, not actionable | Shares theme settings between Fossify apps by design. |
+| 12 | potdroid | AG-CODE-006 | `MessageDigest.getInstance("MD5")` | Correct, not actionable | Used to name cache files, not for security. |
+| 13 | FTPS Server | AG-CODE-008 | BouncyCastle `JcaJceUtils$1.checkServerTrusted()` is empty | Correct, not actionable | Library helper inside BouncyCastle, not app code. |
+| 14 | Email (dystopia) | AG-CODE-005 | DES in `com.sun.mail.auth.Ntlm` | Correct, not actionable | The NTLM protocol requires DES; JavaMail library code. |
+| 15 | OpenContacts | AG-CODE-001 | `DexFile` in `LV0/c;->a` | Correct, not actionable | Obfuscated AndroidX MultiDex (`secondary-dexes`), standard on old Android versions. |
+| 16 | Remember The Date | AG-CODE-002 | `androidx.tracing.Trace`: 9 reflective calls | Correct, not actionable | AndroidX internals, constant names. |
+| 17 | LRC Editor | AG-CODE-002 | `Lq/f;`: 13 reflective calls | Correct, not actionable | Obfuscated library code, constant names. |
+| 18 | Brick Blast | AG-CODE-002 | `Lv3;` reflects into `ActivityThread` | Correct, not actionable | Common AndroidX-style hidden API access. |
+| 19 | Eblan Launcher | AG-PERM-001 | `BIND_ACCESSIBILITY_SERVICE` | Correct, not actionable | A launcher uses accessibility for gestures by design. |
+| 20 | Email (dystopia) | AG-PERM-002 | Contacts + internet + boot | Correct, not actionable | Exactly what an email client needs. |
+| 21 | Presence Publisher | AG-PERM-002 | Background location + internet | Correct, not actionable | Publishing presence is the app's purpose. |
+| 22 | Babby Paint | AG-CODE-004 | Cordova `onReceivedSslError` calls `proceed()` | **FP** | The call only runs when `ApplicationInfo.flags & FLAG_DEBUGGABLE` is set, so never in a release build. The analysis ignores control flow. |
+| 23 | Babby Paint | AG-CODE-004 | Cordova `setAllowUniversalAccessFromFileURLs(true)` | **FP** | Only runs if the `AndroidInsecureFileModeEnabled` preference is set (default false). |
+
+A 24th finding, discovered during the review, was a **rule bug** and has been fixed:
+
+| App | Rule | Finding | Verdict |
+|---|---|---|---|
+| Rete Clock | AG-CODE-007 | `WebAuth.derive` "creates a SecretKeySpec from a hardcoded secret key" | **FP, fixed** |
+
+The key was `password.getBytes("UTF-8")`, where `password` is a method parameter. The constant
+tracker treated *any* constant argument of `getBytes` as the source, so it picked up the charset
+`"UTF-8"`. It now only looks at the receiver string (or the decoded argument for `Base64.decode`),
+with a regression test. The numbers above are from after the fix.
+
+**Summary of the 23 reviewed findings:** 8 true positives (35%), 13 correct but not actionable
+(57%), 2 false positives (9%); 3 out of 24 (13%) if the fixed bug is counted.
+
+How to read this:
+
+- **Detection is accurate.** In 21 of 23 cases the code or manifest really contained what the
+  finding described. Both remaining false positives come from the same known limitation:
+  conditions are ignored (DECISIONS.md #3).
+- **Actionability is the weak point.** More than half of the correct findings are in library
+  code or describe behaviour that is intended for that kind of app. Library code is the largest
+  single cause, which motivated library detection (next section). "By design" findings (a news
+  reader for self-hosted servers using HTTP) can only be resolved by the developer, with a
+  config suppression.
+- **Severity is sometimes too coarse.** An exported provider is always *high*, but in potdroid it
+  only serves public images. Severity reflects the pattern, not the data it exposes.
+- The sample is small (23) and not uniformly random, so these percentages are rough estimates,
+  not a precision measurement.
+
+## Library detection
+
+*(Added in step 2; see below.)*
+
+## Limitations of this evaluation
+
+- **Benign apps only.** The apps are open-source and reviewed by F-Droid, so this measures noise
+  and false positives, not detection rate (recall). Rules for patterns that rarely appear in
+  benign apps (hardcoded keys, `debuggable`) are covered by synthetic unit tests instead.
+- **Small apps only (≤ 6 MB).** Large apps with many DEX files would take longer; runtime is
+  roughly linear in the amount of bytecode.
+- **One reviewer, 23 findings.** The verdicts are my judgement after reading the bytecode, not a
+  ground-truth dataset.
+- **F-Droid builds are often not minified** or only lightly obfuscated, which makes library
+  code easier to recognise than in typical Play Store apps.

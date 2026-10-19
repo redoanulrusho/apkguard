@@ -113,3 +113,24 @@ can be reviewed and reversed.
     committer of all 6 existing commits were rewritten with `git filter-branch --env-filter`
     (safe: never pushed). A `git bundle` of the old history was kept in the session scratchpad
     before rewriting, and `refs/original` was removed afterwards so no placeholder remains.
+
+## Session 2: evaluation, library detection, baselines, MCP
+
+31. **Evaluation corpus: 50 F-Droid apps, pinned by SHA-256.** Only `f-droid.org/repo` is used
+    (benign, built from source by F-Droid). Selection is mechanical and recorded in
+    `evaluation/apks.json` (size 300 KB-6 MB, updated in the last two years, no anti-features,
+    one app per category, seeded shuffle) so it cannot be cherry-picked after seeing results.
+    APKs are gitignored; `evaluation/fetch_apks.py` (stdlib only) re-downloads and verifies them.
+    The raw results (`findings.csv`, `summary.json`) *are* committed so the numbers in
+    EVALUATION.md can be checked without re-running.
+32. **Manual review labels** distinguish "true positive", "correct but not actionable" and
+    "false positive". A plain TP/FP split would hide the main finding of the evaluation: detection is
+    accurate, but many correct findings are in library code or describe intended behaviour.
+33. **Fixed: constant-bytes source in `analysis.py`.** `s.getBytes("UTF-8")` was treated as the
+    constant `"UTF-8"` because any constant argument counted. The source position is now explicit
+    per API (receiver for `String` methods, argument for `Base64` decoders). Found via a false
+    AG-CODE-007 finding in the evaluation.
+34. **Findings are de-duplicated by fingerprint** in the scanner (e.g. the same
+    `addJavascriptInterface` call twice in one method). The merged finding carries
+    `occurrences`. Fingerprints must be unique per scan for SARIF and baselines to work.
+

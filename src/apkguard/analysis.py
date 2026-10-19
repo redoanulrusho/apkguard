@@ -46,13 +46,16 @@ _NON_WRITING_PREFIXES = (
     "fill-array-data",
 )
 
-# Calls whose result is a compile-time constant byte array when their input is a constant string.
-_BYTES_FROM_STRING = (
-    "Ljava/lang/String;->getBytes",
-    "Ljava/lang/String;->toCharArray",
-    "Landroid/util/Base64;->decode",
-    "Ljava/util/Base64$Decoder;->decode",
-)
+# Calls whose result is a compile-time constant byte array when their input is a constant string,
+# mapped to the register position of that input string. For String methods it is the receiver
+# (position 0): in ``password.getBytes("UTF-8")`` the constant "UTF-8" is the charset, not the
+# data, so only the receiver may count.
+_BYTES_FROM_STRING: dict[str, int] = {
+    "Ljava/lang/String;->getBytes": 0,
+    "Ljava/lang/String;->toCharArray": 0,
+    "Landroid/util/Base64;->decode": 0,  # static decode(String, int)
+    "Ljava/util/Base64$Decoder;->decode": 1,  # receiver is the Decoder
+}
 
 
 @dataclass(frozen=True)
@@ -100,16 +103,24 @@ def iter_calls(method: MethodInfo) -> Iterator[CallSite]:
             args = tuple(regs.get(r) for r in ins.regs)
             target = ins.ref or ""
             yield CallSite(caller=method, index=index, target=target, args=args)
-            pending = None
-            if target.startswith(_BYTES_FROM_STRING) and any(isinstance(a, StrConst) for a in args):
-                src = next(a for a in args if isinstance(a, StrConst))
-                pending = BytesConst(
-                    source=f'"{src.value}" ({target.split("->")[1].split("(")[0]})'
-                )
+            pending = _bytes_from_string(target, args)
             continue
         _apply(ins, regs, pending)
         if not op.startswith("move-result"):
             pending = None
+
+
+def _bytes_from_string(target: str, args: tuple[Value, ...]) -> BytesConst | None:
+    """Constant byte array produced by e.g. ``"secret".getBytes()``, or ``None``."""
+    short_target = target.split("(", 1)[0]
+    position = _BYTES_FROM_STRING.get(short_target)
+    if position is None or position >= len(args):
+        return None
+    source = args[position]
+    if not isinstance(source, StrConst):
+        return None
+    method_name = short_target.split("->", 1)[1]
+    return BytesConst(source=f'"{source.value}" ({method_name})')
 
 
 def _apply(ins: Instruction, regs: dict[int, Value], pending: Value) -> None:

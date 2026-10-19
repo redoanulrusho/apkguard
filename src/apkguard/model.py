@@ -102,4 +102,6 @@ class Finding:
         }
         if self.suppression_reason:
             data["suppression_reason"] = self.suppression_reason
+        if "occurrences" in self.extra:
+            data["occurrences"] = self.extra["occurrences"]
         return data

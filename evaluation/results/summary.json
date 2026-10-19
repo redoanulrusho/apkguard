@@ -1,0 +1,484 @@
+{
+  "apks_scanned": 50,
+  "apks_failed": 0,
+  "total_size_mb": 163.0,
+  "runtime_seconds": {
+    "total": 383.0,
+    "mean": 7.66,
+    "median": 7.49,
+    "max": 16.51
+  },
+  "findings": {
+    "total": 737
+  },
+  "by_severity": {
+    "low": 550,
+    "info": 93,
+    "medium": 75,
+    "high": 19
+  },
+  "per_rule": {
+    "AG-CODE-001": {
+      "total": 3,
+      "apps": 1
+    },
+    "AG-CODE-002": {
+      "total": 467,
+      "apps": 45
+    },
+    "AG-CODE-003": {
+      "total": 7,
+      "apps": 3
+    },
+    "AG-CODE-004": {
+      "total": 13,
+      "apps": 7
+    },
+    "AG-CODE-005": {
+      "total": 1,
+      "apps": 1
+    },
+    "AG-CODE-006": {
+      "total": 13,
+      "apps": 7
+    },
+    "AG-CODE-008": {
+      "total": 2,
+      "apps": 2
+    },
+    "AG-CODE-009": {
+      "total": 1,
+      "apps": 1
+    },
+    "AG-MAN-002": {
+      "total": 37,
+      "apps": 37
+    },
+    "AG-MAN-003": {
+      "total": 9,
+      "apps": 9
+    },
+    "AG-MAN-004": {
+      "total": 63,
+      "apps": 22
+    },
+    "AG-MAN-005": {
+      "total": 18,
+      "apps": 14
+    },
+    "AG-PERM-001": {
+      "total": 100,
+      "apps": 33
+    },
+    "AG-PERM-002": {
+      "total": 2,
+      "apps": 2
+    },
+    "AG-SEC-001": {
+      "total": 1,
+      "apps": 1
+    }
+  },
+  "apps": [
+    {
+      "file": "app.zornslemma.mypricelog_8.apk",
+      "package": "app.zornslemma.mypricelog",
+      "size_kb": 4486,
+      "seconds": 7.41,
+      "findings": 8,
+      "rule_errors": []
+    },
+    {
+      "file": "cc.polysfaer.stochapop_8.apk",
+      "package": "cc.polysfaer.stochapop",
+      "size_kb": 2822,
+      "seconds": 5.61,
+      "findings": 5,
+      "rule_errors": []
+    },
+    {
+      "file": "com.anysoftkeyboard.languagepack.coptic_6158.apk",
+      "package": "com.anysoftkeyboard.languagepack.coptic",
+      "size_kb": 2981,
+      "seconds": 2.92,
+      "findings": 9,
+      "rule_errors": []
+    },
+    {
+      "file": "com.bartixxx.opflashcontrol_50.apk",
+      "package": "com.bartixxx.opflashcontrol",
+      "size_kb": 5343,
+      "seconds": 5.78,
+      "findings": 8,
+      "rule_errors": []
+    },
+    {
+      "file": "com.cg.lrceditor_57.apk",
+      "package": "com.cg.lrceditor",
+      "size_kb": 1217,
+      "seconds": 2.06,
+      "findings": 13,
+      "rule_errors": []
+    },
+    {
+      "file": "com.dataespresso.squarechess_14.apk",
+      "package": "com.dataespresso.squarechess",
+      "size_kb": 5477,
+      "seconds": 6.01,
+      "findings": 5,
+      "rule_errors": []
+    },
+    {
+      "file": "com.dumberkit.calculator_2.apk",
+      "package": "com.dumberkit.calculator",
+      "size_kb": 3108,
+      "seconds": 5.21,
+      "findings": 12,
+      "rule_errors": []
+    },
+    {
+      "file": "com.eblan.launcher_105.apk",
+      "package": "com.eblan.launcher",
+      "size_kb": 2816,
+      "seconds": 11.66,
+      "findings": 18,
+      "rule_errors": []
+    },
+    {
+      "file": "com.exner.tools.immichuploader_24.apk",
+      "package": "com.exner.tools.immichuploader",
+      "size_kb": 4712,
+      "seconds": 10.27,
+      "findings": 17,
+      "rule_errors": []
+    },
+    {
+      "file": "com.frabon.rememberthedate_1.apk",
+      "package": "com.frabon.rememberthedate",
+      "size_kb": 5476,
+      "seconds": 16.28,
+      "findings": 28,
+      "rule_errors": []
+    },
+    {
+      "file": "com.kbul.spicycrab_17.apk",
+      "package": "com.kbul.spicycrab",
+      "size_kb": 3185,
+      "seconds": 13.92,
+      "findings": 26,
+      "rule_errors": []
+    },
+    {
+      "file": "com.lenshrv.foss_3.apk",
+      "package": "com.lenshrv.foss",
+      "size_kb": 2348,
+      "seconds": 8.3,
+      "findings": 12,
+      "rule_errors": []
+    },
+    {
+      "file": "com.looker.droidify_780.apk",
+      "package": "com.looker.droidify",
+      "size_kb": 5857,
+      "seconds": 15.73,
+      "findings": 26,
+      "rule_errors": []
+    },
+    {
+      "file": "com.lukeneedham.videodiary_9.apk",
+      "package": "com.lukeneedham.videodiary",
+      "size_kb": 2868,
+      "seconds": 10.17,
+      "findings": 19,
+      "rule_errors": []
+    },
+    {
+      "file": "com.mde.potdroid_94.apk",
+      "package": "com.mde.potdroid",
+      "size_kb": 3699,
+      "seconds": 10.13,
+      "findings": 31,
+      "rule_errors": []
+    },
+    {
+      "file": "com.mostafa.brickblast_10.apk",
+      "package": "com.mostafa.brickblast",
+      "size_kb": 2964,
+      "seconds": 8.11,
+      "findings": 12,
+      "rule_errors": []
+    },
+    {
+      "file": "com.mshdabiola.playnotepad.foss_137.apk",
+      "package": "com.mshdabiola.playnotepad.foss",
+      "size_kb": 3723,
+      "seconds": 12.04,
+      "findings": 21,
+      "rule_errors": []
+    },
+    {
+      "file": "com.nicue.onetwo_42.apk",
+      "package": "com.nicue.onetwo",
+      "size_kb": 3849,
+      "seconds": 4.77,
+      "findings": 11,
+      "rule_errors": []
+    },
+    {
+      "file": "com.nvllz.piggsy_7.apk",
+      "package": "com.nvllz.piggsy",
+      "size_kb": 2734,
+      "seconds": 4.82,
+      "findings": 12,
+      "rule_errors": []
+    },
+    {
+      "file": "com.prismgallery.app_4.apk",
+      "package": "com.prismgallery.app",
+      "size_kb": 4789,
+      "seconds": 11.26,
+      "findings": 9,
+      "rule_errors": []
+    },
+    {
+      "file": "com.rechnen.app_22.apk",
+      "package": "com.rechnen.app",
+      "size_kb": 2941,
+      "seconds": 9.65,
+      "findings": 7,
+      "rule_errors": []
+    },
+    {
+      "file": "com.reteclock_90.apk",
+      "package": "com.reteclock",
+      "size_kb": 691,
+      "seconds": 1.97,
+      "findings": 6,
+      "rule_errors": []
+    },
+    {
+      "file": "com.siarheikuchuk.ftpsserver_20261008.apk",
+      "package": "com.siarheikuchuk.ftpsserver",
+      "size_kb": 5022,
+      "seconds": 16.51,
+      "findings": 8,
+      "rule_errors": []
+    },
+    {
+      "file": "com.studio4plus.homerplayer2_48.apk",
+      "package": "com.studio4plus.homerplayer2",
+      "size_kb": 4377,
+      "seconds": 15.35,
+      "findings": 20,
+      "rule_errors": []
+    },
+    {
+      "file": "com.thomaspeoples.wraithodysseus_600.apk",
+      "package": "com.thomaspeoples.wraithodysseus",
+      "size_kb": 4603,
+      "seconds": 11.28,
+      "findings": 7,
+      "rule_errors": []
+    },
+    {
+      "file": "cz.kutner.why_10002.apk",
+      "package": "cz.kutner.why",
+      "size_kb": 3409,
+      "seconds": 7.43,
+      "findings": 8,
+      "rule_errors": []
+    },
+    {
+      "file": "de.hohnepeople.keepadb_135.apk",
+      "package": "de.hohnepeople.keepadb",
+      "size_kb": 718,
+      "seconds": 0.31,
+      "findings": 4,
+      "rule_errors": []
+    },
+    {
+      "file": "de.kromke.andreas.opus1musicplayer_77.apk",
+      "package": "de.kromke.andreas.opus1musicplayer",
+      "size_kb": 2874,
+      "seconds": 4.44,
+      "findings": 18,
+      "rule_errors": []
+    },
+    {
+      "file": "de.luhmer.owncloudnewsreader_197.apk",
+      "package": "de.luhmer.owncloudnewsreader",
+      "size_kb": 4002,
+      "seconds": 7.82,
+      "findings": 30,
+      "rule_errors": []
+    },
+    {
+      "file": "de.moooon.acrylicons_21.apk",
+      "package": "de.moooon.acrylicons",
+      "size_kb": 4231,
+      "seconds": 0.14,
+      "findings": 3,
+      "rule_errors": []
+    },
+    {
+      "file": "de.pritcloud.appstow_16.apk",
+      "package": "de.pritcloud.appstow",
+      "size_kb": 2876,
+      "seconds": 1.23,
+      "findings": 7,
+      "rule_errors": []
+    },
+    {
+      "file": "de.readeckapp_1200.apk",
+      "package": "de.readeckapp",
+      "size_kb": 3748,
+      "seconds": 11.96,
+      "findings": 25,
+      "rule_errors": []
+    },
+    {
+      "file": "de.spoolmaker.android_33.apk",
+      "package": "de.spoolmaker.android",
+      "size_kb": 1867,
+      "seconds": 7.55,
+      "findings": 18,
+      "rule_errors": []
+    },
+    {
+      "file": "dev.alexjyong.babbypaint_9.apk",
+      "package": "dev.alexjyong.babbypaint",
+      "size_kb": 4102,
+      "seconds": 11.16,
+      "findings": 38,
+      "rule_errors": []
+    },
+    {
+      "file": "dev.co508.soundboard_1003.apk",
+      "package": "dev.co508.soundboard",
+      "size_kb": 2158,
+      "seconds": 9.33,
+      "findings": 7,
+      "rule_errors": []
+    },
+    {
+      "file": "dev.norsehorse.vaultpony_7.apk",
+      "package": "dev.norsehorse.vaultpony",
+      "size_kb": 5421,
+      "seconds": 6.97,
+      "findings": 10,
+      "rule_errors": []
+    },
+    {
+      "file": "dev.tn3w.shelf_13.apk",
+      "package": "dev.tn3w.shelf",
+      "size_kb": 4336,
+      "seconds": 10.95,
+      "findings": 19,
+      "rule_errors": []
+    },
+    {
+      "file": "dnsfilter.android_1506103.apk",
+      "package": "dnsfilter.android",
+      "size_kb": 627,
+      "seconds": 1.0,
+      "findings": 7,
+      "rule_errors": []
+    },
+    {
+      "file": "dubrowgn.wattz_20.apk",
+      "package": "dubrowgn.wattz",
+      "size_kb": 684,
+      "seconds": 1.01,
+      "findings": 5,
+      "rule_errors": []
+    },
+    {
+      "file": "duress.ultimate_22.apk",
+      "package": "duress.ultimate",
+      "size_kb": 337,
+      "seconds": 0.19,
+      "findings": 4,
+      "rule_errors": []
+    },
+    {
+      "file": "es.pile_19.apk",
+      "package": "es.pile",
+      "size_kb": 4768,
+      "seconds": 9.93,
+      "findings": 10,
+      "rule_errors": []
+    },
+    {
+      "file": "evil.spin_103.apk",
+      "package": "evil.spin",
+      "size_kb": 4939,
+      "seconds": 14.25,
+      "findings": 26,
+      "rule_errors": []
+    },
+    {
+      "file": "info.varden.hauk_15.apk",
+      "package": "info.varden.hauk",
+      "size_kb": 3392,
+      "seconds": 11.61,
+      "findings": 31,
+      "rule_errors": []
+    },
+    {
+      "file": "me.lecaro.breakout_29856652.apk",
+      "package": "me.lecaro.breakout",
+      "size_kb": 540,
+      "seconds": 0.24,
+      "findings": 2,
+      "rule_errors": []
+    },
+    {
+      "file": "opencontacts.open.com.opencontacts_32.apk",
+      "package": "opencontacts.open.com.opencontacts",
+      "size_kb": 4407,
+      "seconds": 8.37,
+      "findings": 38,
+      "rule_errors": []
+    },
+    {
+      "file": "org.dystopia.email_121.apk",
+      "package": "org.dystopia.email",
+      "size_kb": 2803,
+      "seconds": 6.97,
+      "findings": 29,
+      "rule_errors": []
+    },
+    {
+      "file": "org.ostrya.presencepublisher_59.apk",
+      "package": "org.ostrya.presencepublisher",
+      "size_kb": 3098,
+      "seconds": 6.76,
+      "findings": 21,
+      "rule_errors": []
+    },
+    {
+      "file": "org.woheller69.browser_3500.apk",
+      "package": "org.woheller69.browser",
+      "size_kb": 5294,
+      "seconds": 5.31,
+      "findings": 14,
+      "rule_errors": []
+    },
+    {
+      "file": "page.codeberg.lanticy.guandan_7.apk",
+      "package": "page.codeberg.lanticy.guandan",
+      "size_kb": 1547,
+      "seconds": 5.08,
+      "findings": 7,
+      "rule_errors": []
+    },
+    {
+      "file": "threads.server_400.apk",
+      "package": "threads.server",
+      "size_kb": 2599,
+      "seconds": 5.73,
+      "findings": 6,
+      "rule_errors": []
+    }
+  ]
+}

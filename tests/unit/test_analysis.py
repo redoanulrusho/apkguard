@@ -66,6 +66,35 @@ def test_getbytes_on_constant_yields_bytes_constant() -> None:
     assert isinstance(calls[1].arg(0), BytesConst)
 
 
+def test_getbytes_with_constant_charset_on_unknown_string_is_not_constant() -> None:
+    # Regression (found in the F-Droid evaluation): password.getBytes("UTF-8") was treated as
+    # the constant "UTF-8" because any constant argument counted, not just the receiver.
+    m = method(
+        CLS,
+        "f",
+        const_string(3, "UTF-8"),
+        invoke("Ljava/lang/String;->getBytes(Ljava/lang/String;)[B", 6, 3),
+        move_result(6),
+        invoke("Lcom/x/Y;->use([B)V", 6, kind="static"),
+    )
+    calls = list(iter_calls(m))
+    assert calls[1].arg(0) is None
+
+
+def test_java_base64_decoder_uses_argument_not_receiver() -> None:
+    m = method(
+        CLS,
+        "f",
+        const_string(1, "c2VjcmV0"),
+        invoke("Ljava/util/Base64$Decoder;->decode(Ljava/lang/String;)[B", 0, 1),
+        move_result(2),
+        invoke("Lcom/x/Y;->use([B)V", 2, kind="static"),
+    )
+    assert next(c for c in iter_calls(m) if c.target_name == "use").arg(0) == BytesConst(
+        '"c2VjcmV0" (decode)'
+    )
+
+
 def test_unknown_instruction_clears_destination_register() -> None:
     m = method(
         CLS,
