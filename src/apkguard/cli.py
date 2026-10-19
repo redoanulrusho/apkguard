@@ -183,7 +183,9 @@ def _write(path: str, content: str) -> None:
     target = Path(path)
     if target.parent and not target.parent.exists():
         target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(content, encoding="utf-8")
+    # newline="\n": identical report files on Windows and Linux (no CRLF translation).
+    with target.open("w", encoding="utf-8", newline="\n") as fh:
+        fh.write(content)
 
 
 def _scan(args: argparse.Namespace) -> int:

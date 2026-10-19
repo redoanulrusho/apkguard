@@ -9,8 +9,12 @@ from __future__ import annotations
 
 from collections.abc import Iterator
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
 
 from lxml import etree
+
+if TYPE_CHECKING:  # analysis imports this module, so import it for type checking only
+    from apkguard.analysis import CallSite
 
 ANDROID_NS = "http://schemas.android.com/apk/res/android"
 COMPONENT_TAGS = ("activity", "activity-alias", "service", "receiver", "provider")
@@ -180,6 +184,8 @@ class MethodInfo:
     name: str
     descriptor: str = "()V"
     instructions: list[Instruction] = field(default_factory=list)
+    #: Call sites with tracked constants, filled lazily by :func:`apkguard.analysis.iter_calls`.
+    call_cache: tuple[CallSite, ...] | None = field(default=None, repr=False, compare=False)
 
     @property
     def full_name(self) -> str:

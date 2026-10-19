@@ -128,6 +128,8 @@ def test_cli_writes_all_reports(tmp_path: Path, monkeypatch: pytest.MonkeyPatch)
     sarif = json.loads((tmp_path / "out/r.sarif").read_text(encoding="utf-8"))
     assert sarif["version"] == "2.1.0"
     assert (tmp_path / "out/r.html").read_text(encoding="utf-8").startswith("<!doctype html>")
+    for name in ("r.json", "r.sarif", "r.html"):  # LF line endings on every platform
+        assert b"\r\n" not in (tmp_path / "out" / name).read_bytes()
 
 
 def test_cli_primary_format_to_stdout(capsys: pytest.CaptureFixture[str]) -> None:

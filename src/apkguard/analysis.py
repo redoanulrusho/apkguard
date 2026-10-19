@@ -94,7 +94,18 @@ class CallSite:
 
 
 def iter_calls(method: MethodInfo) -> Iterator[CallSite]:
-    """Yield every invoke instruction in ``method`` together with known constant arguments."""
+    """Yield every invoke instruction in ``method`` together with known constant arguments.
+
+    The result is computed once per method and cached on it: seven code rules walk every method,
+    and repeating the register tracking for each of them doubled the scan time of large apps.
+    Instructions never change after loading, so the cache cannot go stale during a scan.
+    """
+    if method.call_cache is None:
+        method.call_cache = tuple(_track_calls(method))
+    return iter(method.call_cache)
+
+
+def _track_calls(method: MethodInfo) -> Iterator[CallSite]:
     regs: dict[int, Value] = {}
     pending: Value = None
     for index, ins in enumerate(method.instructions):

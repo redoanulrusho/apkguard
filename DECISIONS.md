@@ -204,4 +204,10 @@ can be reviewed and reversed.
     not known here. PROGRESS.md gives a one-line command to replace it before publishing.
 52. **CI gained a `package` job** that builds, runs `twine check`, installs the wheel (with the
     `mcp` extra) into a fresh venv and smoke-tests it, mirroring the local release check.
+53. **Call sites are cached per method (`MethodInfo.call_cache`).** Checking the README claim
+    that "rules are cheap" showed it was false: rules took ~50% of scan time, because seven code
+    rules each re-ran the register tracking over every method. Computing call sites once cut rule
+    time by 3x (8.2 s -> 2.4 s on the slowest app) with byte-identical findings on all 50 apps.
+    *Trade-off:* the cache lives on the model object, which is only safe because instructions are
+    never modified after loading (documented on `iter_calls`).
 

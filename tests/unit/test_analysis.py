@@ -135,3 +135,16 @@ def test_is_empty_body() -> None:
     assert is_empty_body(method(CLS, "m", ret_void()))
     assert is_empty_body(method(CLS, "m", Instruction("nop"), ret_void()))
     assert not is_empty_body(method(CLS, "m", invoke("Lx;->y()V", kind="static"), ret_void()))
+
+
+def test_call_sites_are_computed_once_per_method() -> None:
+    m = method(
+        CLS,
+        "f",
+        const_string(0, "x"),
+        invoke("Lcom/x/Y;->s(Ljava/lang/String;)V", 0, kind="static"),
+    )
+    first = list(iter_calls(m))
+    assert m.call_cache is not None
+    assert list(iter_calls(m)) == first
+    assert next(iter_calls(m)) is first[0]  # served from the cache, not recomputed
