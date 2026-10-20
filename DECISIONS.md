@@ -200,8 +200,10 @@ can be reviewed and reversed.
 50. **The sdist excludes `tests/`, `evaluation/` and `docs/`** (MANIFEST.in). The fixtures are
     third-party GPL APKs and the evaluation needs 300 MB of downloads; both stay in git, where
     contributors get them. The wheel contains only `src/apkguard`.
-51. **Repository URLs use the placeholder `YOUR_GITHUB_USER`**, because the GitHub account name is
-    not known here. PROGRESS.md gives a one-line command to replace it before publishing.
+51. **Repository URLs point to `github.com/redoanulrusho/apkguard`.** Session 2 used a
+    placeholder because the account name was not known; session 3 replaced it everywhere
+    (package metadata, SARIF `informationUri`, README, community files, action references).
+    Commits keep the identity `redoanulkarim1@gmail.com`, which is on that GitHub account.
 52. **CI gained a `package` job** that builds, runs `twine check`, installs the wheel (with the
     `mcp` extra) into a fresh venv and smoke-tests it, mirroring the local release check.
 53. **Call sites are cached per method (`MethodInfo.call_cache`).** Checking the README claim

@@ -54,9 +54,9 @@ pushed, no GitHub repository was created, nothing was published.
   configuration (`claude mcp add apkguard -- apkguard-mcp`, `claude_desktop_config.json`) was not
   tried in those apps. The exact launch they perform (the `apkguard-mcp` executable over stdio)
   was tested.
-- **Placeholder `YOUR_GITHUB_USER`** in `pyproject.toml` URLs, README badges and links, the SARIF
-  `informationUri`, `CHANGELOG.md`, `SECURITY.md`, `CONTRIBUTING.md`, the issue-template config
-  and the example workflow. Replace it before publishing (see below).
+- **Repository URLs point to `github.com/redoanulrusho/apkguard`**, which does not exist yet.
+  README badges, the SARIF `informationUri`, the `pyproject.toml` URLs and the action reference
+  `redoanulrusho/apkguard@v0.1.0` only resolve once the repository is pushed and tagged.
 - Analysis limits (README "Limitations"): flow-insensitive and intra-procedural; package-name
   library detection does not see through R8 renaming, which also causes baseline churn in
   obfuscated apps; severity is per pattern.
@@ -66,17 +66,13 @@ pushed, no GitHub repository was created, nothing was published.
 
 ### How to publish it yourself
 
-1. **Replace the placeholder** with your GitHub username (Git Bash, from the repo root):
-   ```bash
-   grep -rl YOUR_GITHUB_USER --exclude-dir=.git --exclude-dir=.venv --exclude-dir=evaluation . \
-     | xargs sed -i 's/YOUR_GITHUB_USER/<your-username>/g'
-   git commit -am "Set GitHub repository URLs"
-   ```
-   Run the quality gate again afterwards.
-2. **Create the GitHub repository** (empty: no README or license) named `apkguard`, then:
+1. **Repository URLs:** done. Every former GitHub-user placeholder now reads `redoanulrusho`
+   (session 3).
+2. **Create the GitHub repository** `redoanulrusho/apkguard` (public, empty: no README, no
+   .gitignore, no license), then:
    ```bash
    git branch -M main
-   git remote add origin https://github.com/<your-username>/apkguard.git
+   git remote add origin https://github.com/redoanulrusho/apkguard.git
    git push -u origin main
    ```
 3. **First CI run:** open the *Actions* tab and check that `CI` passes (lint, tests on
@@ -100,7 +96,7 @@ pushed, no GitHub repository was created, nothing was published.
 6. **GitHub Marketplace:** the repository root already has `action.yml` with name, description and
    branding. On the v0.1.0 release page, tick *Publish this Action to the GitHub Marketplace*
    (accept the developer agreement; the action name must be unique on the Marketplace). Users
-   then write `uses: <your-username>/apkguard@v0.1.0`.
+   then write `uses: redoanulrusho/apkguard@v0.1.0`.
 
 ---
 
@@ -232,6 +228,10 @@ action.yml, Dockerfile, .github/ (CI, issue forms, PR template), examples/, docs
 <details>
 <summary>Session 1 summary (2026-10-06), kept for history</summary>
 
+> **Superseded.** This is the state at the end of session 1. The current status is the session 2
+> summary at the top of this file. Items that later sessions resolved are marked *[resolved]*
+> below; the test counts here (177 tests) are from session 1.
+
 ### Summary (end of autonomous session, 2026-10-06)
 
 **Status:** all six requested features are implemented, tested and committed locally (no
@@ -275,18 +275,18 @@ remote, nothing pushed).
   in the Diary fixture.
 - No real F-Droid fixture contains a `networkSecurityConfig`. That loader path is tested with a fake
   APK object (and a bug was found and fixed that way).
-- Findings in third-party libraries are reported like app code unless `exclude_packages` is
-  used. There is no automatic library detection yet.
-- The `uses: apkguard/apkguard@v0.1.0` reference in the README and examples is a placeholder until
-  the action is published somewhere.
-- The git commits use the existing local identity `Redoan Rusho <your_github_email@example.com>`.
-  The email is a placeholder. Fix with `git config user.email you@example.com`, and rewrite
-  history before publishing if needed.
+- *[resolved in session 2: library detection, `--library-findings`]* Findings in third-party
+  libraries were reported like app code unless `exclude_packages` was used.
+- *[resolved in session 3: `redoanulrusho/apkguard@v0.1.0`]* The action reference in the README
+  and examples was a placeholder.
+- *[resolved in session 2: all commits rewritten to `redoanulkarim1@gmail.com`]* The git commits
+  used a placeholder email.
 
 ### Suggested next steps
 1. Push to a GitHub repo and let `ci.yml` run (Linux/Windows/macOS matrix, Docker, action self-test).
-2. Add `--baseline <file>` so PRs fail only on *new* findings (fingerprints already exist).
-3. Library detection, so third-party findings are separated or skipped by default.
+2. *[done in session 2]* Add `--baseline <file>` so PRs fail only on *new* findings.
+3. *[done in session 2]* Library detection, so third-party findings are separated or skipped by
+   default.
 4. More rules: mutable `PendingIntent`, `MODE_WORLD_READABLE`, `rawQuery` SQL injection, logging
    of secrets, `FileProvider` root paths, native library hardening, user-trusted CAs in the network
    security config.

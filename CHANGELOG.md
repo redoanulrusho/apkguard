@@ -45,5 +45,5 @@ First public release.
 - Fingerprints no longer change when a class moves to another `classesN.dex` file, or when a
   class gains one more reflective call.
 
-[Unreleased]: https://github.com/YOUR_GITHUB_USER/apkguard/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/YOUR_GITHUB_USER/apkguard/releases/tag/v0.1.0
+[Unreleased]: https://github.com/redoanulrusho/apkguard/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/redoanulrusho/apkguard/releases/tag/v0.1.0

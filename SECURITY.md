@@ -11,7 +11,7 @@
 Please **do not open a public issue** for security problems in APKGuard itself.
 
 Report them privately through GitHub's
-[private vulnerability reporting](https://github.com/YOUR_GITHUB_USER/apkguard/security/advisories/new)
+[private vulnerability reporting](https://github.com/redoanulrusho/apkguard/security/advisories/new)
 or by email to **redoanulkarim1@gmail.com** with "APKGuard security" in the subject. Please
 include the version, a description, and steps or a minimal file that reproduces the issue.
 

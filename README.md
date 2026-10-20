@@ -1,6 +1,6 @@
 # APKGuard
 
-[![CI](https://github.com/YOUR_GITHUB_USER/apkguard/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_GITHUB_USER/apkguard/actions/workflows/ci.yml)
+[![CI](https://github.com/redoanulrusho/apkguard/actions/workflows/ci.yml/badge.svg)](https://github.com/redoanulrusho/apkguard/actions/workflows/ci.yml)
 ![Python 3.10–3.13](https://img.shields.io/badge/python-3.10%E2%80%933.13-blue)
 ![mypy strict](https://img.shields.io/badge/mypy-strict-informational)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
@@ -253,7 +253,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: ./gradlew assembleRelease
-      - uses: YOUR_GITHUB_USER/apkguard@v0.1.0
+      - uses: redoanulrusho/apkguard@v0.1.0
         with:
           apk: app/build/outputs/apk/release/app-release-unsigned.apk
           fail-on: high

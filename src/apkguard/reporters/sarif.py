@@ -11,7 +11,7 @@ from apkguard.rules import RULES_BY_ID
 from apkguard.scanner import ScanResult
 
 SARIF_SCHEMA = "https://json.schemastore.org/sarif-2.1.0.json"
-INFO_URI = "https://github.com/YOUR_GITHUB_USER/apkguard"
+INFO_URI = "https://github.com/redoanulrusho/apkguard"
 
 LEVELS = {
     Severity.CRITICAL: "error",

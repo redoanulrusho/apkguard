@@ -23,7 +23,7 @@ jobs:
       - name: Build release APK
         run: ./gradlew assembleRelease
       - name: Scan with APKGuard
-        uses: YOUR_GITHUB_USER/apkguard@v0.1.0   # replace with the published location of this action
+        uses: redoanulrusho/apkguard@v0.1.0
         with:
           apk: app/build/outputs/apk/release/app-release-unsigned.apk
           fail-on: high

@@ -38,11 +38,11 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/YOUR_GITHUB_USER/apkguard"
-Repository = "https://github.com/YOUR_GITHUB_USER/apkguard"
-Issues = "https://github.com/YOUR_GITHUB_USER/apkguard/issues"
-Changelog = "https://github.com/YOUR_GITHUB_USER/apkguard/blob/main/CHANGELOG.md"
-Documentation = "https://github.com/YOUR_GITHUB_USER/apkguard#readme"
+Homepage = "https://github.com/redoanulrusho/apkguard"
+Repository = "https://github.com/redoanulrusho/apkguard"
+Issues = "https://github.com/redoanulrusho/apkguard/issues"
+Changelog = "https://github.com/redoanulrusho/apkguard/blob/main/CHANGELOG.md"
+Documentation = "https://github.com/redoanulrusho/apkguard#readme"
 
 [project.optional-dependencies]
 mcp = ["mcp>=2.3,<3"]

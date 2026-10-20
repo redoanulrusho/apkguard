@@ -15,7 +15,7 @@ documentation fixes are all welcome.
 ## Development setup
 
 ```bash
-git clone https://github.com/YOUR_GITHUB_USER/apkguard.git
+git clone https://github.com/redoanulrusho/apkguard.git
 cd apkguard
 python -m venv .venv
 . .venv/bin/activate              # Windows: .venv\Scripts\activate
