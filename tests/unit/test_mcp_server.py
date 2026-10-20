@@ -11,11 +11,12 @@ import anyio
 import pytest
 import yaml
 
-pytest.importorskip("mcp")  # optional extra: pip install "apkguard[mcp]"
+pytest.importorskip("mcp")  # optional extra: pip install ".[mcp]" or ".[dev]"
 
 from mcp import Client, StdioServerParameters
 from mcp.server.mcpserver.exceptions import ToolError
 
+from apkguard import __version__
 from apkguard.cli import mcp_main
 from apkguard.config import parse_config
 from apkguard.guidance import TRIAGE
@@ -181,4 +182,5 @@ def test_mcp_main_without_the_extra(
 ) -> None:
     monkeypatch.setitem(sys.modules, "apkguard.mcp_server", None)  # makes the import fail
     assert mcp_main() == 2
-    assert 'pip install "apkguard[mcp]"' in capsys.readouterr().err
+    hint = f'pip install "apkguard[mcp] @ git+https://github.com/redoanulrusho/apkguard@v{__version__}"'
+    assert hint in capsys.readouterr().err

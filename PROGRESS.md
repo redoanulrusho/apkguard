@@ -13,7 +13,7 @@ pushed, no GitHub repository was created, nothing was published.
 | 1 Evaluation | 50 F-Droid apps (pinned by SHA-256, `evaluation/`), 50/50 scanned, 737 findings, manual review of 23 findings -> [EVALUATION.md](EVALUATION.md). Found and fixed 2 bugs. |
 | 2 Library detection | `--library-findings separate/include/exclude` (default `separate`), `--library-package`, config keys. -33% findings, -47% code findings, high 19 -> 14. |
 | 3 Baselines | `--write-baseline` / `--baseline`, new/unchanged in all reports, action inputs `baseline` and `library-findings`, CI self-test. Evaluated on 42 real release pairs. |
-| 4 MCP server | `pip install "apkguard[mcp]"`, `apkguard-mcp` (stdio), tools `scan_apk`, `list_rules`, `explain_finding`; tested in-process and over a real stdio subprocess. |
+| 4 MCP server | optional `mcp` extra, `apkguard-mcp` (stdio), tools `scan_apk`, `list_rules`, `explain_finding`; tested in-process and over a real stdio subprocess. |
 | 5 Release readiness | v0.1.0 (single-sourced), full metadata, CHANGELOG, CONTRIBUTING, SECURITY, issue forms, PR template, `package` CI job. Wheel + sdist built, `twine check` passed, fresh-venv install verified. |
 | 6 README | Real example output, evaluation summary, rules table with hit counts, baseline + MCP usage, Mermaid architecture, limitations, roadmap. |
 | Extra | Performance: rules were ~50% of scan time; caching call sites cut the median scan from 7.5 s to 5.4 s with byte-identical findings. CLI reports now use LF on every platform. |
@@ -132,7 +132,7 @@ pushed, no GitHub repository was created, nothing was published.
   all cases; CI runs the action against a generated baseline. 17 new tests.
 
 ### Step 4 - MCP server
-- `pip install "apkguard[mcp]"`, command `apkguard-mcp` (stdio). Tools `scan_apk`, `list_rules`,
+- Optional `mcp` extra, command `apkguard-mcp` (stdio). Tools `scan_apk`, `list_rules`,
   `explain_finding` with typed output schemas and read-only annotations.
 - 17 tests: tool functions, in-process MCP client, and a real stdio subprocess. The installed
   `apkguard-mcp.exe` was also driven over stdio against an evaluation APK.

@@ -40,9 +40,15 @@ SARIF and HTML output, and its exit code gates a release.
 ## Quick start
 
 ```bash
-pip install apkguard                 # Python 3.10+  (or: pip install . from a clone)
+# Python 3.10+
+pip install "apkguard @ git+https://github.com/redoanulrusho/apkguard@v0.1.0"
 apkguard scan app-release.apk
 ```
+
+Or from a clone: `git clone https://github.com/redoanulrusho/apkguard.git && cd apkguard && pip install .`
+
+> APKGuard is not on PyPI yet, so `pip install apkguard` does not work. Publishing to PyPI is
+> planned; until then, install from GitHub as shown above.
 
 ```bash
 # All reports at once; fail the build on medium or worse
@@ -317,7 +323,7 @@ about 95% of the "new" findings, mostly low-severity reflection
 ### Any other CI (GitLab, Jenkins, Azure, ...)
 
 ```bash
-pip install apkguard
+pip install "apkguard @ git+https://github.com/redoanulrusho/apkguard@v0.1.0"
 apkguard scan app/build/outputs/apk/release/app-release.apk \
   --fail-on high --baseline apkguard-baseline.json --sarif apkguard.sarif --html apkguard-report.html
 ```
@@ -328,8 +334,11 @@ APKGuard ships an optional [Model Context Protocol](https://modelcontextprotocol
 assistants such as Claude Desktop and Claude Code can scan APKs and explain findings for you.
 
 ```bash
-pip install "apkguard[mcp]"     # adds the official MCP Python SDK and the apkguard-mcp command
+# adds the official MCP Python SDK and the apkguard-mcp command
+pip install "apkguard[mcp] @ git+https://github.com/redoanulrusho/apkguard@v0.1.0"
 ```
+
+From a clone, use `pip install ".[mcp]"`.
 
 | Tool | What it returns |
 |---|---|
@@ -473,6 +482,7 @@ Test fixtures are small, benign GPL apps from F-Droid; see
 - [x] Baselines (`--baseline`) so PRs fail only on new findings
 - [x] Third-party library separation
 - [x] MCP server for AI assistants
+- [ ] Publish to PyPI, so `pip install apkguard` works
 - [ ] Obfuscation-aware library detection (code fingerprints, as in LibScout/LibID)
 - [ ] Branch-aware constant tracking, so code guarded by `FLAG_DEBUGGABLE` or a preference is
       recognised (the main false-positive source in the evaluation)

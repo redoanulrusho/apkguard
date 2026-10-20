@@ -6,6 +6,12 @@ All notable changes to this project are documented here. The format is based on
 
 ## [Unreleased]
 
+### Changed
+
+- Install instructions use the GitHub tag
+  (`pip install "apkguard @ git+https://github.com/redoanulrusho/apkguard@v0.1.0"`), since
+  APKGuard is not on PyPI yet. The `apkguard-mcp` hint for a missing MCP extra does the same.
+
 ## [0.1.0] - 2026-10-20
 
 First public release.
@@ -28,7 +34,7 @@ First public release.
   on new ones. JSON, SARIF (`baselineState`), HTML and terminal output show new/unchanged.
 - GitHub Action (composite, runs on Linux/macOS/Windows runners) with SARIF upload to code
   scanning, `baseline` and `library-findings` inputs.
-- MCP server (`pip install "apkguard[mcp]"`, `apkguard-mcp`) with `scan_apk`, `list_rules` and
+- MCP server (optional `mcp` extra, `apkguard-mcp`) with `scan_apk`, `list_rules` and
   `explain_finding` tools for Claude Desktop, Claude Code and other MCP clients.
 - Per-rule triage guidance (how to verify, when a finding is usually benign).
 - Dockerfile, CI workflow (lint, strict typing, tests on Linux/Windows/macOS, Python 3.10-3.13,

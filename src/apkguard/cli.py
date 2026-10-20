@@ -35,6 +35,8 @@ EXIT_SCAN_ERROR = 3
 
 DEFAULT_FAIL_ON = Severity.HIGH
 SEVERITY_CHOICES = [s.label for s in Severity] + ["none"]
+# Not on PyPI yet, so install hints point at the tagged release on GitHub.
+GIT_URL = "git+https://github.com/redoanulrusho/apkguard"
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -295,7 +297,7 @@ def mcp_main() -> int:
     except ImportError as exc:  # the optional "mcp" extra is not installed
         print(
             f"apkguard-mcp needs the MCP extra ({exc.name} is missing). Install it with:\n"
-            '    pip install "apkguard[mcp]"',
+            f'    pip install "apkguard[mcp] @ {GIT_URL}@v{__version__}"',
             file=sys.stderr,
         )
         return EXIT_USAGE

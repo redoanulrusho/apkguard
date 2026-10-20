@@ -77,4 +77,6 @@ the most useful feedback for a static analyser, and they are how the bugs listed
 1. Update the version in `src/apkguard/__init__.py` and move the `Unreleased` changelog entries
    under the new version.
 2. `python -m build && python -m twine check dist/*`
-3. Tag `vX.Y.Z`, push the tag, publish the GitHub release and upload to PyPI.
+3. Tag `vX.Y.Z`, push the tag and publish the GitHub release. Update the `@vX.Y.Z` in the
+   install commands in README.md and `src/apkguard/mcp_server.py`. (PyPI publishing is planned;
+   until then users install from the GitHub tag.)

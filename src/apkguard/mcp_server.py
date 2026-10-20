@@ -2,7 +2,7 @@
 
 Install the optional extra and run the server over stdio::
 
-    pip install "apkguard[mcp]"
+    pip install "apkguard[mcp] @ git+https://github.com/redoanulrusho/apkguard@v0.1.0"
     apkguard-mcp
 
 Tools:
